@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Judiciary & High Court | Create: Project Blueprint</title>
+    <link rel="icon" type="image/png" href="../../assets/image/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --court-gold: #d97706;
+            --court-light-gold: #f59e0b;
+            --court-navy: #0f172a;
+            --court-deep-navy: #090e1a;
+            --court-card: #141e33;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--court-deep-navy);
+            color: #f1f5f9;
+            box-sizing: border-box;
+        }
+
+        .court-font {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.04em;
+        }
+
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .court-hero-pattern {
+            background: radial-gradient(circle at 50% 20%, rgba(217, 119, 6, 0.12) 0%, transparent 65%),
+                        linear-gradient(180deg, #0f172a 0%, #090e1a 100%);
+            position: relative;
+        }
+
+        .court-hero-pattern::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(217, 119, 6, 0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(217, 119, 6, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+        }
+
+        .gold-border {
+            border: 1px solid rgba(217, 119, 6, 0.35);
+        }
+
+        .court-card {
+            background: linear-gradient(145deg, #162238 0%, #0d1526 100%);
+            border: 1px solid rgba(217, 119, 6, 0.25);
+            transition: all 0.25s ease;
+        }
+
+        .court-card:hover {
+            border-color: #f59e0b;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px -10px rgba(217, 119, 6, 0.25);
+        }
+
+        .docket-badge {
+            background: rgba(217, 119, 6, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(217, 119, 6, 0.4);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .modal-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: #b45309;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Top Gov Navigation Banner -->
+    <div class="bg-black border-b border-amber-950/80 text-xs text-amber-200/70 py-1.5 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span>
+                <span class="font-semibold text-amber-300 court-font tracking-wider">SUPREME TRIBUNAL & FEDERAL JUDICIARY</span>
+                <span class="text-gray-700">|</span>
+                <span class="text-gray-400">ARTICLE III JUDICIAL POWER</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="../" class="hover:text-amber-300 transition-colors">Security Portal</a>
+                <span class="text-gray-700">•</span>
+                <a href="../fboc/" class="hover:text-red-400 transition-colors">FBOC Corrections</a>
+                <span class="text-gray-700">•</span>
+                <a href="../fbis/" class="hover:text-cyan-400 transition-colors">FBIS Intelligence</a>
+                <span class="text-gray-700">•</span>
+                <a href="../../government.html" class="hover:text-blue-400 transition-colors">Server Government</a>
+                <span class="text-gray-700">•</span>
+                <a href="../../" class="hover:text-white transition-colors">CTBE Hub</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Judiciary Header -->
+    <header class="bg-slate-950/95 border-b-2 border-amber-600/60 sticky top-0 z-40 backdrop-blur-md shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3.5">
+                <!-- Agency Brand -->
+                <a href="./" class="flex items-center space-x-3.5 group">
+                    <div class="w-13 h-13 p-2 bg-gradient-to-br from-amber-700 to-slate-900 rounded-lg shadow-lg flex items-center justify-center border border-amber-500/50 group-hover:border-amber-400 transition-colors">
+                        <!-- Custom Judiciary Scales of Justice Vector -->
+                        <svg class="w-9 h-9 text-amber-400" viewBox="0 0 48 48" fill="none" stroke="currentColor">
+                            <!-- Pedestal -->
+                            <path d="M14 42H34" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M20 38H28" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M24 8V38" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Balance Crossbar with Create Mod Cog in center -->
+                            <path d="M10 14H38" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle cx="24" cy="14" r="3.5" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5"/>
+                            <!-- Left Scale -->
+                            <path d="M10 14L6 26H14L10 14Z" stroke="#fbbf24" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M5 26C5 28.5 7.2 30 10 30C12.8 30 15 28.5 15 26" stroke="#fbbf24" stroke-width="1.5"/>
+                            <!-- Right Scale -->
+                            <path d="M38 14L34 26H42L38 14Z" stroke="#fbbf24" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M33 26C33 28.5 35.2 30 38 30C40.8 30 43 28.5 43 26" stroke="#fbbf24" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl font-bold tracking-wider text-white court-font">JUDICIARY</span>
+                            <span class="bg-amber-950 text-amber-400 border border-amber-800/80 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase mono-font">High Tribunal</span>
+                        </div>
+                        <p class="text-xs font-semibold text-gray-300">Court of Arbitrations & Judicial Review</p>
+                        <p class="text-[11px] text-gray-400">Create: Project Blueprint • Independent Legal Authority</p>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-7 text-sm font-medium">
+                    <a href="#docket" class="text-gray-300 hover:text-amber-400 transition-colors">Case Docket</a>
+                    <a href="#principles" class="text-gray-300 hover:text-amber-400 transition-colors">Due Process</a>
+                    <a href="#magistrates" class="text-gray-300 hover:text-amber-400 transition-colors">Magistrates</a>
+                    <a href="#precedents" class="text-gray-300 hover:text-amber-400 transition-colors">Legal Precedents</a>
+                    <a href="#schedule" class="text-gray-300 hover:text-amber-400 transition-colors">Hearings</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openModal('petitionModal')" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white px-4 py-2 rounded text-xs font-bold tracking-wider uppercase transition shadow-lg shadow-amber-950/40 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>File Lawsuit / Appeal</span>
+                    </button>
+                    <span class="docket-badge hidden md:inline-block">OFFICIAL COURT OF RECORD</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1">
+        <!-- Hero Section -->
+        <section class="court-hero-pattern py-16 sm:py-24 border-b border-amber-900/30 text-center relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="inline-flex items-center space-x-2 bg-amber-950/70 border border-amber-700/60 px-4 py-1.5 rounded-full text-xs font-semibold text-amber-300 mb-6 shadow-md">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span class="court-font tracking-widest uppercase">EQUAL JUSTICE UNDER THE BLUEPRINT</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white court-font tracking-tight mb-4">
+                    Justice. Precedent. Equity.
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+                    The independent judicial branch of <span class="text-amber-400 font-semibold">Create: Project Blueprint</span>. Presiding over corporate contract arbitrations, land claim disputes, criminal appeals, and constitutional safeguards.
+                </p>
+
+                <!-- Search Docket Quick Console -->
+                <div class="max-w-2xl mx-auto mb-10">
+                    <div class="bg-slate-900/90 p-2 rounded-xl border border-amber-500/30 shadow-2xl flex flex-col sm:flex-row gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </span>
+                            <input id="docketSearchInput" type="text" placeholder="Search Case Number (e.g. CTBE-CV-2026-042) or Litigant IGN..." 
+                                class="w-full pl-11 pr-4 py-3 bg-slate-800/90 border border-slate-700 rounded-lg text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                        </div>
+                        <button onclick="handleDocketSearch()" class="bg-amber-600 hover:bg-amber-500 text-white px-6 py-3 rounded-lg text-sm font-bold tracking-wide uppercase transition flex items-center justify-center space-x-2 shadow-lg">
+                            <span>Search Docket</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-xs text-gray-400 mt-2">
+                        <span>Frequent Dockets: <button onclick="quickDocket('Granite Ridge')" class="text-amber-400 hover:underline">Granite Ridge Arbitration</button>, <button onclick="quickDocket('Rivera')" class="text-amber-400 hover:underline">State v. Rivera</button>, <button onclick="quickDocket('Sector 4')" class="text-amber-400 hover:underline">Sector 4 Claim Boundary</button></span>
+                    </div>
+                </div>
+
+                <!-- Primary Court Portals -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
+                    <button onclick="openModal('petitionModal')" class="court-card p-5 rounded-xl text-left transition group">
+                        <div class="w-10 h-10 rounded-lg bg-amber-950/60 text-amber-400 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-white font-bold text-sm mb-1 court-font">File Formal Petition</h4>
+                        <p class="text-xs text-gray-400">Initiate commercial litigation, contract disputes, or property damage claims.</p>
+                    </button>
+
+                    <button onclick="openModal('appealModal')" class="court-card p-5 rounded-xl text-left transition group">
+                        <div class="w-10 h-10 rounded-lg bg-blue-950/60 text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-white font-bold text-sm mb-1 court-font">Appeal Staff Ruling</h4>
+                        <p class="text-xs text-gray-400">Seek judicial review of FBOC custodial holds, warnings, or staff fines.</p>
+                    </button>
+
+                    <button onclick="openModal('codeModal')" class="court-card p-5 rounded-xl text-left transition group">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-950/60 text-emerald-400 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-white font-bold text-sm mb-1 court-font">Judicial Code & Precedents</h4>
+                        <p class="text-xs text-gray-400">Review ratified server statutes, building easements, and past court rulings.</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Judicial Principles & Separation of Powers -->
+        <section id="principles" class="py-14 bg-slate-950 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="border-l-2 border-amber-600 pl-4">
+                        <h3 class="text-base font-bold text-white court-font mb-1">Independent Adjudication</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Judges operate autonomously from executive staff and law enforcement (FBOC/FBIS). Every judgment is rendered strictly based on evidence and server law.
+                        </p>
+                    </div>
+
+                    <div class="border-l-2 border-amber-600 pl-4">
+                        <h3 class="text-base font-bold text-white court-font mb-1">Presumption of Good Faith</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Accidental contraption malfunctions (e.g. steam boiler explosions or runaway minecarts) are evaluated fairly to distinguish negligence from intentional griefing.
+                        </p>
+                    </div>
+
+                    <div class="border-l-2 border-amber-600 pl-4">
+                        <h3 class="text-base font-bold text-white court-font mb-1">Enforceable Restitution</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Rather than arbitrary punitive bans, the court prioritizes equitable restitution in brass ingots, material replacement, or supervised labor repair.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Public Case Docket -->
+        <section id="docket" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 pb-4 border-b border-slate-800">
+                    <div>
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-widest mono-font">Public Record</span>
+                        <h2 class="text-3xl font-bold text-white court-font mt-1">Official Court Docket</h2>
+                        <p class="text-sm text-gray-400 mt-1">Active matters pending before the High Tribunal and Magistrates of CTBE SMP.</p>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-4 md:mt-0">
+                        <button onclick="filterDocket('all')" class="docket-filter-btn active bg-amber-600 text-white px-3 py-1.5 rounded text-xs font-semibold">All Cases</button>
+                        <button onclick="filterDocket('civil')" class="docket-filter-btn bg-slate-800 hover:bg-slate-700 text-gray-300 px-3 py-1.5 rounded text-xs font-semibold">Civil & Corporate</button>
+                        <button onclick="filterDocket('criminal')" class="docket-filter-btn bg-slate-800 hover:bg-slate-700 text-gray-300 px-3 py-1.5 rounded text-xs font-semibold">Criminal</button>
+                        <button onclick="filterDocket('appeals')" class="docket-filter-btn bg-slate-800 hover:bg-slate-700 text-gray-300 px-3 py-1.5 rounded text-xs font-semibold">Appellate</button>
+                    </div>
+                </div>
+
+                <!-- Docket Grid -->
+                <div id="docketGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Case 1: Civil / Corporate -->
+                    <div class="court-card rounded-xl p-6 flex flex-col justify-between" data-category="civil">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="docket-badge">#CTBE-CV-2026-042</span>
+                                <span class="text-[11px] font-bold text-amber-400 uppercase mono-font">IN DELIBERATION</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-1 court-font">Granite Ridge Construction v. Aether Rail Co.</h3>
+                            <p class="text-xs text-amber-300/80 mb-3 mono-font">Matter: Modular Tunnel Bore Patent Infringement</p>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Plaintiff claims defendant replicated proprietary drill contraption schematics without payment of the statutory licensing fee. Emergency stay on construction issued.
+                            </p>
+                            <div class="text-[11px] text-gray-400 bg-slate-900/80 p-3 rounded border border-slate-800 mb-4 space-y-1">
+                                <div><span class="text-gray-500">PRESIDING:</span> Chief Justice Sterling</div>
+                                <div><span class="text-gray-500">NEXT SESSION:</span> Saturday 19:00 CST • Chamber Alpha</div>
+                            </div>
+                        </div>
+                        <button onclick="viewCaseDetails('granite')" class="w-full bg-slate-800 hover:bg-amber-600 hover:text-white text-gray-300 text-xs font-bold py-2.5 rounded transition uppercase tracking-wider">
+                            Examine Pleadings & Exhibits
+                        </button>
+                    </div>
+
+                    <!-- Case 2: Criminal Trial -->
+                    <div class="court-card rounded-xl p-6 flex flex-col justify-between" data-category="criminal">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="docket-badge">#CTBE-CR-2026-019</span>
+                                <span class="text-[11px] font-bold text-emerald-400 uppercase mono-font">JUDGMENT RENDERED</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-1 court-font">Federal Government v. Marcus Rivera</h3>
+                            <p class="text-xs text-amber-300/80 mb-3 mono-font">Matter: Kinetic Overdrive Sabotage & Bank Theft</p>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Defendant convicted on 3 counts of intentional kinetic ramming. Full judgment ordered: 30 days custodial remand in FBOC Facility 01 plus 1,500 Brass Ingot compensation.
+                            </p>
+                            <div class="text-[11px] text-gray-400 bg-slate-900/80 p-3 rounded border border-slate-800 mb-4 space-y-1">
+                                <div><span class="text-gray-500">PRESIDING:</span> Senior Magistrate Vance</div>
+                                <div><span class="text-gray-500">ENFORCEMENT:</span> Remanded to FBOC Custody</div>
+                            </div>
+                        </div>
+                        <button onclick="viewCaseDetails('rivera')" class="w-full bg-slate-800 hover:bg-amber-600 hover:text-white text-gray-300 text-xs font-bold py-2.5 rounded transition uppercase tracking-wider">
+                            Examine Pleadings & Exhibits
+                        </button>
+                    </div>
+
+                    <!-- Case 3: Appellate Claim Boundary -->
+                    <div class="court-card rounded-xl p-6 flex flex-col justify-between" data-category="appeals">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="docket-badge">#CTBE-AP-2026-008</span>
+                                <span class="text-[11px] font-bold text-blue-400 uppercase mono-font">HEARING SCHEDULED</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-1 court-font">In Re: Sector 4 Mainland Rail Easement</h3>
+                            <p class="text-xs text-amber-300/80 mb-3 mono-font">Matter: Town Claim vs. Inter-City Rail Right-of-Way</p>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Local township disputes federal eminent domain declaration over a 16-block wide rail corridor connecting mainland hub stations.
+                            </p>
+                            <div class="text-[11px] text-gray-400 bg-slate-900/80 p-3 rounded border border-slate-800 mb-4 space-y-1">
+                                <div><span class="text-gray-500">PRESIDING:</span> Full Appellate Bench (3 Magistrates)</div>
+                                <div><span class="text-gray-500">STATUS:</span> Briefs Submitted by Council</div>
+                            </div>
+                        </div>
+                        <button onclick="viewCaseDetails('sector4')" class="w-full bg-slate-800 hover:bg-amber-600 hover:text-white text-gray-300 text-xs font-bold py-2.5 rounded transition uppercase tracking-wider">
+                            Examine Pleadings & Exhibits
+                        </button>
+                    </div>
+
+                    <!-- Case 4: Parole Appeal -->
+                    <div class="court-card rounded-xl p-6 flex flex-col justify-between" data-category="appeals">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="docket-badge">#CTBE-AP-2026-015</span>
+                                <span class="text-[11px] font-bold text-amber-400 uppercase mono-font">PENDING REVIEW</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-1 court-font">Petition of Silas Vance (Facility 03)</h3>
+                            <p class="text-xs text-amber-300/80 mb-3 mono-font">Matter: Sentence Reduction for Restitution Service</p>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Inmate petitioner requests early conditional discharge from Camp Delta after fulfilling full restitution quota of 500 crushed alloy blocks for public infrastructure.
+                            </p>
+                            <div class="text-[11px] text-gray-400 bg-slate-900/80 p-3 rounded border border-slate-800 mb-4 space-y-1">
+                                <div><span class="text-gray-500">PRESIDING:</span> Magistrate Chen (Parole Division)</div>
+                                <div><span class="text-gray-500">RECOMMENDATION:</span> FBOC Warden endorses release</div>
+                            </div>
+                        </div>
+                        <button onclick="viewCaseDetails('vance_appeal')" class="w-full bg-slate-800 hover:bg-amber-600 hover:text-white text-gray-300 text-xs font-bold py-2.5 rounded transition uppercase tracking-wider">
+                            Examine Pleadings & Exhibits
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Judicial Roster & Magistrates -->
+        <section id="magistrates" class="py-16 bg-slate-950 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="text-xs font-bold text-amber-500 uppercase tracking-widest mono-font">Bench of Magistrates</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white court-font mt-2 mb-3">Tribunal Leadership</h2>
+                    <p class="text-sm text-gray-400">Appointed under CTBE constitutional guidelines to ensure unbiased dispute resolution.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Justice 1 -->
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 text-center">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-amber-950/60 border-2 border-amber-500/50 flex items-center justify-center text-amber-400">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-white court-font">Chief Justice K. Sterling</h4>
+                        <p class="text-xs text-amber-400 mono-font mb-3">Supreme Tribunal of Arbitrations</p>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                            Senior jurist presiding over major company disputes, patent challenges, and constitutional questions on server governance.
+                        </p>
+                        <span class="text-[11px] text-gray-500 mono-font">TERM: SEASON 3 APPOINTMENT</span>
+                    </div>
+
+                    <!-- Justice 2 -->
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 text-center">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-950/60 border-2 border-blue-500/50 flex items-center justify-center text-blue-400">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-white court-font">Magistrate D. Vance</h4>
+                        <p class="text-xs text-blue-400 mono-font mb-3">Penal Appeals & Rule Compliance</p>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                            Hears appeals against custodial sentences, FBIS forensic infractions, and oversees the restitution credit framework.
+                        </p>
+                        <span class="text-[11px] text-gray-500 mono-font">TERM: SEASON 3 APPOINTMENT</span>
+                    </div>
+
+                    <!-- Justice 3 -->
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 text-center">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-purple-950/60 border-2 border-purple-500/50 flex items-center justify-center text-purple-400">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-white court-font">Magistrate M. Torres</h4>
+                        <p class="text-xs text-purple-400 mono-font mb-3">Claims & Municipal Boundaries</p>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                            Arbitrates town borders, mainland expansion rights-of-way, and redstone/contraption interference disputes.
+                        </p>
+                        <span class="text-[11px] text-gray-500 mono-font">TERM: SEASON 3 APPOINTMENT</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal Precedents & Server Case Law -->
+        <section id="precedents" class="py-16 bg-slate-900/40 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-4 border-b border-slate-800">
+                    <div>
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-widest mono-font">Established Law</span>
+                        <h2 class="text-3xl font-bold text-white court-font mt-1">Landmark Server Precedents</h2>
+                        <p class="text-sm text-gray-400 mt-1">Binding rulings establishing property rights, contraption standards, and server etiquette.</p>
+                    </div>
+                    <button onclick="openModal('codeModal')" class="mt-4 md:mt-0 text-xs font-bold text-amber-400 hover:text-amber-300 mono-font uppercase flex items-center space-x-1">
+                        <span>Read Full Judicial Code</span>
+                        <span>→</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                        <span class="text-xs mono-font text-amber-400 font-bold block mb-2">PRECEDENT 24-01</span>
+                        <h3 class="text-base font-bold text-white court-font mb-2">The Kinetic Overclock Liability Doctrine</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-3">
+                            Established that owners of rotational networks exceeding 128 RPM without automatic speed clutches bear strict civil liability for any resulting boiler blasts or chunk desync.
+                        </p>
+                        <span class="text-[10px] text-gray-500 mono-font">RATIFIED: SEASON 2 • UNANIMOUS</span>
+                    </div>
+
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                        <span class="text-xs mono-font text-amber-400 font-bold block mb-2">PRECEDENT 24-09</span>
+                        <h3 class="text-base font-bold text-white court-font mb-2">Rail Right-of-Way Easement Standard</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-3">
+                            Affirmed that certified public rail networks connecting major settlements possess a protected 8-block buffer zone that cannot be obstructed by private land claims.
+                        </p>
+                        <span class="text-[10px] text-gray-500 mono-font">RATIFIED: SEASON 3 • BENCH OPINION</span>
+                    </div>
+
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                        <span class="text-xs mono-font text-amber-400 font-bold block mb-2">PRECEDENT 25-03</span>
+                        <h3 class="text-base font-bold text-white court-font mb-2">Granite Ridge Blueprint Ownership Standard</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-3">
+                            Recognized player-designed schematic files as legally protected trade property under CTBE commercial statutes, forbidding unauthorized commercial reproduction.
+                        </p>
+                        <span class="text-[10px] text-gray-500 mono-font">RATIFIED: SEASON 3.1 • ARBITRATION BENCH</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Unified Footer -->
+    <footer class="bg-black border-t border-slate-900 text-gray-400 text-xs py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+                <div>
+                    <div class="flex items-center space-x-2 text-white font-bold text-lg mb-3 court-font">
+                        <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                        <span>JUDICIARY • CTBE SMP</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed mb-4">
+                        The independent High Court of Create: Project Blueprint. Ensuring due process, fair arbitration, and protection of player rights under server law.
+                    </p>
+                    <span class="mono-font text-amber-400 text-[11px]">CITATION REF: CTBE-JUD-OFFICIAL</span>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-wider text-xs mb-3 court-font">Judicial Services</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#docket" class="hover:text-amber-400 transition">Public Case Docket</a></li>
+                        <li><a href="#magistrates" class="hover:text-amber-400 transition">Roster of Magistrates</a></li>
+                        <li><a href="#precedents" class="hover:text-amber-400 transition">Landmark Precedents</a></li>
+                        <li><button onclick="openModal('petitionModal')" class="hover:text-amber-400 transition">File Civil Lawsuit</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-wider text-xs mb-3 court-font">Security Network</h5>
+                    <ul class="space-y-2">
+                        <li><a href="../fboc/" class="hover:text-red-400 transition">FBOC (Federal Corrections)</a></li>
+                        <li><a href="../fbis/" class="hover:text-cyan-400 transition">FBIS (Federal Investigation)</a></li>
+                        <li><a href="../../government.html" class="hover:text-blue-400 transition">Server Government Hub</a></li>
+                        <li><a href="../../co/granite-ridge/" class="hover:text-white transition">Granite Ridge Construction</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-wider text-xs mb-3 court-font">Clerk of Court</h5>
+                    <p class="text-gray-400 mb-2">Formal Case Submission & Petitions:</p>
+                    <p class="text-amber-400 font-bold mono-font text-sm mb-1">DISCORD #JUDICIAL-PETITIONS</p>
+                    <p class="text-gray-500 text-[11px]">Hearings conducted in Minecraft High Court Chamber and Discord voice tribunal.</p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-950 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-500">
+                <p>&copy; 2026 Create: Project Blueprint Judiciary. All rights reserved. Supreme Court of CTBE SMP.</p>
+                <div class="flex space-x-6">
+                    <a href="../../LEGAL.md" class="hover:text-gray-400">Legal Terms</a>
+                    <a href="../../SECURITY.md" class="hover:text-gray-400">Security Guidelines</a>
+                    <a href="../../support/" class="hover:text-gray-400">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+
+    <!-- Case Details Modal -->
+    <div id="caseModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-amber-950 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <h3 id="caseModalTitle" class="text-lg font-bold text-white court-font">Judicial Case Record</h3>
+                </div>
+                <button onclick="closeModal('caseModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div id="caseModalContent" class="p-6 overflow-y-auto modal-scroll space-y-4 text-sm text-gray-300">
+                <!-- Populated via JS -->
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+                <button onclick="closeModal('caseModal')" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-bold uppercase tracking-wider">Close Record</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Petition Modal -->
+    <div id="petitionModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-amber-950 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white court-font">File Formal Lawsuit / Arbitration Petition</h3>
+                <button onclick="closeModal('petitionModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <form onsubmit="handlePetitionSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Plaintiff (Your IGN / Company Name)</label>
+                    <input type="text" placeholder="e.g. Granite Ridge Construction or PlayerName" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Defendant (Accused Player or Syndicate)</label>
+                    <input type="text" placeholder="Player IGN or Organization" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Nature of Matter</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none">
+                        <option>Breach of Construction / Trade Contract</option>
+                        <option>Schematic Intellectual Property Infringement</option>
+                        <option>Land Claim / Rail Easement Dispute</option>
+                        <option>Accidental Machinery Damage / Compensation</option>
+                        <option>Other Civil Dispute</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Claim Statement & Evidence Links</label>
+                    <textarea rows="4" placeholder="Detail the events, coordinate locations, agreed contract terms, and screenshots/logs..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Requested Relief / Damages</label>
+                    <input type="text" placeholder="e.g. 500 Brass Ingots Restitution or Injunction on Track" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('petitionModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded font-bold uppercase tracking-wider">File with Clerk of Court</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- File Appeal Modal -->
+    <div id="appealModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-blue-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-blue-950 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white court-font">Appeal Penal Sanction or Ban</h3>
+                <button onclick="closeModal('appealModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs text-gray-300">
+                <p class="text-gray-400 leading-relaxed">
+                    Under CTBE Charter Article IV, every player sanctioned by staff or remanded by FBOC has the right to appeal before an impartial Appellate Magistrate.
+                </p>
+                <div>
+                    <label class="block font-bold text-blue-400 uppercase mb-1">Appellant Player IGN</label>
+                    <input type="text" placeholder="Your Minecraft Username" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block font-bold text-blue-400 uppercase mb-1">Sanction Under Appeal</label>
+                    <input type="text" placeholder="e.g. 14 Days FBOC Custody / 300 Ingot Fine" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block font-bold text-blue-400 uppercase mb-1">Grounds for Appeal</label>
+                    <textarea rows="4" placeholder="Explain why the ruling was in error, provide missing context, or attach evidence of mechanical malfunction rather than intentional violation..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm"></textarea>
+                </div>
+                <button onclick="alert('Appellate brief registered. Assigned to Magistrate Vance. Hearing will be scheduled within 48 hours.'); closeModal('appealModal');" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                    Submit Appeal to Appellate Bench
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code of Precedents Modal -->
+    <div id="codeModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-amber-950 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white court-font">CTBE Judicial Code & Precedents</h3>
+                <button onclick="closeModal('codeModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs text-gray-300 leading-relaxed">
+                <div class="border-b border-slate-800 pb-3">
+                    <h4 class="font-bold text-amber-400 uppercase">Chapter 1: The Principle of Restitution</h4>
+                    <p class="text-gray-400 mt-1">Property damage caused by kinetic experiments must first be compensated in kind or in brass value before any punitive ban is considered.</p>
+                </div>
+                <div class="border-b border-slate-800 pb-3">
+                    <h4 class="font-bold text-amber-400 uppercase">Chapter 2: Blueprint Copyright Standard</h4>
+                    <p class="text-gray-400 mt-1">Schematics created and certified by registered server companies belong to the original engineering firm and cannot be pirated for public schematicannons.</p>
+                </div>
+                <div class="border-b border-slate-800 pb-3">
+                    <h4 class="font-bold text-amber-400 uppercase">Chapter 3: Rail Immunity Act</h4>
+                    <p class="text-gray-400 mt-1">Inter-city passenger and freight trains are classified as public infrastructure. Intentionally obstructing tracks with stationary contraptions is a federal felony.</p>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+                <button onclick="closeModal('codeModal')" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-bold uppercase tracking-wider">Close Codex</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const casesData = {
+            granite: {
+                docket: '#CTBE-CV-2026-042',
+                parties: 'Granite Ridge Construction Co. (Plaintiff) vs. Aether Rail Transport (Defendant)',
+                matter: 'Modular Tunnel Bore Patent Infringement',
+                summary: 'Plaintiff claims defendant operated an automated drill contraption that copied the exact gear ratio and chassis configuration patented by Granite Ridge in Season 3.0.',
+                pleadings: 'Granite Ridge requests 800 Brass Ingots in royalties and an immediate cease-and-desist injunction on further tunneling through Sector 4.',
+                presiding: 'Chief Justice Sterling (Tribunal Chamber Alpha)',
+                currentOrder: 'Temporary restraining order granted pending mechanical inspection by FBIS Forensics Lab.'
+            },
+            rivera: {
+                docket: '#CTBE-CR-2026-019',
+                parties: 'CTBE Federal Prosecution vs. Marcus "The Ghost" Rivera',
+                matter: 'Intentional Kinetic Ramming & Bank Griefing',
+                summary: 'Defendant deployed a heavily armored contraption train clocked at 256 RPM to bypass station clutches and smash into the Central Deposit vault.',
+                pleadings: 'Defendant claimed a mechanical clutch failure. FBIS forensic logs proved manual throttle override.',
+                presiding: 'Senior Magistrate Vance',
+                currentOrder: 'Defendant found guilty. Sentenced to 30 In-Game Days at FBOC Facility 01 (The Obsidian Redoubt) + 1,500 Brass Ingot fine.'
+            },
+            sector4: {
+                docket: '#CTBE-AP-2026-008',
+                parties: 'Township of Pine Valley vs. Department of Transportation',
+                matter: 'Rail Corridor Right-of-Way Dispute',
+                summary: 'Pine Valley council disputes the federal eminent domain declaration over a 16-block corridor across their claim for the mainland express train.',
+                pleadings: 'Township requests rerouting around the valley or mandatory noise mitigation and acoustic tunnels.',
+                presiding: 'Appellate Tribunal Panel',
+                currentOrder: 'Scheduled for oral argument on Saturday at 19:00 CST in High Court voice chamber.'
+            },
+            vance_appeal: {
+                docket: '#CTBE-AP-2026-015',
+                parties: 'In Re: Silas Vance (Applicant)',
+                matter: 'Restitution Parole Hearing',
+                summary: 'Petitioner has served 10 In-Game days at Facility 03 and completed crushing 500 andesite alloy blocks for public infrastructure repair.',
+                pleadings: 'Requests conversion of remainder sentence to community supervised probation.',
+                presiding: 'Magistrate Chen (Parole Division)',
+                currentOrder: 'Warden report verified. Hearing set for tomorrow evening.'
+            }
+        };
+
+        function viewCaseDetails(key) {
+            const data = casesData[key];
+            if (!data) return;
+
+            document.getElementById('caseModalTitle').textContent = `Docket ${data.docket}`;
+            document.getElementById('caseModalContent').innerHTML = `
+                <div class="bg-black/60 p-4 rounded-xl border border-amber-950 font-mono text-xs space-y-2">
+                    <div class="flex justify-between"><span class="text-gray-500">LITIGANTS:</span> <span class="text-white">${data.parties}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">MATTER:</span> <span class="text-amber-400 font-bold">${data.matter}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">MAGISTRATE:</span> <span class="text-gray-300">${data.presiding}</span></div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-amber-400 court-font mb-1">Case Summary</h5>
+                    <p class="text-xs bg-slate-950 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.summary}</p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-amber-400 court-font mb-1">Claims & Pleadings</h5>
+                    <p class="text-xs bg-slate-950 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.pleadings}</p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-emerald-400 court-font mb-1">Current Court Order / Finding</h5>
+                    <p class="text-xs bg-slate-950 p-3 rounded border border-slate-800 text-white font-mono leading-relaxed">${data.currentOrder}</p>
+                </div>
+            `;
+            openModal('caseModal');
+        }
+
+        function filterDocket(category) {
+            document.querySelectorAll('.docket-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-gray-300');
+            event.target.classList.add('bg-amber-600', 'text-white');
+
+            const cards = document.querySelectorAll('#docketGrid .court-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function handleDocketSearch() {
+            const query = document.getElementById('docketSearchInput').value.toLowerCase().trim();
+            if (!query) {
+                filterDocket('all');
+                document.getElementById('docket').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const cards = document.querySelectorAll('#docketGrid .court-card');
+            let found = 0;
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                    found++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('docket').scrollIntoView({ behavior: 'smooth' });
+            if (found === 0) {
+                alert(`No docket records found matching "${query}".`);
+                filterDocket('all');
+            }
+        }
+
+        function quickDocket(term) {
+            document.getElementById('docketSearchInput').value = term;
+            handleDocketSearch();
+        }
+
+        function handlePetitionSubmit(e) {
+            e.preventDefault();
+            alert('Lawsuit / Petition successfully filed with the Clerk of Court. Docket Assigned: #CTBE-CV-2026-' + Math.floor(100 + Math.random() * 900));
+            closeModal('petitionModal');
+            e.target.reset();
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            ['caseModal', 'petitionModal', 'appealModal', 'codeModal'].forEach(id => {
+                const modal = document.getElementById(id);
+                if (e.target === modal) {
+                    closeModal(id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

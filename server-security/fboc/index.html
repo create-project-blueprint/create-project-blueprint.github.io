@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Bureau of Corrections (FBOC) | Create: Project Blueprint</title>
+    <link rel="icon" type="image/png" href="../../assets/image/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+        :root {
+            --fboc-crimson: #dc2626;
+            --fboc-dark-crimson: #991b1b;
+            --fboc-amber: #f59e0b;
+            --fboc-steel: #334155;
+            --fboc-dark: #0f172a;
+            --fboc-panel: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+
+        .heading-font {
+            font-family: 'Chakra Petch', sans-serif;
+            letter-spacing: 0.03em;
+        }
+
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hero-pattern {
+            background: radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.15), transparent 70%),
+                        linear-gradient(180deg, #0f172a 0%, #080c14 100%);
+            position: relative;
+        }
+
+        .hero-pattern::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+        }
+
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                -45deg,
+                #dc2626,
+                #dc2626 12px,
+                #1e293b 12px,
+                #1e293b 24px
+            );
+        }
+
+        .facility-card {
+            background: linear-gradient(145deg, #182234 0%, #111827 100%);
+            border: 1px solid #334155;
+            transition: all 0.25s ease;
+        }
+
+        .facility-card:hover {
+            border-color: #ef4444;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px -10px rgba(220, 38, 38, 0.35);
+        }
+
+        .inmate-card {
+            background: #151d2c;
+            border-left: 4px solid #dc2626;
+            border-top: 1px solid #283548;
+            border-right: 1px solid #283548;
+            border-bottom: 1px solid #283548;
+            transition: all 0.2s ease;
+        }
+
+        .inmate-card:hover {
+            background: #1a2436;
+            border-left-color: #f87171;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .clearance-badge {
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-weight: 700;
+        }
+
+        .modal-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Top Gov Navigation Banner -->
+    <div class="bg-black border-b border-gray-800 text-xs text-gray-400 py-1.5 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="font-semibold text-gray-300">CTBE FEDERAL CORRECTIONS NETWORK</span>
+                <span class="text-gray-600">|</span>
+                <span>SECURE PROTOCOL v3.1</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="../" class="hover:text-red-400 transition-colors">Security Portal</a>
+                <span class="text-gray-700">•</span>
+                <a href="../fbis/" class="hover:text-cyan-400 transition-colors">FBIS Intelligence</a>
+                <span class="text-gray-700">•</span>
+                <a href="../judiciary/" class="hover:text-amber-400 transition-colors">Federal Judiciary</a>
+                <span class="text-gray-700">•</span>
+                <a href="../../government.html" class="hover:text-blue-400 transition-colors">Server Government</a>
+                <span class="text-gray-700">•</span>
+                <a href="../../" class="hover:text-white transition-colors">CTBE Hub</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main FBOC Header -->
+    <header class="bg-slate-900 border-b-2 border-red-600 shadow-2xl sticky top-0 z-40 backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3.5">
+                <!-- Agency Brand -->
+                <a href="./" class="flex items-center space-x-3.5 group">
+                    <div class="w-13 h-13 p-2 bg-gradient-to-br from-red-600 to-red-900 rounded-lg shadow-lg flex items-center justify-center border border-red-500/40 group-hover:border-red-400 transition-colors">
+                        <!-- Custom FBOC SVG Shield Emblem -->
+                        <svg class="w-9 h-9 text-white" viewBox="0 0 48 48" fill="none" stroke="currentColor">
+                            <path d="M24 4L7 11V22C7 33.5 14.3 43.1 24 46C33.7 43.1 41 33.5 41 22V11L24 4Z" fill="#1e293b" stroke="#ef4444" stroke-width="2.5" stroke-linejoin="round"/>
+                            <!-- Prison Portcullis / Barred Cage Icon -->
+                            <path d="M16 16V34" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M24 14V36" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M32 16V34" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13 22H35" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13 28H35" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                            <!-- Create Gear Motif center lock -->
+                            <circle cx="24" cy="25" r="4" fill="#dc2626" stroke="#ffffff" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl font-black tracking-wider text-white heading-font">FBOC</span>
+                            <span class="bg-red-950 text-red-400 border border-red-700/60 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Custody Division</span>
+                        </div>
+                        <p class="text-xs font-semibold text-gray-300">Federal Bureau of Corrections</p>
+                        <p class="text-[11px] text-gray-400">Create: Project Blueprint • Ministry of Justice</p>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-7 text-sm font-medium">
+                    <a href="#facilities" class="text-gray-300 hover:text-red-400 transition-colors">Facilities</a>
+                    <a href="#inmate-registry" class="text-gray-300 hover:text-red-400 transition-colors">Inmate Roster</a>
+                    <a href="#visitation" class="text-gray-300 hover:text-red-400 transition-colors">Visitation</a>
+                    <a href="#commissary" class="text-gray-300 hover:text-red-400 transition-colors">Brass Commissary</a>
+                    <a href="#contraband" class="text-gray-300 hover:text-red-400 transition-colors">Contraband Code</a>
+                    <a href="#hotline" class="text-gray-300 hover:text-red-400 transition-colors">Emergency</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openModal('tipModal')" class="hidden sm:inline-flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold tracking-wider uppercase transition shadow-md hover:shadow-red-900/50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+                        </svg>
+                        <span>Report Breach</span>
+                    </button>
+                    <span class="clearance-badge hidden md:inline-block">RESTRICTED ACCREDITATION</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1">
+        <!-- Hero Section -->
+        <section class="hero-pattern py-16 sm:py-24 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div class="inline-flex items-center space-x-2 bg-red-950/80 border border-red-800/80 px-3.5 py-1.5 rounded-full text-xs font-semibold text-red-300 mb-6 shadow-inner">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <span>SERVER CORRECTIONAL STATUS: SECURE PROTOCOL ACTIVE</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white heading-font tracking-tight mb-4">
+                    Security. Custody. Rehabilitation.
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto font-normal leading-relaxed mb-8">
+                    The Federal Bureau of Corrections maintains lawful order and secure detention across <span class="text-white font-semibold">Create: Project Blueprint</span>. From rotational kinetic containment cells to community restitution work programs.
+                </p>
+
+                <!-- Search Inmate Quick Bar -->
+                <div class="max-w-2xl mx-auto mb-10">
+                    <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-700 shadow-2xl flex flex-col sm:flex-row gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </span>
+                            <input id="quickSearchInput" type="text" placeholder="Search Inmate IGN, Registration #, or Offense..." 
+                                class="w-full pl-11 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        </div>
+                        <button onclick="handleHeroSearch()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg text-sm font-bold tracking-wide uppercase transition flex items-center justify-center space-x-2 shadow-lg">
+                            <span>Locate Inmate</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-xs text-gray-400 mt-2">
+                        <span>Recent Searches: <button onclick="quickFilterSearch('Rivera')" class="text-red-400 hover:underline">Marcus Rivera</button>, <button onclick="quickFilterSearch('Schematic')" class="text-red-400 hover:underline">Schematic Cannon Grievance</button>, <button onclick="quickFilterSearch('Obsidian')" class="text-red-400 hover:underline">Obsidian Redoubt</button></span>
+                    </div>
+                </div>
+
+                <!-- Primary Action Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                    <button onclick="openModal('visitationModal')" class="bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700 p-4 rounded-xl text-left transition group">
+                        <div class="w-10 h-10 rounded-lg bg-red-900/40 text-red-400 flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-white font-bold text-sm mb-1">Schedule Visitation</h4>
+                        <p class="text-xs text-gray-400">Request supervised access at Facility 01 or 02 secure glass chambers.</p>
+                    </button>
+
+                    <button onclick="openModal('commissaryModal')" class="bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700 p-4 rounded-xl text-left transition group">
+                        <div class="w-10 h-10 rounded-lg bg-amber-900/40 text-amber-400 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-white font-bold text-sm mb-1">Inmate Commissary</h4>
+                        <p class="text-xs text-gray-400">Deposit Brass and Iron credits for food, books, and authorized tools.</p>
+                    </button>
+
+                    <button onclick="openModal('paroleModal')" class="bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700 p-4 rounded-xl text-left transition group">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-900/40 text-emerald-400 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-white font-bold text-sm mb-1">Parole & Appeals</h4>
+                        <p class="text-xs text-gray-400">Submit rehabilitation logs for sentence reduction before Judiciary review.</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Metrics Bar -->
+        <section class="bg-slate-950 border-b border-slate-800 py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 border-r border-slate-800/80 last:border-none">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Active Detainees</p>
+                        <p class="text-3xl font-extrabold text-white heading-font">14 <span class="text-xs text-emerald-400 font-normal">(-2 this week)</span></p>
+                    </div>
+                    <div class="p-4 border-r border-slate-800/80 last:border-none">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Operational Facilities</p>
+                        <p class="text-3xl font-extrabold text-red-500 heading-font">3 <span class="text-xs text-gray-400 font-normal">Sectors</span></p>
+                    </div>
+                    <div class="p-4 border-r border-slate-800/80 last:border-none">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Kinetic Containment</p>
+                        <p class="text-3xl font-extrabold text-emerald-400 heading-font">100%</p>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Escapes (Season 3.1)</p>
+                        <p class="text-3xl font-extrabold text-white heading-font">0 <span class="text-xs text-emerald-400 font-normal">Flawless</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Facility Directory -->
+        <section id="facilities" class="py-16 bg-slate-900/60">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-4 border-b border-slate-800">
+                    <div>
+                        <span class="text-xs font-bold text-red-500 tracking-widest uppercase">Infrastructure</span>
+                        <h2 class="text-3xl font-bold text-white heading-font mt-1">Federal Prison Facilities</h2>
+                        <p class="text-sm text-gray-400 mt-1">Classified containment units calibrated for high-tech Create mod offenders.</p>
+                    </div>
+                    <span class="text-xs font-mono text-gray-500 mt-3 md:mt-0">SECURE VAULT LOG // REGION: CTBE-MAIN</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Facility 1: Maximum Security -->
+                    <div class="facility-card rounded-xl p-6 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl uppercase tracking-wider">
+                            Level V • Maximum
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 bg-red-950/80 border border-red-800/60 rounded-lg flex items-center justify-center text-red-400 mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-1 heading-font">Facility 01: The Obsidian Redoubt</h3>
+                            <p class="text-xs text-red-400 mono-font mb-3">Y-Level -58 Bedrock Base • Subterranean</p>
+                            <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                                Houses catastrophic griefers, illegal automated schematics deployers, and repeat server exploiters. Encased in reinforced obsidian, rotating clutch traps, and anti-teleportation wards.
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-gray-400 mb-6">
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-2"></span>Current Inmates: 4</li>
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-2"></span>Armed Guard Automation: Active</li>
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-2"></span>Zero Inventory Clearance Policy</li>
+                            </ul>
+                        </div>
+                        <button onclick="showFacilityDetails('redoubt')" class="w-full bg-slate-800 hover:bg-red-600 hover:text-white text-gray-200 text-xs font-bold py-2.5 rounded transition border border-slate-700">
+                            View Facility Specs
+                        </button>
+                    </div>
+
+                    <!-- Facility 2: Medium Security -->
+                    <div class="facility-card rounded-xl p-6 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 bg-amber-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl uppercase tracking-wider">
+                            Level III • Medium
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 bg-amber-950/80 border border-amber-800/60 rounded-lg flex items-center justify-center text-amber-400 mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-1 heading-font">Facility 02: Deepslate Kinetic Vault</h3>
+                            <p class="text-xs text-amber-400 mono-font mb-3">Sector 7 • Industrial Trench Zone</p>
+                            <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                                Dedicated to offenders convicted of rail line theft, unauthorized claim trespass, and kinetic contraption accidents resulting in property damage. Monitored automated cog cellblocks.
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-gray-400 mb-6">
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Current Inmates: 7</li>
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Supervised Weekly Visitation</li>
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>Mechanics Re-training Classrooms</li>
+                            </ul>
+                        </div>
+                        <button onclick="showFacilityDetails('kinetic')" class="w-full bg-slate-800 hover:bg-amber-600 hover:text-white text-gray-200 text-xs font-bold py-2.5 rounded transition border border-slate-700">
+                            View Facility Specs
+                        </button>
+                    </div>
+
+                    <!-- Facility 3: Minimum Security -->
+                    <div class="facility-card rounded-xl p-6 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl uppercase tracking-wider">
+                            Level I • Minimum
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-950/80 border border-emerald-800/60 rounded-lg flex items-center justify-center text-emerald-400 mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-1 heading-font">Facility 03: Andesite Restitution Works</h3>
+                            <p class="text-xs text-emerald-400 mono-font mb-3">Mainland Perimeter • Camp Delta</p>
+                            <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                                Open-camp community restitution program. Inmates operate manual hand cranks, quarry andesite alloy ingredients, and lay public rail lines under supervised work orders.
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-gray-400 mb-6">
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>Current Inmates: 3</li>
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>Daylight Labor Credits Scheme</li>
+                                <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>High Early Release Probability</li>
+                            </ul>
+                        </div>
+                        <button onclick="showFacilityDetails('andesite')" class="w-full bg-slate-800 hover:bg-emerald-600 hover:text-white text-gray-200 text-xs font-bold py-2.5 rounded transition border border-slate-700">
+                            View Facility Specs
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inmate Roster & Public Registry -->
+        <section id="inmate-registry" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8">
+                    <div>
+                        <span class="text-xs font-bold text-red-500 tracking-widest uppercase">Official Public Record</span>
+                        <h2 class="text-3xl font-bold text-white heading-font mt-1">Federal Inmate Roster</h2>
+                        <p class="text-sm text-gray-400 mt-1">Current federal detainees undergoing judicial sentencing or custodial hold.</p>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-4 md:mt-0">
+                        <button onclick="filterInmates('all')" class="filter-btn active bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold">All</button>
+                        <button onclick="filterInmates('maximum')" class="filter-btn bg-slate-800 hover:bg-slate-700 text-gray-300 px-3 py-1.5 rounded text-xs font-semibold">Maximum</button>
+                        <button onclick="filterInmates('medium')" class="filter-btn bg-slate-800 hover:bg-slate-700 text-gray-300 px-3 py-1.5 rounded text-xs font-semibold">Medium</button>
+                        <button onclick="filterInmates('restitution')" class="filter-btn bg-slate-800 hover:bg-slate-700 text-gray-300 px-3 py-1.5 rounded text-xs font-semibold">Restitution</button>
+                    </div>
+                </div>
+
+                <!-- Inmate List Grid -->
+                <div id="inmatesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Inmate 1 -->
+                    <div class="inmate-card rounded-lg p-5 flex flex-col justify-between" data-category="maximum">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[11px] mono-font text-red-400 font-bold">#CTBE-8821</span>
+                                <span class="bg-red-950 text-red-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase">MAX SECURITY</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-1">Marcus Rivera</h4>
+                            <p class="text-xs text-gray-400 mb-3">Alias: "The Ghost"</p>
+                            <div class="text-xs space-y-1.5 text-gray-300 mb-4 bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                                <div><span class="text-gray-500">Offense:</span> Kinetic Overdrive Sabotage & Bank Griefing</div>
+                                <div><span class="text-gray-500">Sentence:</span> 30 In-Game Days Solitary</div>
+                                <div><span class="text-gray-500">Assigned:</span> Facility 01 (Redoubt)</div>
+                            </div>
+                        </div>
+                        <button onclick="viewInmateDossier('rivera')" class="w-full bg-slate-800 hover:bg-red-700 text-white text-xs font-semibold py-2 rounded transition">
+                            View Inmate Record
+                        </button>
+                    </div>
+
+                    <!-- Inmate 2 -->
+                    <div class="inmate-card rounded-lg p-5 flex flex-col justify-between" data-category="medium">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[11px] mono-font text-amber-400 font-bold">#CTBE-7419</span>
+                                <span class="bg-amber-950 text-amber-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase">MED SECURITY</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-1">Elena Volkov</h4>
+                            <p class="text-xs text-gray-400 mb-3">Alias: "Vector"</p>
+                            <div class="text-xs space-y-1.5 text-gray-300 mb-4 bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                                <div><span class="text-gray-500">Offense:</span> Schematic Duplication & Vault Theft</div>
+                                <div><span class="text-gray-500">Sentence:</span> 14 Days + Restitution</div>
+                                <div><span class="text-gray-500">Assigned:</span> Facility 02 (Vault)</div>
+                            </div>
+                        </div>
+                        <button onclick="viewInmateDossier('volkov')" class="w-full bg-slate-800 hover:bg-amber-700 text-white text-xs font-semibold py-2 rounded transition">
+                            View Inmate Record
+                        </button>
+                    </div>
+
+                    <!-- Inmate 3 -->
+                    <div class="inmate-card rounded-lg p-5 flex flex-col justify-between" data-category="maximum">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[11px] mono-font text-red-400 font-bold">#CTBE-6104</span>
+                                <span class="bg-red-950 text-red-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase">MAX SECURITY</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-1">Viktor Kozlov</h4>
+                            <p class="text-xs text-gray-400 mb-3">Alias: "Iron Viktor"</p>
+                            <div class="text-xs space-y-1.5 text-gray-300 mb-4 bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                                <div><span class="text-gray-500">Offense:</span> Black-Market Train Raids & Griefing</div>
+                                <div><span class="text-gray-500">Sentence:</span> 45 Days Containment</div>
+                                <div><span class="text-gray-500">Assigned:</span> Facility 01 (Redoubt)</div>
+                            </div>
+                        </div>
+                        <button onclick="viewInmateDossier('kozlov')" class="w-full bg-slate-800 hover:bg-red-700 text-white text-xs font-semibold py-2 rounded transition">
+                            View Inmate Record
+                        </button>
+                    </div>
+
+                    <!-- Inmate 4 -->
+                    <div class="inmate-card rounded-lg p-5 flex flex-col justify-between" data-category="restitution">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[11px] mono-font text-emerald-400 font-bold">#CTBE-5291</span>
+                                <span class="bg-emerald-950 text-emerald-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase">RESTITUTION</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-1">Silas Vance</h4>
+                            <p class="text-xs text-gray-400 mb-3">Alias: "Crank"</p>
+                            <div class="text-xs space-y-1.5 text-gray-300 mb-4 bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                                <div><span class="text-gray-500">Offense:</span> Unlicensed Steam Engine Boiler Blast</div>
+                                <div><span class="text-gray-500">Sentence:</span> 500 Alloy Blocks Crushed</div>
+                                <div><span class="text-gray-500">Assigned:</span> Facility 03 (Andesite)</div>
+                            </div>
+                        </div>
+                        <button onclick="viewInmateDossier('vance')" class="w-full bg-slate-800 hover:bg-emerald-700 text-white text-xs font-semibold py-2 rounded transition">
+                            View Inmate Record
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contraband Regulations & Enforcement -->
+        <section id="contraband" class="py-16 bg-slate-950 border-t border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="text-xs font-bold text-red-500 tracking-widest uppercase">Directive 14-B</span>
+                        <h2 class="text-3xl font-bold text-white heading-font mt-1 mb-4">Prohibited Contraband & Exploits</h2>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                            Under the Create: Project Blueprint Penal Enforcement Act, any possession of banned machinery modifications or illicit schematics within federal custody boundaries will trigger immediate maximum sentencing.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3 bg-slate-900 p-3.5 rounded-lg border border-slate-800">
+                                <span class="text-red-500 font-bold text-lg">⚠️</span>
+                                <div>
+                                    <h4 class="text-white font-semibold text-sm">Weaponized Schematicannons</h4>
+                                    <p class="text-xs text-gray-400">Loading non-blueprint munitions, TNT payloads, or rapid-fire lag contraptions inside server borders.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3 bg-slate-900 p-3.5 rounded-lg border border-slate-800">
+                                <span class="text-red-500 font-bold text-lg">⚠️</span>
+                                <div>
+                                    <h4 class="text-white font-semibold text-sm">Sub-Chunk Desync Motors</h4>
+                                    <p class="text-xs text-gray-400">Contraptions calibrated to cause server tick-lag or disrupt chunk border saving routines.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3 bg-slate-900 p-3.5 rounded-lg border border-slate-800">
+                                <span class="text-red-500 font-bold text-lg">⚠️</span>
+                                <div>
+                                    <h4 class="text-white font-semibold text-sm">Smuggled Wrench & Super Glue</h4>
+                                    <p class="text-xs text-gray-400">Strictly confiscated upon entering any FBOC correctional facility perimeter. Handled only by certified staff.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-2xl border border-red-900/40 shadow-2xl relative">
+                        <div class="hazard-stripe h-2.5 rounded-full mb-6"></div>
+                        <h3 class="text-xl font-bold text-white heading-font mb-2">Notice of Inmate Rights & Due Process</h3>
+                        <p class="text-xs text-gray-300 mb-6 leading-relaxed">
+                            Every player detained under the authority of FBOC maintains full right to representation before the <span class="text-amber-400 font-semibold">Federal Judiciary</span>. Disciplinary actions and detention durations are formally documented in the public docket.
+                        </p>
+                        <div class="bg-black/60 p-4 rounded-xl border border-slate-700/80 mb-6 font-mono text-xs text-gray-300 space-y-1">
+                            <div>LEGAL_REF: CTBE-CONST-ART-IV</div>
+                            <div>APPEAL_WINDOW: 72 Hours from Initial Incarceration</div>
+                            <div>SUPERVISING_MAGISTRATE: High Court of Arbitrations</div>
+                        </div>
+                        <a href="../judiciary/" class="inline-flex items-center space-x-2 text-xs font-bold text-amber-400 hover:text-amber-300 transition">
+                            <span>Open Federal Judiciary Docket & Appeals System</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Hotlines & Tip Form -->
+        <section id="hotline" class="py-16 bg-slate-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-gradient-to-r from-red-950/70 via-slate-900 to-slate-900 rounded-2xl p-8 lg:p-12 border border-red-800/60 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div class="max-w-2xl">
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-widest">Rapid Response Unit</span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-white heading-font mt-1 mb-3">Witnessing a Custody Breach or Grief Incident?</h3>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            If an inmate has broken containment, weaponized an unauthorized contraption, or attempted rail sabotage, submit an urgent alert to FBOC Tactical Command immediately.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                        <button onclick="openModal('tipModal')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3.5 rounded-lg text-sm tracking-wide uppercase transition shadow-lg flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                            <span>File Urgent Alert</span>
+                        </button>
+                        <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-lg text-sm tracking-wide uppercase transition border border-slate-700 flex items-center justify-center space-x-2">
+                            <span>Open Modmail Ticket</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Unified Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-gray-400 text-xs py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+                <div>
+                    <div class="flex items-center space-x-2 text-white font-bold text-lg mb-3 heading-font">
+                        <span class="w-3 h-3 rounded-full bg-red-600"></span>
+                        <span>FBOC • CTBE SMP</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed mb-4">
+                        Federal Bureau of Corrections for Create: Project Blueprint. Upholding community safety, fair detention protocols, and technical integrity.
+                    </p>
+                    <span class="mono-font text-gray-500">STATUS: ENFORCEMENT LEVEL 2</span>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-wider text-xs mb-3">Custody & Facilities</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#facilities" class="hover:text-red-400 transition">Facility 01 (Obsidian Redoubt)</a></li>
+                        <li><a href="#facilities" class="hover:text-red-400 transition">Facility 02 (Deepslate Vault)</a></li>
+                        <li><a href="#facilities" class="hover:text-red-400 transition">Facility 03 (Andesite Camp)</a></li>
+                        <li><a href="#inmate-registry" class="hover:text-red-400 transition">Search Detainee Directory</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-wider text-xs mb-3">Security Network</h5>
+                    <ul class="space-y-2">
+                        <li><a href="../fbis/" class="hover:text-cyan-400 transition">FBIS (Federal Investigation & Security)</a></li>
+                        <li><a href="../judiciary/" class="hover:text-amber-400 transition">Federal Judiciary & Supreme Tribunal</a></li>
+                        <li><a href="../../government.html" class="hover:text-blue-400 transition">Server Government Hub</a></li>
+                        <li><a href="../../co/granite-ridge/" class="hover:text-white transition">Granite Ridge Construction Co.</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-wider text-xs mb-3">Emergency Response</h5>
+                    <p class="text-gray-400 mb-2">Staff Dispatch & Incident Reporting:</p>
+                    <p class="text-red-400 font-bold mono-font text-sm mb-1">DISCORD #SECURITY-TICKET</p>
+                    <p class="text-gray-500 text-[11px]">Monitored 24/7 by Server Administrators and Senior Duty Officers.</p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-500">
+                <p>&copy; 2026 Create: Project Blueprint. All rights reserved. Operating under CTBE Federal Charter.</p>
+                <div class="flex space-x-6">
+                    <a href="../../LEGAL.md" class="hover:text-gray-400">Legal Terms</a>
+                    <a href="../../SECURITY.md" class="hover:text-gray-400">Security Policy</a>
+                    <a href="../../support/" class="hover:text-gray-400">Help Desk</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+
+    <!-- Inmate Dossier Modal -->
+    <div id="dossierModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="w-3 h-3 rounded-full bg-red-600"></span>
+                    <h3 id="dossierTitle" class="text-lg font-bold text-white heading-font">Inmate Detention Record</h3>
+                </div>
+                <button onclick="closeModal('dossierModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div id="dossierContent" class="p-6 overflow-y-auto modal-scroll text-sm text-gray-300 space-y-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end space-x-3">
+                <button onclick="closeModal('dossierModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded text-xs font-semibold">Close</button>
+                <a href="../judiciary/" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold">Inspect Judicial Appeal</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Facility Details Modal -->
+    <div id="facilityModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                <h3 id="facilityModalTitle" class="text-lg font-bold text-white heading-font">Facility Dossier</h3>
+                <button onclick="closeModal('facilityModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div id="facilityModalContent" class="p-6 overflow-y-auto modal-scroll text-sm text-gray-300 space-y-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+                <button onclick="closeModal('facilityModal')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-semibold">Close Specification</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tip / Incident Report Modal -->
+    <div id="tipModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                    <h3 class="text-lg font-bold text-white heading-font">Submit Incident or Contraband Report</h3>
+                </div>
+                <button onclick="closeModal('tipModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <form onsubmit="handleReportSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Your Player IGN (or Anonymous)</label>
+                    <input type="text" placeholder="e.g. EngineerSteve or leave blank for Anonymous" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Incident Category</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
+                        <option>Custody Breach / Escape Attempt</option>
+                        <option>Weaponized Schematic Cannon Deployment</option>
+                        <option>Illegal Kinetic Ramming / Train Griefing</option>
+                        <option>Contraband Possession in Prison Perimeter</option>
+                        <option>Sub-Chunk Desync Machinery</option>
+                        <option>Other Violation</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Coordinates / Location (X, Y, Z)</label>
+                    <input type="text" placeholder="e.g. X: 1420, Y: 64, Z: -880" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Detailed Incident Description</label>
+                    <textarea rows="4" placeholder="Describe the players involved, machinery blueprints observed, and any property damage..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500" required></textarea>
+                </div>
+                <p class="text-[11px] text-gray-500">Reports are routed directly to FBOC Duty Wardens and FBIS Tactical Units on duty.</p>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('tipModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded text-xs">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold uppercase tracking-wider">Dispatch Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Visitation Request Modal -->
+    <div id="visitationModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white heading-font">Supervised Visitation Application</h3>
+                <button onclick="closeModal('visitationModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-sm text-gray-300">
+                <div class="bg-red-950/40 border border-red-800/60 p-3 rounded-lg text-xs text-red-300">
+                    <span class="font-bold">SECURITY NOTICE:</span> Visitors must deposit all inventory items, backpacks, and tools in the lobby locker before passing through kinetic security portals.
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Visitor IGN</label>
+                    <input type="text" placeholder="Your Minecraft username" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Inmate to Visit</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                        <option>Marcus Rivera (#CTBE-8821) - Facility 01</option>
+                        <option>Elena Volkov (#CTBE-7419) - Facility 02</option>
+                        <option>Viktor Kozlov (#CTBE-6104) - Facility 01</option>
+                        <option>Silas Vance (#CTBE-5291) - Facility 03</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Requested Timeslot</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                        <option>Friday 18:00 - 19:00 CST (Supervised Glass Chamber)</option>
+                        <option>Saturday 14:00 - 15:00 CST (Supervised Glass Chamber)</option>
+                        <option>Sunday 16:00 - 17:00 CST (Supervised Glass Chamber)</option>
+                    </select>
+                </div>
+                <button onclick="alert('Visitation request registered with FBOC Sector Warden. You will receive authorization confirmation via Discord modmail.'); closeModal('visitationModal');" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                    Submit Visitation Request
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Commissary Modal -->
+    <div id="commissaryModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white heading-font">Inmate Brass Commissary Transfer</h3>
+                <button onclick="closeModal('commissaryModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-sm text-gray-300">
+                <p class="text-xs text-gray-400">
+                    Friends and approved faction members can deposit standard server currency (Brass Ingots or Iron Nuggets) directly into an inmate's meal and educational crafting allowance.
+                </p>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Inmate Registration #</label>
+                    <input type="text" placeholder="e.g. #CTBE-7419" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Amount to Transfer</label>
+                    <input type="number" placeholder="e.g. 32 Brass Ingots" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs text-gray-400 space-y-1">
+                    <div>• 10% Federal Administrative Surcharge applied to facility power generation.</div>
+                    <div>• Inmates in Level V Solitary cannot receive mechanical gear parts.</div>
+                </div>
+                <button onclick="alert('Commissary transaction ticket initiated. Ingame vault transfer will process at the next banking sync.'); closeModal('commissaryModal');" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                    Authorize Commissary Deposit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parole Application Modal -->
+    <div id="paroleModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white heading-font">Federal Parole & Sentence Reduction</h3>
+                <button onclick="closeModal('paroleModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-sm text-gray-300">
+                <p class="text-xs text-gray-400">
+                    Eligible detainees who have served over 50% of their designated custodial sentence with zero disciplinary infractions may apply for parole review by the Federal Judiciary.
+                </p>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Applicant Inmate IGN</label>
+                    <input type="text" placeholder="Your Minecraft Username" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Restitution Work Units Completed</label>
+                    <input type="text" placeholder="e.g. 40 hours quarry labor / 1200 rail ties placed" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Statement of Good Conduct</label>
+                    <textarea rows="3" placeholder="Explain your rehabilitation progress and commitment to CTBE server building guidelines..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm"></textarea>
+                </div>
+                <button onclick="alert('Parole petition filed. Scheduled for review during next Judiciary hearing docket.'); closeModal('paroleModal');" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                    Submit Parole Petition to Court
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const inmatesData = {
+            rivera: {
+                id: '#CTBE-8821',
+                name: 'Marcus "The Ghost" Rivera',
+                status: 'Solitary Confinement',
+                securityLevel: 'Level V (Maximum)',
+                facility: 'Facility 01 - The Obsidian Redoubt',
+                charges: 'Kinetic Overdrive Sabotage, High-Pressure Boiler Detonation, Central Bank Vault Breach',
+                intakeDate: 'Season 3.1 - Week 2',
+                sentence: '30 In-Game Days Detention + 1,500 Brass Ingot Restitution',
+                behaviorLog: 'Multiple contraband tool fabrication attempts detected by automated magnetic screening. Zero privileges granted.',
+                paroleStatus: 'Ineligible until Week 6'
+            },
+            volkov: {
+                id: '#CTBE-7419',
+                name: 'Elena "Vector" Volkov',
+                status: 'Active Custody - Supervised Workshop',
+                securityLevel: 'Level III (Medium)',
+                facility: 'Facility 02 - Deepslate Kinetic Vault',
+                charges: 'Schematic Infiltration, Blueprint Intellectual Property Theft from Granite Ridge Co., Identity Forgery',
+                intakeDate: 'Season 3.1 - Week 3',
+                sentence: '14 In-Game Days Detention + Full Return of Stolen Schematics',
+                behaviorLog: 'Cooperative with FBIS investigators. Currently assisting with forensic decryption of altered schematics.',
+                paroleStatus: 'Eligible in 3 In-Game Days'
+            },
+            kozlov: {
+                id: '#CTBE-6104',
+                name: 'Viktor "Iron" Kozlov',
+                status: 'Maximum Security Lockup',
+                securityLevel: 'Level V (Maximum)',
+                facility: 'Facility 01 - The Obsidian Redoubt',
+                charges: 'Operating Rogue Armored Rail Train, Unsanctioned Armed Train Raids, Illegal TNT Cannon Mounts',
+                intakeDate: 'Season 3.1 - Week 1',
+                sentence: '45 In-Game Days Detention + Permanent Forfeiture of Rail Stock',
+                behaviorLog: 'Refused initial inventory surrender. Confined to Bedrock Cell C-4 with redstone-suppression dampeners.',
+                paroleStatus: 'Appeal Pending with Federal Judiciary'
+            },
+            vance: {
+                id: '#CTBE-5291',
+                name: 'Silas "Crank" Vance',
+                status: 'Restitution Labor Detail',
+                securityLevel: 'Level I (Minimum)',
+                facility: 'Facility 03 - Andesite Restitution Works',
+                charges: 'Unlicensed High-Heat Boiler Operation, Accidental Factory Explosion at Sector 4',
+                intakeDate: 'Season 3.1 - Week 4',
+                sentence: 'Crushing 500 Andesite Alloy Blocks + Community Rail Repair',
+                behaviorLog: 'Exemplary behavior. Recommended for early parole and mechanic re-certification.',
+                paroleStatus: 'Parole Hearing Scheduled'
+            }
+        };
+
+        const facilityData = {
+            redoubt: {
+                title: 'Facility 01: The Obsidian Redoubt',
+                tier: 'Level V Supermax Containment',
+                location: 'Deep Underground Bedrock (Y: -58), Subterranean Sector 1',
+                warden: 'Commander K. Sterling (FBOC Tactical Unit)',
+                capacity: '8 Secure Cells (4 Occupied)',
+                containmentSpecs: 'Tri-layer obsidian reinforcement, rotational clutch traps on all doors, bedrock ceiling/floor barrier, zero-perk isolation cells, anti-ender-pearl frequency jammer.',
+                protocols: 'Automated kinetic defense turrets active 24/7. Strict zero-visitor physical contact policy. All communication via reinforced blast glass and acoustic tubes.'
+            },
+            kinetic: {
+                title: 'Facility 02: Deepslate Kinetic Vault',
+                tier: 'Level III Medium Security Facility',
+                location: 'Sector 7 Industrial Trench Zone (Y: 12)',
+                warden: 'Inspector M. Torres (FBOC Corrections)',
+                capacity: '20 Standard Containment Units (7 Occupied)',
+                containmentSpecs: 'Deepslate tile construction with copper electrical grid monitoring. Automated water-wheel power supplies for individual cell ventilation and lock mechanics.',
+                protocols: 'Supervised common area access. Inmates participate in monitored technical education and blueprint ethics seminars. Controlled weekly visitation available.'
+            },
+            andesite: {
+                title: 'Facility 03: Andesite Restitution Works',
+                tier: 'Level I Minimum Security Restitution Camp',
+                location: 'Mainland Perimeter, Camp Delta (Surface)',
+                warden: 'Supervisor D. Chen',
+                capacity: '15 Work Detail Barracks (3 Occupied)',
+                containmentSpecs: 'Perimeter perimeter rail fence with warning beacons. Low-security open barracks with community dining and communal kinetic workshops.',
+                protocols: 'Inmates earn daily labor credits by hand-cranking alloy presses, manufacturing brass casings for public use, and clearing rights-of-way for government rail lines.'
+            }
+        };
+
+        function viewInmateDossier(inmateKey) {
+            const data = inmatesData[inmateKey];
+            if (!data) return;
+
+            document.getElementById('dossierTitle').textContent = `${data.name} — ${data.id}`;
+            document.getElementById('dossierContent').innerHTML = `
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+                        <span class="text-xs text-gray-500 uppercase">Custodial Status</span>
+                        <span class="text-xs font-bold text-red-400 font-mono">${data.status}</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+                        <span class="text-xs text-gray-500 uppercase">Classification</span>
+                        <span class="text-xs font-bold text-white">${data.securityLevel}</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+                        <span class="text-xs text-gray-500 uppercase">Facility Assignment</span>
+                        <span class="text-xs font-bold text-gray-300">${data.facility}</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+                        <span class="text-xs text-gray-500 uppercase">Intake Date</span>
+                        <span class="text-xs text-gray-400">${data.intakeDate}</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-red-400 mb-1">Convicted Offenses</h5>
+                    <p class="text-xs bg-slate-900 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.charges}</p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-gray-400 mb-1">Active Sentence & Fines</h5>
+                    <p class="text-xs bg-slate-900 p-3 rounded border border-slate-800 text-gray-300">${data.sentence}</p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-gray-400 mb-1">Guard Behavioral Log</h5>
+                    <p class="text-xs bg-slate-900 p-3 rounded border border-slate-800 text-gray-400 italic">${data.behaviorLog}</p>
+                </div>
+
+                <div class="flex justify-between items-center p-3 rounded bg-amber-950/30 border border-amber-800/40 text-xs">
+                    <span class="text-amber-300 font-semibold">Parole / Release Hearing:</span>
+                    <span class="text-white font-mono">${data.paroleStatus}</span>
+                </div>
+            `;
+            openModal('dossierModal');
+        }
+
+        function showFacilityDetails(facKey) {
+            const data = facilityData[facKey];
+            if (!data) return;
+
+            document.getElementById('facilityModalTitle').textContent = data.title;
+            document.getElementById('facilityModalContent').innerHTML = `
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2.5">
+                    <div class="flex justify-between"><span class="text-gray-500">Security Classification:</span> <span class="font-bold text-red-400">${data.tier}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Facility Location:</span> <span class="text-gray-300 font-mono text-xs">${data.location}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Command Warden:</span> <span class="text-white font-semibold">${data.warden}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Cell Capacity:</span> <span class="text-emerald-400 font-mono">${data.capacity}</span></div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-gray-400 mb-1">Containment Engineering</h5>
+                    <p class="text-xs bg-slate-900 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.containmentSpecs}</p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold uppercase text-gray-400 mb-1">Operational Security Protocols</h5>
+                    <p class="text-xs bg-slate-900 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.protocols}</p>
+                </div>
+            `;
+            openModal('facilityModal');
+        }
+
+        function filterInmates(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-red-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-gray-300');
+            event.target.classList.add('bg-red-600', 'text-white');
+
+            const cards = document.querySelectorAll('.inmate-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function handleHeroSearch() {
+            const query = document.getElementById('quickSearchInput').value.toLowerCase().trim();
+            if (!query) {
+                filterInmates('all');
+                document.getElementById('inmate-registry').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const cards = document.querySelectorAll('.inmate-card');
+            let found = 0;
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                    found++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('inmate-registry').scrollIntoView({ behavior: 'smooth' });
+            if (found === 0) {
+                alert(`No active inmates matching "${query}" found on the public roster.`);
+                filterInmates('all');
+            }
+        }
+
+        function quickFilterSearch(name) {
+            document.getElementById('quickSearchInput').value = name;
+            handleHeroSearch();
+        }
+
+        function handleReportSubmit(e) {
+            e.preventDefault();
+            alert('Incident report encrypted and dispatched to FBOC Command and FBIS Forensics Unit. Case Reference: #ALERT-' + Math.floor(100000 + Math.random() * 900000));
+            closeModal('tipModal');
+            e.target.reset();
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        // Close on backdrop click
+        window.addEventListener('click', (e) => {
+            ['dossierModal', 'facilityModal', 'tipModal', 'visitationModal', 'commissaryModal', 'paroleModal'].forEach(id => {
+                const modal = document.getElementById(id);
+                if (e.target === modal) {
+                    closeModal(id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
