@@ -6,6 +6,10 @@
     <title>Federal Judiciary & High Court | Create: Project Blueprint</title>
     <link rel="icon" type="image/png" href="../../assets/image/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="judiciary.js" defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -155,13 +159,14 @@
 
                 <!-- Actions -->
                 <div class="flex items-center space-x-3">
-                    <button onclick="openModal('petitionModal')" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white px-4 py-2 rounded text-xs font-bold tracking-wider uppercase transition shadow-lg shadow-amber-950/40 flex items-center space-x-2">
+                    <button onclick="openModal('petitionModal')" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white px-3.5 py-2 rounded text-xs font-bold tracking-wider uppercase transition shadow-lg shadow-amber-950/40 flex items-center space-x-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        <span>File Lawsuit / Appeal</span>
+                        <span>File Petition</span>
                     </button>
-                    <span class="docket-badge hidden md:inline-block">OFFICIAL COURT OF RECORD</span>
+                    <!-- Dynamic Google Auth & Profile State -->
+                    <div id="authHeaderArea" class="flex items-center space-x-2"></div>
                 </div>
             </div>
         </div>
@@ -567,36 +572,36 @@
                 <h3 class="text-lg font-bold text-white court-font">File Formal Lawsuit / Arbitration Petition</h3>
                 <button onclick="closeModal('petitionModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
             </div>
-            <form onsubmit="handlePetitionSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs">
+            <form onsubmit="window.CPB_JUDICIARY.handlePetitionSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs">
+                <!-- Submitter Auth Status Banner -->
+                <div class="filing-auth-banner"></div>
+
                 <div>
-                    <label class="block font-bold text-amber-400 uppercase mb-1">Plaintiff (Your IGN / Company Name)</label>
-                    <input type="text" placeholder="e.g. Granite Ridge Construction or PlayerName" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
-                </div>
-                <div>
-                    <label class="block font-bold text-amber-400 uppercase mb-1">Defendant (Accused Player or Syndicate)</label>
-                    <input type="text" placeholder="Player IGN or Organization" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Defendant / Accused (Player IGN or Registered Company)</label>
+                    <input type="text" id="petitionDefendant" placeholder="e.g. Aether Rail Co. or PlayerUsername" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
                 </div>
                 <div>
                     <label class="block font-bold text-amber-400 uppercase mb-1">Nature of Matter</label>
-                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none">
-                        <option>Breach of Construction / Trade Contract</option>
-                        <option>Schematic Intellectual Property Infringement</option>
-                        <option>Land Claim / Rail Easement Dispute</option>
-                        <option>Accidental Machinery Damage / Compensation</option>
-                        <option>Other Civil Dispute</option>
+                    <select id="petitionMatter" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none">
+                        <option value="Modular Tunnel Bore Patent Infringement">Schematic / Blueprint Patent Infringement</option>
+                        <option value="Breach of Construction or Supply Contract">Breach of Construction / Supply Contract</option>
+                        <option value="Land Claim & Rail Right-of-Way Dispute">Land Claim & Rail Right-of-Way Dispute</option>
+                        <option value="Accidental Machine Collision & Property Damage">Accidental Machine Collision & Property Damage</option>
+                        <option value="Commercial Contract Fraud">Commercial Contract Fraud / Debt Recovery</option>
+                        <option value="Other Civil Matter">Other Civil Dispute</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block font-bold text-amber-400 uppercase mb-1">Claim Statement & Evidence Links</label>
-                    <textarea rows="4" placeholder="Detail the events, coordinate locations, agreed contract terms, and screenshots/logs..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required></textarea>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Claim Statement & Evidence Details</label>
+                    <textarea id="petitionDetails" rows="4" placeholder="Detail the events, coordinate locations, agreed contract terms, and screenshots or log links..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required></textarea>
                 </div>
                 <div>
-                    <label class="block font-bold text-amber-400 uppercase mb-1">Requested Relief / Damages</label>
-                    <input type="text" placeholder="e.g. 500 Brass Ingots Restitution or Injunction on Track" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Requested Relief / Damages (Brass Ingots or Injunction)</label>
+                    <input type="text" id="petitionRelief" placeholder="e.g. 800 Brass Ingots Restitution or Immediate Track Injunction" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
                 </div>
                 <div class="pt-2 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal('petitionModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded">Cancel</button>
-                    <button type="submit" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded font-bold uppercase tracking-wider">File with Clerk of Court</button>
+                    <button type="button" onclick="closeModal('petitionModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded font-bold uppercase tracking-wider transition">Transmit to Clerk</button>
                 </div>
             </form>
         </div>
@@ -606,29 +611,31 @@
     <div id="appealModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div class="bg-slate-900 border border-blue-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="p-6 bg-slate-950 border-b border-blue-950 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white court-font">Appeal Penal Sanction or Ban</h3>
+                <h3 class="text-lg font-bold text-white court-font">Appeal Penal Sanction or Detention</h3>
                 <button onclick="closeModal('appealModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
             </div>
-            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs text-gray-300">
+            <form onsubmit="window.CPB_JUDICIARY.handleAppealSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs text-gray-300">
+                <!-- Submitter Auth Status Banner -->
+                <div class="filing-auth-banner"></div>
+
                 <p class="text-gray-400 leading-relaxed">
-                    Under CTBE Charter Article IV, every player sanctioned by staff or remanded by FBOC has the right to appeal before an impartial Appellate Magistrate.
+                    Under CTBE Charter Article IV, every player sanctioned by server staff or remanded by FBOC has the right to judicial review by an independent Appellate Magistrate.
                 </p>
                 <div>
-                    <label class="block font-bold text-blue-400 uppercase mb-1">Appellant Player IGN</label>
-                    <input type="text" placeholder="Your Minecraft Username" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
-                </div>
-                <div>
                     <label class="block font-bold text-blue-400 uppercase mb-1">Sanction Under Appeal</label>
-                    <input type="text" placeholder="e.g. 14 Days FBOC Custody / 300 Ingot Fine" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                    <input type="text" id="appealSanction" placeholder="e.g. 14 Days FBOC Custody / 300 Ingot Fine / Land Warning" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-blue-400 focus:outline-none" required>
                 </div>
                 <div>
-                    <label class="block font-bold text-blue-400 uppercase mb-1">Grounds for Appeal</label>
-                    <textarea rows="4" placeholder="Explain why the ruling was in error, provide missing context, or attach evidence of mechanical malfunction rather than intentional violation..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm"></textarea>
+                    <label class="block font-bold text-blue-400 uppercase mb-1">Grounds for Judicial Review</label>
+                    <textarea id="appealGrounds" rows="4" placeholder="Explain why the sanction was in error, attach telemetry evidence, or demonstrate accidental kinetic failure rather than malicious intent..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-blue-400 focus:outline-none" required></textarea>
                 </div>
-                <button onclick="alert('Appellate brief registered. Assigned to Magistrate Vance. Hearing will be scheduled within 48 hours.'); closeModal('appealModal');" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
-                    Submit Appeal to Appellate Bench
-                </button>
-            </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('appealModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                        Submit to Appellate Bench
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -659,158 +666,143 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        const casesData = {
-            granite: {
-                docket: '#CTBE-CV-2026-042',
-                parties: 'Granite Ridge Construction Co. (Plaintiff) vs. Aether Rail Transport (Defendant)',
-                matter: 'Modular Tunnel Bore Patent Infringement',
-                summary: 'Plaintiff claims defendant operated an automated drill contraption that copied the exact gear ratio and chassis configuration patented by Granite Ridge in Season 3.0.',
-                pleadings: 'Granite Ridge requests 800 Brass Ingots in royalties and an immediate cease-and-desist injunction on further tunneling through Sector 4.',
-                presiding: 'Chief Justice Sterling (Tribunal Chamber Alpha)',
-                currentOrder: 'Temporary restraining order granted pending mechanical inspection by FBIS Forensics Lab.'
-            },
-            rivera: {
-                docket: '#CTBE-CR-2026-019',
-                parties: 'CTBE Federal Prosecution vs. Marcus "The Ghost" Rivera',
-                matter: 'Intentional Kinetic Ramming & Bank Griefing',
-                summary: 'Defendant deployed a heavily armored contraption train clocked at 256 RPM to bypass station clutches and smash into the Central Deposit vault.',
-                pleadings: 'Defendant claimed a mechanical clutch failure. FBIS forensic logs proved manual throttle override.',
-                presiding: 'Senior Magistrate Vance',
-                currentOrder: 'Defendant found guilty. Sentenced to 30 In-Game Days at FBOC Facility 01 (The Obsidian Redoubt) + 1,500 Brass Ingot fine.'
-            },
-            sector4: {
-                docket: '#CTBE-AP-2026-008',
-                parties: 'Township of Pine Valley vs. Department of Transportation',
-                matter: 'Rail Corridor Right-of-Way Dispute',
-                summary: 'Pine Valley council disputes the federal eminent domain declaration over a 16-block corridor across their claim for the mainland express train.',
-                pleadings: 'Township requests rerouting around the valley or mandatory noise mitigation and acoustic tunnels.',
-                presiding: 'Appellate Tribunal Panel',
-                currentOrder: 'Scheduled for oral argument on Saturday at 19:00 CST in High Court voice chamber.'
-            },
-            vance_appeal: {
-                docket: '#CTBE-AP-2026-015',
-                parties: 'In Re: Silas Vance (Applicant)',
-                matter: 'Restitution Parole Hearing',
-                summary: 'Petitioner has served 10 In-Game days at Facility 03 and completed crushing 500 andesite alloy blocks for public infrastructure repair.',
-                pleadings: 'Requests conversion of remainder sentence to community supervised probation.',
-                presiding: 'Magistrate Chen (Parole Division)',
-                currentOrder: 'Warden report verified. Hearing set for tomorrow evening.'
-            }
-        };
-
-        function viewCaseDetails(key) {
-            const data = casesData[key];
-            if (!data) return;
-
-            document.getElementById('caseModalTitle').textContent = `Docket ${data.docket}`;
-            document.getElementById('caseModalContent').innerHTML = `
-                <div class="bg-black/60 p-4 rounded-xl border border-amber-950 font-mono text-xs space-y-2">
-                    <div class="flex justify-between"><span class="text-gray-500">LITIGANTS:</span> <span class="text-white">${data.parties}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500">MATTER:</span> <span class="text-amber-400 font-bold">${data.matter}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500">MAGISTRATE:</span> <span class="text-gray-300">${data.presiding}</span></div>
+    <!-- Minecraft Identity Verification Modal -->
+    <div id="minecraftVerifyModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-amber-950 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                    <h3 class="text-lg font-bold text-white court-font">Minecraft Java Identity Verification</h3>
+                </div>
+                <button onclick="closeModal('minecraftVerifyModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs text-gray-300">
+                <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">Current Linked IGN:</span>
+                        <span id="mcCurrentIgn" class="font-mono text-white font-bold">Checking...</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">Verification Status:</span>
+                        <span id="mcCurrentStatus" class="font-mono text-xs font-bold text-gray-400">UNLINKED</span>
+                    </div>
                 </div>
 
+                <!-- Verification Token Display Container -->
+                <div id="mcTokenContainer" class="hidden p-4 bg-amber-950/30 border border-amber-700/60 rounded-xl space-y-2.5">
+                    <div class="flex justify-between items-center">
+                        <span class="text-amber-300 font-bold uppercase text-[11px]">In-Game Verification Token</span>
+                        <span class="text-[10px] text-gray-400 font-mono">SINGLE-USE CODE</span>
+                    </div>
+                    <div class="text-center py-2 bg-black/70 rounded-lg border border-amber-900/50">
+                        <span id="mcTokenCode" class="font-mono text-xl text-amber-400 font-black tracking-widest select-all">CPB-XXXX</span>
+                    </div>
+                    <div class="text-[11px] text-gray-300 space-y-1 leading-relaxed">
+                        <p><strong>Step 1:</strong> Join the Create: Project Blueprint Minecraft Server.</p>
+                        <p><strong>Step 2:</strong> Execute in chat: <code class="bg-black text-amber-300 px-1.5 py-0.5 rounded font-mono">/verify &lt;token&gt;</code></p>
+                        <p><strong>Alternative:</strong> Submit this code to a Judicial Clerk in Discord ticket <code class="text-amber-400 font-mono">#judicial-petitions</code> for manual accreditation.</p>
+                    </div>
+                </div>
+
+                <!-- Input form to bind username -->
+                <form onsubmit="window.CPB_JUDICIARY.handleMinecraftLinkSubmit(event)" class="space-y-3 pt-2">
+                    <div>
+                        <label class="block font-bold text-amber-400 uppercase mb-1">Enter Minecraft Java In-Game Name (IGN)</label>
+                        <input type="text" id="mcUsernameInput" placeholder="e.g. Notch or EngineerSteve" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
+                    </div>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        In accordance with CPB Court Rules, official filings require binding your Google web session to your canonical Java Edition UUID to prevent impersonation.
+                    </p>
+                    <button type="submit" id="mcLinkSubmitBtn" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                        Resolve & Generate Verification Token
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Filings Modal -->
+    <div id="myFilingsModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-amber-950 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <h3 class="text-lg font-bold text-white court-font">My Case Filings & Petitions</h3>
+                </div>
+                <button onclick="closeModal('myFilingsModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4">
+                <div id="myFilingsList" class="space-y-3">
+                    <p class="text-xs text-gray-500 font-mono italic">Loading filings...</p>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center">
+                <button onclick="closeModal('myFilingsModal'); openModal('petitionModal');" class="text-xs font-bold text-amber-400 hover:underline">
+                    + New Lawsuit Petition
+                </button>
+                <button onclick="closeModal('myFilingsModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded text-xs font-semibold">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Judicial Chamber / Clerk Workbench Modal -->
+    <div id="workbenchModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-purple-500/40 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-purple-950 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+                    <h3 class="text-lg font-bold text-white court-font">Judicial Chamber & Clerk Workbench</h3>
+                </div>
+                <button onclick="closeModal('workbenchModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto modal-scroll space-y-4">
+                <div class="bg-purple-950/30 border border-purple-800/50 p-3 rounded-xl text-xs text-purple-300">
+                    <span class="font-bold">STAFF CHAMBER:</span> Authorized for Court Clerks, Magistrates, and Administrators. You may review submitted petitions, convert filings into official public docket cases, or dismiss groundless claims.
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono">Incoming Pending Filings</h4>
+                    <div id="workbenchFilingsContainer" class="space-y-3">
+                        <p class="text-xs text-gray-500 font-mono italic">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+                <button onclick="closeModal('workbenchModal')" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-bold uppercase tracking-wider">
+                    Close Workbench
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confidential Tip Modal -->
+    <div id="tipModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 bg-slate-950 border-b border-amber-950 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white court-font">Submit Confidential Whistleblower Tip</h3>
+                <button onclick="closeModal('tipModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
+            </div>
+            <form onsubmit="window.CPB_JUDICIARY.handleTipSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4 text-xs">
+                <div class="filing-auth-banner"></div>
+                <p class="text-gray-400 leading-relaxed">
+                    Tips submitted here are classified under Judicial Secrecy rules and visible only to the High Court and authorized investigation staff.
+                </p>
                 <div>
-                    <h5 class="text-xs font-bold uppercase text-amber-400 court-font mb-1">Case Summary</h5>
-                    <p class="text-xs bg-slate-950 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.summary}</p>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Suspect Individual or Faction</label>
+                    <input type="text" id="tipSuspectInput" placeholder="IGN or Syndicate Name" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required>
                 </div>
-
                 <div>
-                    <h5 class="text-xs font-bold uppercase text-amber-400 court-font mb-1">Claims & Pleadings</h5>
-                    <p class="text-xs bg-slate-950 p-3 rounded border border-slate-800 text-gray-300 leading-relaxed">${data.pleadings}</p>
+                    <label class="block font-bold text-amber-400 uppercase mb-1">Observed Violation / Evidence Details</label>
+                    <textarea id="tipDetailsInput" rows="4" placeholder="Describe the suspected machine dupe loop, griefing contraption, coordinate locations, or evidence..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-amber-400 focus:outline-none" required></textarea>
                 </div>
-
-                <div>
-                    <h5 class="text-xs font-bold uppercase text-emerald-400 court-font mb-1">Current Court Order / Finding</h5>
-                    <p class="text-xs bg-slate-950 p-3 rounded border border-slate-800 text-white font-mono leading-relaxed">${data.currentOrder}</p>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('tipModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded font-bold uppercase tracking-wider transition">Transmit Encrypted Tip</button>
                 </div>
-            `;
-            openModal('caseModal');
-        }
-
-        function filterDocket(category) {
-            document.querySelectorAll('.docket-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-amber-600', 'text-white');
-                btn.classList.add('bg-slate-800', 'text-gray-300');
-            });
-            event.target.classList.remove('bg-slate-800', 'text-gray-300');
-            event.target.classList.add('bg-amber-600', 'text-white');
-
-            const cards = document.querySelectorAll('#docketGrid .court-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        function handleDocketSearch() {
-            const query = document.getElementById('docketSearchInput').value.toLowerCase().trim();
-            if (!query) {
-                filterDocket('all');
-                document.getElementById('docket').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-
-            const cards = document.querySelectorAll('#docketGrid .court-card');
-            let found = 0;
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    card.style.display = 'flex';
-                    found++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            document.getElementById('docket').scrollIntoView({ behavior: 'smooth' });
-            if (found === 0) {
-                alert(`No docket records found matching "${query}".`);
-                filterDocket('all');
-            }
-        }
-
-        function quickDocket(term) {
-            document.getElementById('docketSearchInput').value = term;
-            handleDocketSearch();
-        }
-
-        function handlePetitionSubmit(e) {
-            e.preventDefault();
-            alert('Lawsuit / Petition successfully filed with the Clerk of Court. Docket Assigned: #CTBE-CV-2026-' + Math.floor(100 + Math.random() * 900));
-            closeModal('petitionModal');
-            e.target.reset();
-        }
-
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-        }
-
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-        }
-
-        window.addEventListener('click', (e) => {
-            ['caseModal', 'petitionModal', 'appealModal', 'codeModal'].forEach(id => {
-                const modal = document.getElementById(id);
-                if (e.target === modal) {
-                    closeModal(id);
-                }
-            });
-        });
-    </script>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
