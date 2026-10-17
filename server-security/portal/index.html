@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal | Create: Project Blueprint</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="../../assets/image/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #020617; }
+        .heading-font { font-family: 'Cinzel', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="h-full text-gray-200 flex flex-col" data-portal-mode="staff">
+    <header class="bg-slate-950/95 border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+            <a href="../" class="flex items-center gap-3">
+                <span class="w-9 h-9 rounded-lg bg-amber-600/20 border border-amber-600/50 flex items-center justify-center text-amber-400 font-bold heading-font">S</span>
+                <div>
+                    <div class="text-white font-bold heading-font leading-tight">Staff Portal</div>
+                    <div class="text-[11px] text-gray-500">Security & Justice Department</div>
+                </div>
+            </a>
+            <div id="cpbAuthChip"></div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div id="portalGate"></div>
+        <div id="portalApp" class="hidden">
+            <p id="portalWelcome" class="text-xs text-gray-500 mb-3"></p>
+            <nav id="portalTabs" class="flex gap-1 border-b border-slate-800 mb-6 overflow-x-auto"></nav>
+            <section id="portalContent"></section>
+        </div>
+    </main>
+
+    <div id="portalModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-4">
+                <h3 id="portalModalTitle" class="text-base font-bold text-white heading-font"></h3>
+                <button type="button" data-close onclick="document.getElementById('portalModal').classList.add('hidden');document.getElementById('portalModal').classList.remove('flex');" class="text-gray-400 hover:text-white text-xl" aria-label="Close">✕</button>
+            </div>
+            <div id="portalModalBody" class="p-6 overflow-y-auto space-y-4"></div>
+            <div id="portalModalFooter" class="px-6 py-4 bg-slate-950 border-t border-slate-800 flex flex-wrap justify-end gap-2"></div>
+        </div>
+    </div>
+
+    <script src="../cpb-auth.js"></script>
+    <script src="portal.js"></script>
+</body>
+</html>

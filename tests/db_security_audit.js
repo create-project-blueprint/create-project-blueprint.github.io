@@ -29,8 +29,10 @@ async function runSecurityAudit() {
   try {
     console.log('Step 1: Setting up mock Supabase auth infrastructure...');
     await client.query(`
-      create extension if not exists "uuid-ossp";
-      create extension if not exists "pgcrypto";
+      -- Mirror Supabase: extensions live in the extensions schema, not public
+      create schema if not exists extensions;
+      create extension if not exists "uuid-ossp" schema extensions;
+      create extension if not exists "pgcrypto" schema extensions;
 
       -- Setup mock Supabase roles
       do $$
@@ -110,6 +112,10 @@ async function runSecurityAudit() {
     console.log('Step 4b: Applying Migration 4 (Firebase Auth identity)...');
     const m4 = fs.readFileSync('supabase/migrations/20261018000004_firebase_auth.sql', 'utf8');
     await client.query(m4);
+    const m5 = fs.readFileSync('supabase/migrations/20261018000005_fix_pgcrypto_search_path.sql', 'utf8');
+    await client.query(m5);
+    const m6 = fs.readFileSync('supabase/migrations/20261018000006_divisions_and_president.sql', 'utf8');
+    await client.query(m6);
     await client.query(`
       insert into private.settings (key, value) values ('firebase_project_id', '${FIREBASE_PROJECT}')
       on conflict (key) do update set value = excluded.value;
@@ -148,18 +154,24 @@ async function runSecurityAudit() {
     const clerkId = 'ClerkFirebaseUid000000000003';
     const playerId = 'PlayerFirebaseUid00000000004';
     const attackerId = 'HackerFirebaseUid00000000005';
+    const presidentId = 'PresidentFirebaseUid00000006';
+    const fbisId = 'FbisAgentFirebaseUid00000007';
+    const fbocId = 'FbocOfficerFirebaseUid000008';
 
-    for (const id of [adminId, judgeId, clerkId, playerId, attackerId]) {
+    for (const id of [adminId, judgeId, clerkId, playerId, attackerId, presidentId, fbisId, fbocId]) {
       await asUser(id, 'authenticated', 'select public.ensure_my_profile();');
     }
     const provisioned = await client.query('select count(*) from public.profiles;');
-    assert(parseInt(provisioned.rows[0].count) === 5, 'ensure_my_profile creates profiles for Firebase users');
+    assert(parseInt(provisioned.rows[0].count) === 8, 'ensure_my_profile creates profiles for Firebase users');
 
     await client.query(`
       -- Set roles via superuser (as in the SQL editor)
       update public.profiles set role = 'admin', verification_status = 'verified', minecraft_username = 'AdminMaster' where id = '${adminId}';
       update public.profiles set role = 'judge', verification_status = 'verified', minecraft_username = 'JudgeDredd' where id = '${judgeId}';
       update public.profiles set role = 'clerk', verification_status = 'verified', minecraft_username = 'ClerkBob' where id = '${clerkId}';
+      update public.profiles set role = 'president' where id = '${presidentId}';
+      update public.profiles set role = 'fbis_agent' where id = '${fbisId}';
+      update public.profiles set role = 'fboc_officer' where id = '${fbocId}';
     `);
 
     console.log('\n--- EXECUTING AUTHORIZATION & SECURITY TESTS ---\n');
@@ -419,6 +431,145 @@ async function runSecurityAudit() {
       update public.cases set status = 'dismissed' where id = '${caseId}' returning id;
     `);
     assert(clerkDirectEdit.rows.length === 0, 'Clerk cannot bypass judge-only rules by editing cases directly');
+
+    // --------------------------------------------------------------------------
+    // Test 9: FBIS / FBOC division isolation
+    // --------------------------------------------------------------------------
+    // Returns the error message, or null if the call succeeded
+    async function errorOf(fn) {
+      try { await fn(); return null; } catch (e) { return e.message; }
+    }
+    const citizenId = attackerId; // still a plain player (playerId was promoted to clerk above)
+
+    const tipRes = await asUser(citizenId, 'authenticated', `
+      select public.submit_fbis_tip('Phantom_Builder', 'rail_sabotage', 'X: 1, Z: 2', 'Saw them ram the depot', null) as res;
+    `);
+    assert(tipRes.rows[0].res.reference_number.startsWith('FBIS-'), 'Signed-in citizen can submit an FBIS tip and gets a reference number');
+
+    const anonTip = await errorOf(() => asUser('', 'anon', `select public.submit_fbis_tip('x', 'other', null, 'x', null);`));
+    assert(anonTip !== null, 'Signed-out visitors cannot submit FBIS tips');
+
+    const directTip = await errorOf(() => asUser(citizenId, 'authenticated', `
+      insert into public.fbis_tips (reference_number, suspect_name, category, details) values ('FAKE', 'x', 'other', 'x');
+    `));
+    assert(directTip !== null, 'Tips can only be created through submit_fbis_tip (no direct inserts)');
+
+    const citizenTips = await asUser(citizenId, 'authenticated', 'select count(*) from public.fbis_tips;');
+    assert(parseInt(citizenTips.rows[0].count) === 0, 'Citizens cannot read FBIS tips, even their own');
+
+    const fbisTips = await asUser(fbisId, 'authenticated', 'select count(*) from public.fbis_tips;');
+    const fbocTips = await asUser(fbocId, 'authenticated', 'select count(*) from public.fbis_tips;');
+    const clerkTips = await asUser(clerkId, 'authenticated', 'select count(*) from public.fbis_tips;');
+    assert(parseInt(fbisTips.rows[0].count) === 1 && parseInt(fbocTips.rows[0].count) === 0 && parseInt(clerkTips.rows[0].count) === 0,
+      'Only FBIS staff can read tips (not FBOC officers or judiciary clerks)');
+
+    const incRes = await asUser(citizenId, 'authenticated', `
+      select public.submit_fboc_incident('escape', 'Marcus Rivera', 'Redoubt cell C-4', 'Saw him tunnel out') as res;
+    `);
+    const incRef = incRes.rows[0].res.reference_number;
+    const fbisIncidents = await asUser(fbisId, 'authenticated', 'select count(*) from public.fboc_incidents;');
+    const fbocIncidents = await asUser(fbocId, 'authenticated', 'select count(*) from public.fboc_incidents;');
+    assert(parseInt(fbisIncidents.rows[0].count) === 0 && parseInt(fbocIncidents.rows[0].count) === 1,
+      'Escape/incident reports are visible to FBOC staff only');
+
+    const fbocJudiciary = await asUser(fbocId, 'authenticated', 'select count(*) from public.filings;');
+    assert(parseInt(fbocJudiciary.rows[0].count) === 0, 'Division staff get no access to judiciary filings');
+
+    // Staff may update workflow fields but not rewrite the report itself
+    await asUser(fbocId, 'authenticated', `update public.fboc_incidents set status = 'responding', staff_notes = 'Unit dispatched' where reference_number = '${incRef}';`);
+    const rewrite = await errorOf(() => asUser(fbocId, 'authenticated', `update public.fboc_incidents set details = 'nothing happened' where reference_number = '${incRef}';`));
+    assert(rewrite && rewrite.includes('cannot be changed'), 'Staff cannot alter what a citizen reported');
+
+    // Rate limit: 5 submissions per hour per table (1 tip already filed)
+    for (let i = 0; i < 4; i++) {
+      await asUser(citizenId, 'authenticated', `select public.submit_fbis_tip('Spam${i}', 'other', null, 'x', null);`);
+    }
+    const sixth = await errorOf(() => asUser(citizenId, 'authenticated', `select public.submit_fbis_tip('Spam5', 'other', null, 'x', null);`));
+    assert(sixth && sixth.includes('Too many submissions'), 'Tip submissions are rate limited (5 per hour)');
+
+    // --------------------------------------------------------------------------
+    // Test 10: Public roster / Most Wanted and staff management
+    // --------------------------------------------------------------------------
+    const anonInmates = await asUser('', 'anon', 'select count(*) from public.fboc_inmates;');
+    const anonWanted = await asUser('', 'anon', 'select count(*) from public.fbis_wanted;');
+    assert(parseInt(anonInmates.rows[0].count) === 4 && parseInt(anonWanted.rows[0].count) === 3,
+      'Visitors can read the seeded public inmate roster and Most Wanted list');
+
+    const citizenBooks = await errorOf(() => asUser(citizenId, 'authenticated', `insert into public.fboc_inmates (name, offense) values ('Fake', 'x');`));
+    assert(citizenBooks !== null, 'Citizens cannot add inmates');
+
+    const fbisBooks = await errorOf(() => asUser(fbisId, 'authenticated', `insert into public.fboc_inmates (name, offense) values ('Fake', 'x');`));
+    assert(fbisBooks !== null, 'FBIS agents cannot manage the FBOC roster');
+
+    const booked = await asUser(fbocId, 'authenticated', `
+      insert into public.fboc_inmates (name, offense, is_public) values ('Hidden Detainee', 'Pending charges', false) returning id, inmate_number, created_by;
+    `);
+    assert(booked.rows[0].inmate_number.startsWith('CTBE-') && booked.rows[0].created_by === fbocId, 'FBOC officers can book inmates (numbered, creator recorded)');
+
+    const anonHidden = await asUser('', 'anon', `select count(*) from public.fboc_inmates where name = 'Hidden Detainee';`);
+    assert(parseInt(anonHidden.rows[0].count) === 0, 'Non-public inmates are hidden from visitors');
+
+    const escapeMark = await asUser(fbocId, 'authenticated', `
+      update public.fboc_inmates set custody_status = 'escaped' where id = 'b0000000-0000-0000-0000-000000000001' returning custody_status;
+    `);
+    assert(escapeMark.rows[0].custody_status === 'escaped', 'FBOC officers can mark an inmate as escaped');
+
+    const wantedAdd = await asUser(fbisId, 'authenticated', `
+      insert into public.fbis_wanted (name, offense, threat_level) values ('Marcus Rivera', 'Escaped federal custody', 'extreme') returning wanted_number;
+    `);
+    assert(wantedAdd.rows[0].wanted_number.startsWith('FBIS-W-'), 'FBIS agents can add Most Wanted entries');
+
+    // Requests: requester sees own + staff response; others see nothing
+    const reqRes = await asUser(citizenId, 'authenticated', `
+      select public.submit_fboc_request('commissary', 'b0000000-0000-0000-0000-000000000002', null, null, 32, null) as res;
+    `);
+    const reqRef = reqRes.rows[0].res.reference_number;
+    await asUser(fbocId, 'authenticated', `update public.fboc_requests set status = 'approved', staff_response = 'Deposited' where reference_number = '${reqRef}';`);
+    const ownReq = await asUser(citizenId, 'authenticated', `select status, staff_response, inmate_label from public.fboc_requests where reference_number = '${reqRef}';`);
+    const otherReq = await asUser(judgeId, 'authenticated', `select count(*) from public.fboc_requests;`);
+    assert(ownReq.rows[0].status === 'approved' && ownReq.rows[0].staff_response === 'Deposited' && ownReq.rows[0].inmate_label.includes('Elena Volkov')
+      && parseInt(otherReq.rows[0].count) === 0,
+      'Requesters see their own request and the staff response; other users do not');
+
+    const hiddenReq = await errorOf(() => asUser(citizenId, 'authenticated', `
+      select public.submit_fboc_request('visitation', '${booked.rows[0].id}', null, 'Friday', null, null);
+    `));
+    assert(hiddenReq && hiddenReq.includes('not found'), 'Requests cannot target inmates hidden from the public roster');
+
+    // --------------------------------------------------------------------------
+    // Test 11: President and administrators
+    // --------------------------------------------------------------------------
+    const adminMakesAdmin = await errorOf(() => asUser(adminId, 'authenticated', `select public.admin_set_user_role('${judgeId}', 'admin');`));
+    assert(adminMakesAdmin && adminMakesAdmin.includes('Only the President'), 'Administrators cannot appoint other administrators');
+
+    const adminDemotesPresident = await errorOf(() => asUser(adminId, 'authenticated', `update public.profiles set role = 'player' where id = '${presidentId}';`));
+    assert(adminDemotesPresident && adminDemotesPresident.includes('Only the President'), 'Administrators cannot demote the President, even by editing profiles directly');
+
+    const adminSelf = await errorOf(() => asUser(adminId, 'authenticated', `select public.admin_set_user_role('${adminId}', 'president');`));
+    assert(adminSelf && adminSelf.includes('your own role'), 'Nobody can change their own role');
+
+    const adminStaff = await errorOf(() => asUser(adminId, 'authenticated', `select public.admin_set_user_role('${citizenId}', 'fbis_agent');`));
+    assert(adminStaff === null, 'Administrators can assign division staff roles');
+
+    const presidentAppoints = await errorOf(() => asUser(presidentId, 'authenticated', `select public.admin_set_user_role('${judgeId}', 'admin');`));
+    assert(presidentAppoints === null, 'The President can appoint administrators');
+
+    const presidentSeesAll = await asUser(presidentId, 'authenticated', `
+      select (select count(*) from public.fbis_tips) as tips, (select count(*) from public.fboc_incidents) as incidents,
+             (select count(*) from public.filings) as filings, (select count(*) from public.audit_log) as audit;
+    `);
+    const ps = presidentSeesAll.rows[0];
+    assert(parseInt(ps.tips) > 0 && parseInt(ps.incidents) > 0 && parseInt(ps.filings) > 0 && parseInt(ps.audit) > 0,
+      'The President can see every division and the audit log');
+
+    const roleAudit = await asUser(presidentId, 'authenticated', `
+      select actor_id, details from public.audit_log where action = 'set_role' and target_id = '${judgeId}';
+    `);
+    assert(roleAudit.rows.length === 1 && roleAudit.rows[0].actor_id === presidentId && roleAudit.rows[0].details.to === 'admin',
+      'Role changes are recorded in the audit log with who made them');
+
+    const citizenAudit = await asUser(fbocId, 'authenticated', 'select count(*) from public.audit_log;');
+    assert(parseInt(citizenAudit.rows[0].count) === 0, 'Only administrators and the President can read the audit log');
 
     console.log('\n================================================================');
     if (failures === 0) {

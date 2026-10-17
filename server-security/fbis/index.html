@@ -6,6 +6,9 @@
     <title>Federal Bureau of Investigation & Security (FBIS) | Create: Project Blueprint</title>
     <link rel="icon" type="image/png" href="../../assets/image/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@600;700&display=swap');
 
@@ -189,7 +192,7 @@
                         </svg>
                         <span>Encrypted Tip</span>
                     </button>
-                    <span class="classified-stamp hidden md:inline-block">RESTRICTED</span>
+                    <div id="cpbAuthChip"></div>
                 </div>
             </div>
         </div>
@@ -365,7 +368,8 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Static cards are the offline fallback; fbis.js replaces them with live records -->
+                <div id="wantedGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Wanted 1 -->
                     <div class="wanted-card rounded-xl p-6 flex flex-col justify-between overflow-hidden">
                         <div class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl uppercase tracking-wider mono-font">
@@ -573,9 +577,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                 </div>
-                <h2 class="text-3xl font-extrabold text-white heading-font mb-3">Submit Anonymous Intelligence or Griefing Tip</h2>
+                <h2 class="text-3xl font-extrabold text-white heading-font mb-3">Submit Confidential Intelligence or Griefing Tip</h2>
                 <p class="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
-                    All tips submitted via the FBIS portal are encrypted. You may report without disclosing your in-game identity. Bounties will be issued to an anonymous drop chest upon verification.
+                    Sign in to file a tip. Tips are confidential: only FBIS agents and server leadership can see them or who sent them. Bounties will be issued to an anonymous drop chest upon verification.
                 </p>
                 <button onclick="openModal('tipModal')" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold px-8 py-3.5 rounded-lg text-sm tracking-wide uppercase transition shadow-xl shadow-cyan-950">
                     Open Secure Tip Submission Terminal
@@ -670,40 +674,41 @@
                 </div>
                 <button onclick="closeModal('tipModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
             </div>
-            <form onsubmit="handleTipSubmit(event)" class="p-6 overflow-y-auto space-y-4">
-                <div>
-                    <label class="block text-xs font-mono uppercase text-cyan-400 mb-1">Informant Handle (or Anonymous)</label>
-                    <input type="text" placeholder="Leave empty to file strictly anonymously" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none">
+            <form id="tipForm" onsubmit="handleTipSubmit(event)" class="p-6 overflow-y-auto space-y-4">
+                <div id="tipAuthNotice" class="text-xs text-gray-300 bg-slate-950 border border-slate-800 rounded p-3">
+                    Checking sign-in…
                 </div>
                 <div>
-                    <label class="block text-xs font-mono uppercase text-cyan-400 mb-1">Suspect Player IGN or Group</label>
-                    <input type="text" placeholder="e.g. Phantom_Builder or Unknown Syndicate" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none" required>
+                    <label for="tipSuspect" class="block text-xs font-mono uppercase text-cyan-400 mb-1">Suspect Player IGN or Group</label>
+                    <input id="tipSuspect" type="text" maxlength="100" placeholder="e.g. Phantom_Builder or Unknown Syndicate" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-mono uppercase text-cyan-400 mb-1">Crime Classification</label>
-                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none">
-                        <option>Malicious Contraption Deployment / Ramming</option>
-                        <option>Schematic Intellectual Property Theft</option>
-                        <option>Chunk Desync / Duplication Machine</option>
-                        <option>Illegal Rail Line Sabotage</option>
-                        <option>Sub-Surface Corporate Espionage</option>
+                    <label for="tipCategory" class="block text-xs font-mono uppercase text-cyan-400 mb-1">Crime Classification</label>
+                    <select id="tipCategory" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none">
+                        <option value="contraption_ramming">Malicious Contraption Deployment / Ramming</option>
+                        <option value="schematic_theft">Schematic Intellectual Property Theft</option>
+                        <option value="duplication">Chunk Desync / Duplication Machine</option>
+                        <option value="rail_sabotage">Illegal Rail Line Sabotage</option>
+                        <option value="espionage">Sub-Surface Corporate Espionage</option>
+                        <option value="other">Other</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-mono uppercase text-cyan-400 mb-1">Incident Coordinates (X, Y, Z)</label>
-                    <input type="text" placeholder="e.g. X: -1050, Y: 72, Z: 3400" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none">
+                    <label for="tipLocation" class="block text-xs font-mono uppercase text-cyan-400 mb-1">Incident Coordinates (X, Y, Z)</label>
+                    <input id="tipLocation" type="text" maxlength="200" placeholder="e.g. X: -1050, Y: 72, Z: 3400" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-mono uppercase text-cyan-400 mb-1">Evidence Summary & Screenshot URL</label>
-                    <textarea rows="4" placeholder="Detail the contraption design, observed damage, and paste any image / video links..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none" required></textarea>
+                    <label for="tipDetails" class="block text-xs font-mono uppercase text-cyan-400 mb-1">Evidence Summary</label>
+                    <textarea id="tipDetails" rows="4" maxlength="5000" placeholder="Detail the contraption design, observed damage, and who was involved..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none" required></textarea>
                 </div>
-                <div class="flex items-center space-x-2 text-xs text-gray-400">
-                    <input type="checkbox" id="anonCheck" checked class="rounded bg-slate-800 border-slate-700 text-cyan-500">
-                    <label for="anonCheck">Enable End-to-End Hash Scrambling (Zero Metadata Retention)</label>
+                <div>
+                    <label for="tipEvidence" class="block text-xs font-mono uppercase text-cyan-400 mb-1">Screenshot / Video Links (optional)</label>
+                    <input id="tipEvidence" type="text" maxlength="2000" placeholder="https://..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:border-cyan-400 focus:outline-none">
                 </div>
+                <p class="text-[11px] text-gray-500">Only FBIS agents and server leadership can read tips or see who sent them.</p>
                 <div class="pt-2 flex justify-end space-x-3">
                     <button type="button" onclick="closeModal('tipModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded text-xs">Cancel</button>
-                    <button type="submit" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded text-xs font-bold uppercase tracking-wider">Encrypt & Transmit</button>
+                    <button id="tipSubmitBtn" type="submit" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white rounded text-xs font-bold uppercase tracking-wider">Encrypt & Transmit</button>
                 </div>
             </form>
         </div>
@@ -803,5 +808,7 @@
             });
         });
     </script>
+    <script src="../cpb-auth.js"></script>
+    <script src="fbis.js"></script>
 </body>
 </html>

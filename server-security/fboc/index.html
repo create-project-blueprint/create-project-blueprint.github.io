@@ -6,6 +6,9 @@
     <title>Federal Bureau of Corrections (FBOC) | Create: Project Blueprint</title>
     <link rel="icon" type="image/png" href="../../assets/image/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -180,7 +183,7 @@
                         </svg>
                         <span>Report Breach</span>
                     </button>
-                    <span class="clearance-badge hidden md:inline-block">RESTRICTED ACCREDITATION</span>
+                    <div id="cpbAuthChip"></div>
                 </div>
             </div>
         </div>
@@ -671,34 +674,35 @@
                 </div>
                 <button onclick="closeModal('tipModal')" class="text-gray-400 hover:text-white text-xl">✕</button>
             </div>
-            <form onsubmit="handleReportSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4">
+            <form id="incidentForm" onsubmit="handleReportSubmit(event)" class="p-6 overflow-y-auto modal-scroll space-y-4">
+                <div data-fboc-auth class="text-xs text-gray-300 bg-slate-950 border border-slate-800 rounded p-3">Checking sign-in…</div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Your Player IGN (or Anonymous)</label>
-                    <input type="text" placeholder="e.g. EngineerSteve or leave blank for Anonymous" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Incident Category</label>
-                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
-                        <option>Custody Breach / Escape Attempt</option>
-                        <option>Weaponized Schematic Cannon Deployment</option>
-                        <option>Illegal Kinetic Ramming / Train Griefing</option>
-                        <option>Contraband Possession in Prison Perimeter</option>
-                        <option>Sub-Chunk Desync Machinery</option>
-                        <option>Other Violation</option>
+                    <label for="incidentCategory" class="block text-xs font-semibold uppercase text-gray-400 mb-1">Incident Category</label>
+                    <select id="incidentCategory" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
+                        <option value="escape">Custody Breach / Escape Attempt</option>
+                        <option value="weapon">Weaponized Schematic Cannon Deployment</option>
+                        <option value="griefing">Illegal Kinetic Ramming / Train Griefing</option>
+                        <option value="contraband">Contraband Possession in Prison Perimeter</option>
+                        <option value="custody_breach">Sub-Chunk Desync Machinery / Facility Breach</option>
+                        <option value="other">Other Violation</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Coordinates / Location (X, Y, Z)</label>
-                    <input type="text" placeholder="e.g. X: 1420, Y: 64, Z: -880" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
+                    <label for="incidentSubject" class="block text-xs font-semibold uppercase text-gray-400 mb-1">Player(s) Involved (optional)</label>
+                    <input id="incidentSubject" type="text" maxlength="100" placeholder="e.g. Marcus Rivera" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Detailed Incident Description</label>
-                    <textarea rows="4" placeholder="Describe the players involved, machinery blueprints observed, and any property damage..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500" required></textarea>
+                    <label for="incidentLocation" class="block text-xs font-semibold uppercase text-gray-400 mb-1">Coordinates / Location (X, Y, Z)</label>
+                    <input id="incidentLocation" type="text" maxlength="200" placeholder="e.g. X: 1420, Y: 64, Z: -880" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500">
                 </div>
-                <p class="text-[11px] text-gray-500">Reports are routed directly to FBOC Duty Wardens and FBIS Tactical Units on duty.</p>
+                <div>
+                    <label for="incidentDetails" class="block text-xs font-semibold uppercase text-gray-400 mb-1">Detailed Incident Description</label>
+                    <textarea id="incidentDetails" rows="4" maxlength="5000" placeholder="Describe the players involved, machinery blueprints observed, and any property damage..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red-500" required></textarea>
+                </div>
+                <p class="text-[11px] text-gray-500">Reports go to FBOC Duty Wardens. Only FBOC staff and server leadership can see them.</p>
                 <div class="pt-2 flex justify-end space-x-3">
                     <button type="button" onclick="closeModal('tipModal')" class="px-4 py-2 bg-slate-800 text-gray-300 rounded text-xs">Cancel</button>
-                    <button type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold uppercase tracking-wider">Dispatch Report</button>
+                    <button type="submit" data-fboc-submit class="px-5 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded text-xs font-bold uppercase tracking-wider">Dispatch Report</button>
                 </div>
             </form>
         </div>
@@ -715,28 +719,22 @@
                 <div class="bg-red-950/40 border border-red-800/60 p-3 rounded-lg text-xs text-red-300">
                     <span class="font-bold">SECURITY NOTICE:</span> Visitors must deposit all inventory items, backpacks, and tools in the lobby locker before passing through kinetic security portals.
                 </div>
+                <div data-fboc-auth class="text-xs text-gray-300 bg-slate-950 border border-slate-800 rounded p-3">Checking sign-in…</div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Visitor IGN</label>
-                    <input type="text" placeholder="Your Minecraft username" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Inmate to Visit</label>
-                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
-                        <option>Marcus Rivera (#CTBE-8821) - Facility 01</option>
-                        <option>Elena Volkov (#CTBE-7419) - Facility 02</option>
-                        <option>Viktor Kozlov (#CTBE-6104) - Facility 01</option>
-                        <option>Silas Vance (#CTBE-5291) - Facility 03</option>
+                    <label for="visitInmate" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Inmate to Visit</label>
+                    <select id="visitInmate" data-inmate-select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                        <option value="">Loading roster…</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Requested Timeslot</label>
-                    <select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                    <label for="visitTimeslot" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Requested Timeslot</label>
+                    <select id="visitTimeslot" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
                         <option>Friday 18:00 - 19:00 CST (Supervised Glass Chamber)</option>
                         <option>Saturday 14:00 - 15:00 CST (Supervised Glass Chamber)</option>
                         <option>Sunday 16:00 - 17:00 CST (Supervised Glass Chamber)</option>
                     </select>
                 </div>
-                <button onclick="alert('Visitation request registered with FBOC Sector Warden. You will receive authorization confirmation via Discord modmail.'); closeModal('visitationModal');" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                <button type="button" data-fboc-submit onclick="submitFbocRequest('visitation')" class="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
                     Submit Visitation Request
                 </button>
             </div>
@@ -754,19 +752,22 @@
                 <p class="text-xs text-gray-400">
                     Friends and approved faction members can deposit standard server currency (Brass Ingots or Iron Nuggets) directly into an inmate's meal and educational crafting allowance.
                 </p>
+                <div data-fboc-auth class="text-xs text-gray-300 bg-slate-950 border border-slate-800 rounded p-3">Checking sign-in…</div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Inmate Registration #</label>
-                    <input type="text" placeholder="e.g. #CTBE-7419" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                    <label for="commInmate" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Inmate</label>
+                    <select id="commInmate" data-inmate-select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                        <option value="">Loading roster…</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Amount to Transfer</label>
-                    <input type="number" placeholder="e.g. 32 Brass Ingots" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                    <label for="commAmount" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Brass Ingots to Transfer</label>
+                    <input id="commAmount" type="number" min="1" max="1000000" placeholder="e.g. 32" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
                 </div>
                 <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs text-gray-400 space-y-1">
                     <div>• 10% Federal Administrative Surcharge applied to facility power generation.</div>
                     <div>• Inmates in Level V Solitary cannot receive mechanical gear parts.</div>
                 </div>
-                <button onclick="alert('Commissary transaction ticket initiated. Ingame vault transfer will process at the next banking sync.'); closeModal('commissaryModal');" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                <button type="button" data-fboc-submit onclick="submitFbocRequest('commissary')" class="w-full bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
                     Authorize Commissary Deposit
                 </button>
             </div>
@@ -784,19 +785,22 @@
                 <p class="text-xs text-gray-400">
                     Eligible detainees who have served over 50% of their designated custodial sentence with zero disciplinary infractions may apply for parole review by the Federal Judiciary.
                 </p>
+                <div data-fboc-auth class="text-xs text-gray-300 bg-slate-950 border border-slate-800 rounded p-3">Checking sign-in…</div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Applicant Inmate IGN</label>
-                    <input type="text" placeholder="Your Minecraft Username" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                    <label for="paroleInmate" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Applicant Inmate</label>
+                    <select id="paroleInmate" data-inmate-select class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                        <option value="">Loading roster…</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Restitution Work Units Completed</label>
-                    <input type="text" placeholder="e.g. 40 hours quarry labor / 1200 rail ties placed" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
+                    <label for="paroleWork" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Restitution Work Units Completed</label>
+                    <input id="paroleWork" type="text" maxlength="500" placeholder="e.g. 40 hours quarry labor / 1200 rail ties placed" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Statement of Good Conduct</label>
-                    <textarea rows="3" placeholder="Explain your rehabilitation progress and commitment to CTBE server building guidelines..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm"></textarea>
+                    <label for="paroleStatement" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Statement of Good Conduct</label>
+                    <textarea id="paroleStatement" rows="3" maxlength="4000" placeholder="Explain your rehabilitation progress and commitment to CTBE server building guidelines..." class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white text-sm"></textarea>
                 </div>
-                <button onclick="alert('Parole petition filed. Scheduled for review during next Judiciary hearing docket.'); closeModal('paroleModal');" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
+                <button type="button" data-fboc-submit onclick="submitFbocRequest('parole')" class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider transition">
                     Submit Parole Petition to Court
                 </button>
             </div>
@@ -1043,5 +1047,7 @@
             });
         });
     </script>
+    <script src="../cpb-auth.js"></script>
+    <script src="fboc.js"></script>
 </body>
 </html>

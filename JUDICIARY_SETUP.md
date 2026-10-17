@@ -152,3 +152,28 @@ The test verifies:
 - Presence of strict XSS escaping across all dynamic docket and modal renderings.
 - Migration syntax and RLS enablement.
 - Edge function configuration.
+
+---
+
+## 7. Staff Portal & President's Office
+
+Migration `20261018000006_divisions_and_president.sql` adds FBIS tips, FBOC incident reports (escapes, breaches, contraband), the inmate roster, the Most Wanted list, FBOC visitation/commissary/parole requests, and an audit log.
+
+| Role | Can access |
+|------|-----------|
+| `player` | Submit tips, incident reports and FBOC requests (signed in; 5 per hour each) |
+| `clerk`, `judge` | Judiciary tab + Judiciary Workbench |
+| `fbis_agent` | FBIS tab: tips, Most Wanted |
+| `fboc_officer` | FBOC tab: incidents, inmate roster, requests |
+| `admin` | Every tab + Administration (assign staff roles, audit log) |
+| `president` | Everything, including appointing and removing administrators |
+
+- **Staff Portal:** `/server-security/portal/`
+- **President's Office:** `/server-security/president/`
+
+### Appoint the first President
+After pushing the migration and signing in once, run in the **SQL Editor**:
+```sql
+UPDATE public.profiles SET role = 'president' WHERE email = 'your-google-email@gmail.com';
+```
+From then on, assign every other role from the Administration tab. Nobody can change their own role, and only the President can appoint or remove administrators.

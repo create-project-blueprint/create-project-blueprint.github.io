@@ -262,7 +262,7 @@
                         <span class="text-[10px] font-mono ${vStatus === 'verified' ? 'text-emerald-400' : 'text-amber-400'}">${vStatus.toUpperCase()}</span>
                     </a>
 
-                    ${(role === 'clerk' || role === 'judge' || role === 'admin') ? `
+                    ${(role === 'clerk' || role === 'judge' || role === 'admin' || role === 'president') ? `
                         <a href="javascript:void(0)" onclick="window.CPB_JUDICIARY.openWorkbenchModal()" 
                             class="block px-3.5 py-2 text-amber-400 hover:bg-amber-950/60 font-bold transition flex items-center justify-between border-t border-slate-800/80">
                             <span>Judicial Workbench</span>
@@ -1000,7 +1000,7 @@
     // --------------------------------------------------------------------------
     async function openWorkbenchModal() {
         const profile = window.CPB_JUDICIARY.currentProfile;
-        if (!profile || (profile.role !== 'clerk' && profile.role !== 'judge' && profile.role !== 'admin')) {
+        if (!profile || (profile.role !== 'clerk' && profile.role !== 'judge' && profile.role !== 'admin' && profile.role !== 'president')) {
             alert("Access restricted to authorized Judicial and Clerk officers.");
             return;
         }
@@ -1035,12 +1035,12 @@
                         <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 text-xs flex justify-between items-center">
                             <span class="text-gray-400">Officer Level: <strong class="text-amber-400 uppercase font-mono">${escapeHtml(role)}</strong></span>
                             <div class="space-x-2">
-                                ${(role === 'clerk' || role === 'admin') ? `
+                                ${(role === 'clerk' || role === 'admin' || role === 'president') ? `
                                     <button onclick="window.CPB_JUDICIARY.verifyPlayerPrompt()" class="bg-blue-900 hover:bg-blue-800 text-blue-200 px-2.5 py-1 rounded text-[11px] font-mono transition">
                                         Manual Verify Player
                                     </button>
                                 ` : ''}
-                                ${role === 'admin' ? `
+                                ${(role === 'admin' || role === 'president') ? `
                                     <button onclick="window.CPB_JUDICIARY.adminSetUserRolePrompt()" class="bg-purple-900 hover:bg-purple-800 text-purple-200 px-2.5 py-1 rounded text-[11px] font-mono transition">
                                         Assign User Role
                                     </button>
@@ -1060,12 +1060,12 @@
                 <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 text-xs flex justify-between items-center mb-4">
                     <span class="text-gray-400">Officer Level: <strong class="text-amber-400 uppercase font-mono">${escapeHtml(role)}</strong></span>
                     <div class="space-x-2">
-                        ${(role === 'clerk' || role === 'admin') ? `
+                        ${(role === 'clerk' || role === 'admin' || role === 'president') ? `
                             <button onclick="window.CPB_JUDICIARY.verifyPlayerPrompt()" class="bg-blue-900 hover:bg-blue-800 text-blue-200 px-2.5 py-1 rounded text-[11px] font-mono transition">
                                 Manual Verify Player
                             </button>
                         ` : ''}
-                        ${role === 'admin' ? `
+                        ${(role === 'admin' || role === 'president') ? `
                             <button onclick="window.CPB_JUDICIARY.adminSetUserRolePrompt()" class="bg-purple-900 hover:bg-purple-800 text-purple-200 px-2.5 py-1 rounded text-[11px] font-mono transition">
                                 Assign User Role
                             </button>
@@ -1270,9 +1270,9 @@
     }
 
     async function adminSetUserRolePrompt() {
-        const targetUserId = prompt("Enter user Supabase User ID (UUID):");
+        const targetUserId = prompt("Enter the user ID (from the Administration tab of the Staff Portal):");
         if (!targetUserId) return;
-        const newRole = prompt("Enter new role (player, clerk, judge, admin):", "clerk");
+        const newRole = prompt("Enter new role (player, clerk, judge, fbis_agent, fboc_officer, admin, president):", "clerk");
         if (!newRole) return;
 
         try {
