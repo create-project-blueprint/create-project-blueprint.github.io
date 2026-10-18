@@ -68,6 +68,8 @@ body > main, body > .main-content { background: transparent !important; }
     border-color: var(--cpb-border) !important;
     box-shadow: 0 14px 40px rgba(0, 0, 0, .2);
 }
+.stat-card { color:var(--cpb-text); background:linear-gradient(145deg,rgba(23,33,52,.96),rgba(13,19,32,.92)) !important; border-color:var(--cpb-border) !important; }
+main .prose-history p, main .prose-history ul, main .prose-history li, main .prose-history strong { color:#f1f5f9 !important; }
 .nav-link:hover, .faq-card:hover { border-color: rgba(125, 211, 252, .55) !important; }
 .hero-section {
     background: radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, .2), transparent 58%), linear-gradient(130deg, #111827, #111a30 60%, #17132d) !important;
