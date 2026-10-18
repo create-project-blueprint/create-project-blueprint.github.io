@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - CTBE to Create: Project Blueprint</title>
+    <link rel="icon" type="image/png" href="assets/image/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-blue: #2563eb;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #1d4ed8;
+            --light-blue: #eff6ff;
+            --dark-blue: #1e40af;
+            --navy: #1e3a8a;
+            --slate: #64748b;
+            --green: #16a34a;
+            --amber: #d97706;
+            --red: #dc2626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .title-font { font-family: 'Poppins', sans-serif; }
+
+        .custom-shadow { box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--navy) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('assets/image/history/s31-festival.jpg') center/cover no-repeat;
+            opacity: 0.22;
+            z-index: 1;
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .era-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+        }
+
+        .prose-history p { color: #374151; line-height: 1.75; margin-bottom: 1rem; }
+        .prose-history p:last-child { margin-bottom: 0; }
+        .prose-history ul { list-style: disc; padding-left: 1.25rem; color: #374151; line-height: 1.75; margin-bottom: 1rem; }
+        .prose-history li { margin-bottom: 0.35rem; }
+        .prose-history strong { color: #111827; }
+
+        .bar-track { background: #e2e8f0; border-radius: 999px; height: 10px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 999px; width: 0; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+
+        .shot {
+            border-radius: 0.6rem;
+            overflow: hidden;
+            cursor: zoom-in;
+            position: relative;
+            background: #0f172a;
+        }
+        .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+        .shot:hover img { transform: scale(1.04); }
+        .shot figcaption {
+            position: absolute; left: 0; right: 0; bottom: 0;
+            padding: 1.5rem 0.75rem 0.5rem;
+            font-size: 0.75rem; color: white;
+            background: linear-gradient(transparent, rgba(0,0,0,0.75));
+        }
+
+        .toc a { transition: all 0.2s ease; border-left: 2px solid transparent; }
+        .toc a:hover, .toc a.active { color: var(--primary-blue); border-left-color: var(--primary-blue); background: var(--light-blue); }
+
+        .tl-item { position: relative; padding-left: 2rem; padding-bottom: 1.75rem; }
+        .tl-item::before {
+            content: ''; position: absolute; left: 0.4rem; top: 0.4rem; bottom: -0.4rem;
+            width: 2px; background: #cbd5e1;
+        }
+        .tl-item:last-child::before { display: none; }
+        .tl-dot {
+            position: absolute; left: 0; top: 0.25rem; width: 0.95rem; height: 0.95rem;
+            border-radius: 999px; border: 3px solid white; box-shadow: 0 0 0 2px currentColor;
+            background: currentColor;
+        }
+
+        .gantt-row { display: grid; grid-template-columns: 9.5rem 1fr; align-items: center; gap: 0.75rem; }
+        .gantt-track { position: relative; height: 2rem; background: #f1f5f9; border-radius: 0.4rem; }
+        .gantt-bar {
+            position: absolute; top: 0.25rem; bottom: 0.25rem; border-radius: 0.35rem;
+            display: flex; align-items: center; padding: 0 0.5rem;
+            font-size: 0.7rem; font-weight: 600; color: white; white-space: nowrap; overflow: hidden;
+        }
+        .gantt-bar.approx {
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.25) 0 6px, transparent 6px 12px);
+        }
+
+        .vote-col { transition: height 1s cubic-bezier(.2,.8,.2,1); }
+
+        #lightbox { background: rgba(2, 6, 23, 0.9); }
+
+        @media (max-width: 640px) {
+            .gantt-row { grid-template-columns: 6.5rem 1fr; }
+            .gantt-bar span, .gantt-tick.minor { display: none; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-lg border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center custom-shadow">
+                        <span class="text-white font-bold text-xl title-font"><img src="assets/image/favicon.png" alt=""></span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 title-font">CTBE SMP Server</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Home</a>
+                    <a href="government.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Government</a>
+                    <a href="history.html" class="text-blue-600 font-medium">History</a>
+                    <a href="server-security/" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Security & Justice</a>
+                    <a href="co/" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Companies</a>
+                    <a href="support/" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Support</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-section text-white py-16 sm:py-20">
+        <div class="hero-content max-w-6xl mx-auto px-4 sm:px-6">
+            <nav class="flex items-center space-x-2 text-sm mb-6">
+                <a href="index.html" class="text-blue-200 hover:text-white transition-colors">Home</a>
+                <span class="text-blue-300">›</span>
+                <span class="text-white font-medium">History</span>
+            </nav>
+            <h2 class="text-4xl sm:text-5xl font-bold mb-4 title-font">The Complete History of CTBE</h2>
+            <p class="text-lg sm:text-xl text-blue-100 max-w-3xl">From a small group of Minecraft friends, through four seasons of CTBE, to the rebuild as <strong class="text-white">Create: Project Blueprint</strong>. 2025 to 2026.</p>
+            <div class="flex flex-wrap gap-2 mt-8">
+                <a href="#origins" class="bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Origins</a>
+                <a href="#season-2" class="bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Season 2</a>
+                <a href="#season-3" class="bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Astral Divergence</a>
+                <a href="#season-31" class="bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Operation Genesis</a>
+                <a href="#rebrand" class="bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 rounded-lg text-sm font-medium">The Rebrand</a>
+                <a href="#cpb" class="bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 rounded-lg text-sm font-medium">Project Blueprint</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="flex-1 py-12 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+            <!-- At a glance -->
+            <section class="mb-12">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="stat-card rounded-xl p-5">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Seasons</p>
+                        <p class="text-3xl font-bold text-gray-800 title-font mt-1">4</p>
+                        <p class="text-sm text-gray-500 mt-1">S1, S2, S3 and S3.1 under CTBE</p>
+                    </div>
+                    <div class="stat-card rounded-xl p-5">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Peak pack size</p>
+                        <p class="text-3xl font-bold text-gray-800 title-font mt-1">~400</p>
+                        <p class="text-sm text-gray-500 mt-1">mods in Astral Divergence</p>
+                    </div>
+                    <div class="stat-card rounded-xl p-5">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Rebrand</p>
+                        <p class="text-3xl font-bold text-gray-800 title-font mt-1">Jul 6</p>
+                        <p class="text-sm text-gray-500 mt-1">2026: CTBE becomes CPB</p>
+                    </div>
+                    <div class="stat-card rounded-xl p-5">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">New platform</p>
+                        <p class="text-3xl font-bold text-gray-800 title-font mt-1">1.21.1</p>
+                        <p class="text-sm text-gray-500 mt-1">NeoForge, picked by members</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Season timeline (gantt) -->
+            <section class="mb-12">
+                <div class="card p-6 sm:p-8">
+                    <div class="flex flex-wrap items-end justify-between gap-2 mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 title-font">Seasons at a glance</h3>
+                            <p class="text-gray-500 text-sm mt-1">May 2025 to October 2026. Striped bars have approximate dates.</p>
+                        </div>
+                    </div>
+                    <div id="gantt" class="space-y-2"></div>
+                    <div id="gantt-axis" class="gantt-row mt-2">
+                        <div></div>
+                        <div class="relative h-5 text-[0.65rem] text-gray-400" id="gantt-ticks"></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="lg:grid lg:grid-cols-[13rem_1fr] lg:gap-10">
+                <!-- Table of contents -->
+                <aside class="hidden lg:block">
+                    <nav class="toc sticky top-6 text-sm space-y-1">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3 px-3">On this page</p>
+                        <a href="#origins" class="block px-3 py-1.5 text-gray-600 rounded-r">1. Origins & Season 1</a>
+                        <a href="#season-2" class="block px-3 py-1.5 text-gray-600 rounded-r">2. Season 2</a>
+                        <a href="#polls" class="block px-3 py-1.5 text-gray-600 rounded-r">3. Community & polls</a>
+                        <a href="#season-3" class="block px-3 py-1.5 text-gray-600 rounded-r">4. Astral Divergence</a>
+                        <a href="#early-2026" class="block px-3 py-1.5 text-gray-600 rounded-r">5. Early 2026</a>
+                        <a href="#season-31" class="block px-3 py-1.5 text-gray-600 rounded-r">6. Operation Genesis</a>
+                        <a href="#rebrand" class="block px-3 py-1.5 text-gray-600 rounded-r">7. The rebrand</a>
+                        <a href="#hardware" class="block px-3 py-1.5 text-gray-600 rounded-r">8. Hardware failures</a>
+                        <a href="#cpb" class="block px-3 py-1.5 text-gray-600 rounded-r">9. Project Blueprint</a>
+                        <a href="#chronology" class="block px-3 py-1.5 text-gray-600 rounded-r">10. Full chronology</a>
+                        <a href="#themes" class="block px-3 py-1.5 text-gray-600 rounded-r">11. What it tells us</a>
+                    </nav>
+                </aside>
+
+                <div class="min-w-0 space-y-12">
+
+                    <!-- 1. Origins -->
+                    <section id="origins" class="scroll-mt-6">
+                        <span class="era-badge bg-slate-100 text-slate-700">Before July 2025</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">1. Origins: a small group of friends</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>CTBE started as a small group chat: <strong>CreateModFan12</strong>, <strong>Cayd</strong> (caydsgamertag), <strong>supercat Creative/EWGB</strong>, <strong>axolotls525</strong> and <strong>KALASH4741</strong>. These five were later thanked by name in the July 2026 rebrand announcement for being there from the beginning.</p>
+                            <p>The server grew because Cayd said the group was lonely and asked to let more people in. CreateModFan12 agreed. Without that decision CTBE might have stayed a small group chat. The SMP was never set up as a commercial network; it grew because its first members wanted more people to play with.</p>
+                            <p>CreateModFan12 became the project lead, running the modpack, server, technical work, announcements and polls. Cayd became co-founder and co-owner.</p>
+                            <h4 class="text-lg font-bold text-gray-800 mt-6 mb-2">Before the SMP</h4>
+                            <p>The May 18, 2025 Create workshop predates Season 1 and the CTBE SMP. It records an earlier stage of the group’s Minecraft history.</p>
+                            <h4 class="text-lg font-bold text-gray-800 mt-6 mb-2">Season 1</h4>
+                            <p>Season 1 came before the documented Season 2 period, and its world save still exists. A video from May 28, 2025 was shared back to members in August 2025 with the question "Who remembers this from S1?" Its exact launch date, mod list and length aren't recorded, so this page doesn't guess at them. The screenshots below are from that early period.</p>
+                        </div>
+                        <figure class="shot aspect-video max-w-2xl mt-4" data-src="assets/image/history/s1-first-base.jpg"><img src="assets/image/history/s1-first-base.jpg" alt="A player beside an early Create workshop from before the CTBE SMP" loading="lazy"><figcaption>Pre-SMP Create workshop · May 18, 2025</figcaption></figure>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
+                            <figure class="shot aspect-video" data-src="assets/image/history/s1-cave.jpg"><img src="assets/image/history/s1-cave.jpg" alt="A glowing lush cave" loading="lazy"><figcaption>Exploring · May 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s1-contraption.jpg"><img src="assets/image/history/s1-contraption.jpg" alt="A tall Create contraption" loading="lazy"><figcaption>Contraption testing · May 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s1-town.jpg"><img src="assets/image/history/s1-town.jpg" alt="Corruption damage in the Season 1 world" loading="lazy"><figcaption>Season 1 world corruption · Jun 2025</figcaption></figure>
+                        </div>
+                    </section>
+
+                        <div class="card p-6 sm:p-8 mt-4">
+                            <h4 class="text-lg font-bold text-gray-800 mb-3">Season 1 clip</h4>
+                            <div class="aspect-video overflow-hidden rounded-lg bg-gray-900">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/NCckoH23fMM" title="Random clip from Season 1" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    <!-- 2. Season 2 -->
+                    <section id="season-2" class="scroll-mt-6">
+                        <span class="era-badge bg-blue-100 text-blue-700">July 1 – December 7, 2025</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">2. Season 2</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>Season 2 is the first season with firm start and end dates. It ran for just over five months, a substantial chapter rather than a short experiment, and belongs to the early CTBE era before Astral Divergence.</p>
+                            <p>Over the season the world filled up with industrial yards, an airbase, a brick rail station, a vehicle depot and Camp 42. On October 30 a house fire broke out (chat: "damn home insurance will not pay for this one"). Season 2 ended on December 7, 2025; the records don't say exactly why it concluded.</p>
+                        </div>
+
+                        <!-- world save graph -->
+                        <div class="card p-6 sm:p-8 mt-4">
+                            <p class="text-sm font-semibold text-gray-500 mb-4">Season 2 world-save cleanup</p>
+                            <div class="flex items-center justify-between gap-4 mb-4">
+                                <div>
+                                    <p class="text-3xl font-bold text-gray-800 title-font">8.33 GB</p>
+                                    <p class="text-xs text-gray-500">Before trimming</p>
+                                </div>
+                                <svg class="w-6 h-6 text-gray-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M18.707 12.707a1 1 0 0 0 0-1.414l-5-5a1 1 0 1 0-1.414 1.414L15.586 11H6a1 1 0 1 0 0 2h9.586l-3.293 3.293a1 1 0 0 0 1.414 1.414l5-5Z" clip-rule="evenodd"/></svg>
+                                <div class="text-right">
+                                    <p class="text-3xl font-bold title-font" style="color: var(--green)">1.04 GB</p>
+                                    <p class="text-xs text-gray-500">After trimming</p>
+                                </div>
+                            </div>
+                            <div class="bar-track"><div class="bar-fill" data-w="12.5" style="background: var(--green)"></div></div>
+                            <p class="text-sm text-gray-500 mt-3">About 87.5% less storage used. The figures show the size reduction, not which regions were removed.</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-industrial-yard.jpg"><img src="assets/image/history/s2-industrial-yard.jpg" alt="Industrial yard with containers" loading="lazy"><figcaption>Industrial yard · Jul 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-hard-hat.jpg"><img src="assets/image/history/s2-hard-hat.jpg" alt="Hard hat area sign" loading="lazy"><figcaption>Hard hat area · Jul 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-brick-station.jpg"><img src="assets/image/history/s2-brick-station.jpg" alt="Large brick station building" loading="lazy"><figcaption>Brick station · Sep 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-airbase.jpg"><img src="assets/image/history/s2-airbase.jpg" alt="Helicopter over a base" loading="lazy"><figcaption>The airbase · Sep 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-players.jpg"><img src="assets/image/history/s2-players.jpg" alt="caydsme, CreateModFan12 and axolotls525 at sunset" loading="lazy"><figcaption>caydsme, CreateModFan12 & axolotls525 · Sep 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-vehicles.jpg"><img src="assets/image/history/s2-vehicles.jpg" alt="Vehicle depot with traffic cones" loading="lazy"><figcaption>Vehicle depot · Oct 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-camp42.jpg"><img src="assets/image/history/s2-camp42.jpg" alt="Camp 42 entrance" loading="lazy"><figcaption>Camp 42 · Oct 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-fire.jpg"><img src="assets/image/history/s2-fire.jpg" alt="A house on fire" loading="lazy"><figcaption>House fire · Oct 30, 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s2-gasf1.jpg"><img src="assets/image/history/s2-gasf1.jpg" alt="GASF1 building with truck" loading="lazy"><figcaption>GASF1 · Nov 2025</figcaption></figure>
+                        </div>
+                    </section>
+
+                    <!-- 3. Polls -->
+                    <section id="polls" class="scroll-mt-6">
+                        <span class="era-badge bg-indigo-100 text-indigo-700">June 2025 – September 2026</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">3. The community shaped the pack</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>A pattern that defined both CTBE and CPB: members were asked to vote on modpack changes, events and server decisions. Some polls were about gameplay, some about presentation, some about community events.</p>
+                            <p>There was a weakness too. Having a community and getting it to take part were two different things. When the Halloween event poll closed, 27 members hadn't voted. By November the server was being called "dead", with only two votes in a whole day on the server-mod poll. Poll turnout isn't the same as in-game activity, but it shows how hard it was to get a response.</p>
+                        </div>
+
+                        <!-- turnout chart -->
+                        <div class="card p-6 sm:p-8 mt-4">
+                            <div class="flex flex-wrap items-end justify-between gap-2 mb-6">
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-800">Votes cast per poll</p>
+                                    <p class="text-xs text-gray-500">Recorded Discord polls. Hover or tap a bar for details.</p>
+                                </div>
+                                <p class="text-xs text-gray-500">Most polls got 1–4 votes</p>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute inset-x-0 top-0 bottom-8 flex flex-col justify-between pointer-events-none">
+                                    <div class="border-t border-dashed border-gray-200 text-[0.65rem] text-gray-400">4</div>
+                                    <div class="border-t border-dashed border-gray-200 text-[0.65rem] text-gray-400">2</div>
+                                    <div class="border-t border-gray-300"></div>
+                                </div>
+                                <div id="turnout" class="relative flex items-end gap-1 sm:gap-2 h-48 pl-4"></div>
+                            </div>
+                            <p id="turnout-detail" class="text-sm text-gray-600 mt-4 min-h-[1.25rem]">Select a bar to see the poll.</p>
+                        </div>
+
+                        <!-- poll results -->
+                        <div id="poll-grid" class="grid md:grid-cols-2 gap-4 mt-4"></div>
+                    </section>
+
+                    <!-- 4. Season 3 -->
+                    <section id="season-3" class="scroll-mt-6">
+                        <span class="era-badge bg-purple-100 text-purple-700">Late 2025 into 2026</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">4. Season 3: Astral Divergence</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>Season 3 was a far more ambitious modded experience, combining Create engineering with space exploration. Create supplied the machinery and automation; Ad Astra added a path to space. The name, Astral Divergence, captured that direction.</p>
+                            <p>A pack of roughly 400 mods has a lot of moving parts. Updates, dependencies and interactions make maintenance hard even when the game launches fine. No single compatibility issue is recorded as ending the season, but keeping a pack this size running was a big part of the organizer's workload.</p>
+                        </div>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+                            <div class="stat-card rounded-xl p-4"><p class="text-xs text-gray-500">Minecraft</p><p class="text-xl font-bold text-gray-800 title-font">1.20.1</p></div>
+                            <div class="stat-card rounded-xl p-4"><p class="text-xs text-gray-500">Loader</p><p class="text-xl font-bold text-gray-800 title-font">Forge</p></div>
+                            <div class="stat-card rounded-xl p-4"><p class="text-xs text-gray-500">Create</p><p class="text-xl font-bold text-gray-800 title-font">6.0.8</p></div>
+                            <div class="stat-card rounded-xl p-4"><p class="text-xs text-gray-500">Space</p><p class="text-xl font-bold text-gray-800 title-font">Ad Astra</p></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
+                            <figure class="shot aspect-video" data-src="assets/image/history/s3-aurora.jpg"><img src="assets/image/history/s3-aurora.jpg" alt="Aurora over the night sky" loading="lazy"><figcaption>Aurora · Dec 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s3-landscape.jpg"><img src="assets/image/history/s3-landscape.jpg" alt="Wide landscape with a lake" loading="lazy"><figcaption>New world · Dec 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s3-buster.jpg"><img src="assets/image/history/s3-buster.jpg" alt="BUSTER building sign" loading="lazy"><figcaption>BUSTER · Dec 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s3-dino-build.jpg"><img src="assets/image/history/s3-dino-build.jpg" alt="Modern building with dinosaur logo" loading="lazy"><figcaption>Dino-themed build · Jan 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s3-hq-dusk.jpg"><img src="assets/image/history/s3-hq-dusk.jpg" alt="Headquarters building at dusk" loading="lazy"><figcaption>HQ at dusk · Feb 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s3-winter-frontier.jpg"><img src="assets/image/history/s3-winter-frontier.jpg" alt="Snow-covered forest and mountain frontier" loading="lazy"><figcaption>Winter frontier · Dec 2025</figcaption></figure>
+                        </div>
+                    </section>
+
+                    <!-- 5. Early 2026 -->
+                    <section id="early-2026" class="scroll-mt-6">
+                        <span class="era-badge bg-slate-100 text-slate-700">January – June 2026</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">5. The project keeps evolving</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <ul>
+                                <li><strong>January 9:</strong> members were asked to choose between keeping Cool Decor and the big girders, or being able to view recipes. The next morning a port was found that might offer "the best of both worlds".</li>
+                                <li><strong>January 14:</strong> a gameplay-design poll on whether oil should be finite or renewable.</li>
+                                <li><strong>April 18:</strong> a review of the rules and entry requirements. The CFL permit requirement was creating barriers, so the plan was to lower it, rework rules and partly rebrand parts of the server, with accessibility, clarity and fairness as goals. This was the start of the later constitution rewrite. The same day, Create Aeronautics' release was announced.</li>
+                                <li><strong>May 29 – ~June 7:</strong> development paused while the founder was away from home.</li>
+                                <li><strong>June 10:</strong> a poll on whether to keep Ars Nouveau.</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- 6. Season 3.1 -->
+                    <section id="season-31" class="scroll-mt-6">
+                        <span class="era-badge bg-amber-100 text-amber-700">June 20, 2026</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">6. Season 3.1: The Blueprint Expedition, Operation Genesis</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>Season 3.1, <strong>Create: The Blueprint Expedition — Operation Genesis</strong>, followed Astral Divergence. It matters because it links the old CTBE identity to the name that replaced it: the "Blueprint" idea was already here before the rebrand.</p>
+                            <p>On launch day the founder also had to take their puppy to the vet for a dislocated arm, so the server was down for about an hour. The SMP was run by one person juggling real life, not by an operations team.</p>
+                            <p>The launch worked and people joined, but turnout was poor compared with what was hoped for. A first player joining is a milestone; it isn't the same as a busy, sustainable SMP.</p>
+                        </div>
+
+                        <div class="card p-6 sm:p-8 mt-4">
+                            <h4 class="text-lg font-bold text-gray-800 mb-1">Season 3.1 announcement video</h4>
+                            <p class="text-sm text-gray-500 mb-4">The announcement and lore of Operation Genesis.</p>
+                            <div class="aspect-video overflow-hidden rounded-lg bg-gray-900">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/b0VOgLbdIaw" title="Season 3.1 announcement video and Operation Genesis lore" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <!-- launch day countdown -->
+                        <div class="card p-6 sm:p-8 mt-4">
+                            <p class="text-sm font-semibold text-gray-800 mb-5">Launch countdown</p>
+                            <div class="grid sm:grid-cols-[1fr_1fr] gap-6">
+                                <div>
+                                    <div class="tl-item text-blue-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">June 16</p><p class="text-sm text-gray-700">Countdown page goes live at <a href="whens3.1.html" class="text-blue-600 hover:underline">whens3.1.html</a></p></div>
+                                    <div class="tl-item text-blue-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">June 17</p><p class="text-sm text-gray-700">Rules reminder, call for testers</p></div>
+                                    <div class="tl-item text-blue-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">June 18</p><p class="text-sm text-gray-700">React if you plan to join</p></div>
+                                    <div class="tl-item text-amber-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">June 20 · 12:04 PM</p><p class="text-sm text-gray-700">Four hours to go</p></div>
+                                    <div class="tl-item text-amber-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">3:02 PM</p><p class="text-sm text-gray-700">30 minutes to early prep, one hour to launch</p></div>
+                                    <div class="tl-item text-amber-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">3:29 PM</p><p class="text-sm text-gray-700">Modpack and address shared: <code class="text-xs bg-gray-100 px-1 rounded">playctbe.mslacademy.online</code></p></div>
+                                    <div class="tl-item text-green-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">3:55 PM</p><p class="text-sm text-gray-700 font-semibold">First player joins</p></div>
+                                </div>
+                                <figure class="shot self-start aspect-video" data-src="assets/image/history/s31-launch-day.jpg"><img src="assets/image/history/s31-launch-day.jpg" alt="Players at a campfire on launch day" loading="lazy"><figcaption>Launch day, 3:54 PM · June 20, 2026</figcaption></figure>
+                            </div>
+                        </div>
+
+                        <div class="card p-6 sm:p-8 mt-4 prose-history">
+                            <h4 class="text-lg font-bold text-gray-800 mb-2">After launch</h4>
+                            <ul>
+                                <li><strong>June 26:</strong> poll on adding Better Nether/End, using a newly found Forge port.</li>
+                                <li><strong>June 27:</strong> short downtime to set up a server management portal.</li>
+                                <li><strong>June 28:</strong> Fairy Lights flagged as a needed mod.</li>
+                                <li><strong>July 7:</strong> interest polls for Tinkers' Construct, Jack's Economy, ComputerCraft, Immersive Engineering, Immersive Weathering and Yuushya Townscape.</li>
+                            </ul>
+                            <blockquote class="border-l-4 border-blue-500 bg-blue-50 rounded-r-lg px-4 py-3 text-gray-700 text-sm">
+                                "Polls are used to measure community interest. A positive vote does not guarantee a mod will be added."
+                                <span class="block text-xs text-gray-500 mt-1">July 7, 2026. Compatibility, stability, performance and CPB's direction decide.</span>
+                            </blockquote>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+                            <figure class="shot aspect-video" data-src="assets/image/history/s31-depot.jpg"><img src="assets/image/history/s31-depot.jpg" alt="Depot building at night" loading="lazy"><figcaption>Depot build · May 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s31-factory-floor.jpg"><img src="assets/image/history/s31-factory-floor.jpg" alt="Factory floor" loading="lazy"><figcaption>Factory floor · Jun 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s31-festival.jpg"><img src="assets/image/history/s31-festival.jpg" alt="MUTMA camp with bunting" loading="lazy"><figcaption>MUTMA camp · Jun 28, 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/s31-barn.jpg"><img src="assets/image/history/s31-barn.jpg" alt="Red barn by the railway" loading="lazy"><figcaption>The barn · Jun 28, 2026</figcaption></figure>
+                        </div>
+                    </section>
+
+                    <!-- 7. Rebrand -->
+                    <section id="rebrand" class="scroll-mt-6">
+                        <span class="era-badge bg-red-100 text-red-700">Major turning point</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">7. July 6, 2026: CTBE becomes Create: Project Blueprint</h3>
+                        <div class="rounded-xl p-6 sm:p-8 text-white mb-4" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--navy) 100%);">
+                            <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+                                <div class="text-center">
+                                    <p class="text-3xl sm:text-4xl font-bold title-font">CTBE</p>
+                                    <p class="text-blue-200 text-xs mt-1">2025 – 2026</p>
+                                </div>
+                                <svg class="w-8 h-8 text-blue-200 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M18.707 12.707a1 1 0 0 0 0-1.414l-5-5a1 1 0 1 0-1.414 1.414L15.586 11H6a1 1 0 1 0 0 2h9.586l-3.293 3.293a1 1 0 0 0 1.414 1.414l5-5Z" clip-rule="evenodd"/></svg>
+                                <div class="text-center">
+                                    <p class="text-3xl sm:text-4xl font-bold title-font">CPB</p>
+                                    <p class="text-blue-200 text-xs mt-1">Create: Project Blueprint</p>
+                                </div>
+                                <p class="text-blue-100 text-sm sm:ml-auto">Announced July 6, 2026 · 8:31 PM</p>
+                            </div>
+                        </div>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>The CTBE name and branding were retired and replaced with Create: Project Blueprint. The announcement was clear that <strong>the SMP itself wasn't going anywhere</strong>; only its identity and direction were changing.</p>
+                            <p><strong>Why:</strong> during a modpack update, the original pack stopped working. It would print two lines in the log and exit. Rather than patching the old project forever, a clean transition was chosen:</p>
+                            <ul>
+                                <li>Retire the CTBE branding and continue as Create: Project Blueprint.</li>
+                                <li>Build a new modpack compatible with the CTBE pack.</li>
+                                <li>Rewrite the constitution from the ground up, with a clearer summary of member freedoms and restrictions.</li>
+                                <li>Keep the current season running until CPB Season 1 was ready, then retire it to free server resources.</li>
+                            </ul>
+                            <p>The original members (Cayd, supercat Creative/EWGB, axolotls525 and KALASH4741) were thanked by name, along with Cayd's push to open the group up. Everyone who was a member before the rebrand received a special legacy role, plus an in-game cape (needs the official modpack and CapeJS, redeemed by request for a limited time). There was even a channel to mourn the old branding.</p>
+                        </div>
+                    </section>
+
+                    <!-- 8. Hardware -->
+                    <section id="hardware" class="scroll-mt-6">
+                        <span class="era-badge bg-red-100 text-red-700">July – August 2026</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">8. The hardware failures</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="card p-5 border-l-4" style="border-left-color: var(--red)">
+                                <p class="text-xs font-semibold text-red-600 uppercase tracking-wide">July 14</p>
+                                <p class="font-bold text-gray-800 mt-1">Power supply fails</p>
+                                <p class="text-sm text-gray-600 mt-2">The machine hosting Season 3.1 won't power on. The SMP stays offline until CPB Season 1. The PSU is proprietary, so a standard ATX unit can't replace it.</p>
+                            </div>
+                            <div class="card p-5 border-l-4" style="border-left-color: var(--red)">
+                                <p class="text-xs font-semibold text-red-600 uppercase tracking-wide">August 9</p>
+                                <p class="font-bold text-gray-800 mt-1">Motherboard broken</p>
+                                <p class="text-sm text-gray-600 mt-2">A second hardware failure on top of the PSU. The machine itself has to work again, not just the modpack.</p>
+                            </div>
+                            <div class="card p-5 border-l-4" style="border-left-color: var(--green)">
+                                <p class="text-xs font-semibold text-green-600 uppercase tracking-wide">August 14</p>
+                                <p class="font-bold text-gray-800 mt-1">New motherboard</p>
+                                <p class="text-sm text-gray-600 mt-2">A replacement board arrives, and rebuilding continues toward CPB Season 1.</p>
+                            </div>
+                        </div>
+                        <div class="card p-6 sm:p-8 mt-4 prose-history">
+                            <p>The outage announcement was explicit: <strong>no donations, money, gifts or replacement hardware</strong> were being asked for. The project had always been funded out of the founder's own pocket, and they wanted to keep it that way. Members were only asked to be patient.</p>
+                        </div>
+                    </section>
+
+                    <!-- 9. CPB -->
+                    <section id="cpb" class="scroll-mt-6">
+                        <span class="era-badge bg-green-100 text-green-700">August – October 2026</span>
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mt-3 mb-5">9. Building Create: Project Blueprint</h3>
+                        <div class="card p-6 sm:p-8 prose-history">
+                            <p>The original release target for CPB Season 1 was September 1–4, 2026. By September 9 it had been pushed back to around early October, and that target also slipped. Several obstacles overlapped:</p>
+                            <ul>
+                                <li>The original CTBE modpack broke during an update.</li>
+                                <li>The server hardware lost its power supply, then its motherboard.</li>
+                                <li>The move to Minecraft 1.21.1 NeoForge meant redoing compatibility and configuration.</li>
+                                <li>Uneven engagement made it hard to judge how many people would join at launch.</li>
+                                <li>The constitution and its ratification were still in progress.</li>
+                            </ul>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <!-- version poll -->
+                            <div class="card p-6">
+                                <p class="text-sm font-semibold text-gray-800">CPB version poll</p>
+                                <p class="text-xs text-gray-500 mb-5">September 5–12, 2026 · 3 votes</p>
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-1"><span class="font-medium text-gray-800">1.21.1 NeoForge</span><span class="text-gray-500">3 votes · 100%</span></div>
+                                    <div class="bar-track"><div class="bar-fill" data-w="100" style="background: var(--primary-blue)"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1"><span class="font-medium text-gray-800">1.20.1 Forge</span><span class="text-gray-500">0 votes · 0%</span></div>
+                                    <div class="bar-track"><div class="bar-fill" data-w="0" style="background: var(--slate)"></div></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-4">A big change from Season 3's 1.20.1 Forge foundation. Every mod had to exist for the new version.</p>
+                            </div>
+                            <!-- mod count -->
+                            <div class="card p-6">
+                                <p class="text-sm font-semibold text-gray-800">Pack size: then and now</p>
+                                <p class="text-xs text-gray-500 mb-5">Approximate mod counts</p>
+                                <div class="space-y-4" id="modcount"></div>
+                                <p class="text-xs text-gray-500 mt-4">CPB numbers are development figures, not the final released pack. The working build also listed 33,000+ items in EMI.</p>
+                            </div>
+                        </div>
+
+                        <!-- constitution -->
+                        <div class="card p-6 sm:p-8 mt-4 flex flex-col sm:flex-row gap-6 items-start">
+                            <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                            <div class="prose-history">
+                                <h4 class="text-lg font-bold text-gray-800 mb-2">The new constitution</h4>
+                                <p>On September 13, 2026 the new constitution was published, "almost 5 months" after it was first promised ("Better late than never I guess"). Members had until October 1, 2026 at 1:59 AM to vote on ratification. It sets out the structure and rules of Create: Project Blueprint, including members' rights and restrictions.</p>
+                                <a href="assets/pdf/Constitution%20of%20the%20Create.pdf" target="_blank" rel="noopener" class="inline-block mt-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">Read the constitution (PDF) →</a>
+                            </div>
+                        </div>
+
+                        <!-- mod proposals -->
+                        <div class="card p-6 sm:p-8 mt-4">
+                            <p class="text-sm font-semibold text-gray-800 mb-1">Mods proposed for CPB</p>
+                            <p class="text-xs text-gray-500 mb-5">Suggestions and polls, not a confirmed mod list.</p>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div><p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Engineering</p><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">Tinkers' Construct</span><span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">Immersive Engineering</span></div></div>
+                                <div><p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Computing & economy</p><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm">ComputerCraft</span><span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm">Jack's Economy</span></div></div>
+                                <div><p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">World & building</p><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">Yuushya Townscape</span><span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">Immersive Weathering</span></div></div>
+                                <div><p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Other</p><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm">Ars Nouveau</span><span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm">Better Nether/End</span><span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm">Fairy Lights</span></div></div>
+                            </div>
+                        </div>
+
+                        <div class="card p-6 sm:p-8 mt-4 prose-history">
+                            <h4 class="text-lg font-bold text-gray-800 mb-2">What CPB is aiming for</h4>
+                            <p>CPB keeps a strong Create-based industrial and construction identity, with stability and performance ahead of raw popularity. Plans in development include:</p>
+                            <ul>
+                                <li>A survival-island seed with enough trees and building space, with islands spaced to encourage independent bases without making rail links too hard.</li>
+                                <li>A custom notice-board block made with MCreator.</li>
+                                <li>Weekly quests with measurable objectives.</li>
+                                <li>Mod enforcement against hacked clients, X-ray and duplication exploits.</li>
+                                <li>A possible custom launcher using mod-platform APIs and controlled manifests to make installs and updates easier.</li>
+                            </ul>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+                            <figure class="shot aspect-video col-span-2 md:col-span-2 md:row-span-2 md:aspect-auto" data-src="assets/image/history/cpb-main-menu.jpg"><img src="assets/image/history/cpb-main-menu.jpg" alt="Create: Project Blueprint main menu" loading="lazy"><figcaption>The CPB main menu · Oct 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/cpb-citadel.jpg"><img src="assets/image/history/cpb-citadel.jpg" alt="Rows of Citadel buses" loading="lazy"><figcaption>Citadel buses · Oct 2026</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/cpb-construction.jpg"><img src="assets/image/history/cpb-construction.jpg" alt="Steel-framed construction site under work lights" loading="lazy"><figcaption>Construction site · Oct 2026</figcaption></figure>
+                            <figure class="shot aspect-video col-span-2" data-src="assets/image/history/cpb-coast.jpg"><img src="assets/image/history/cpb-coast.jpg" alt="Coastal industrial build" loading="lazy"><figcaption>Coastal build · Sep 2026</figcaption></figure>
+                        </div>
+
+
+
+                        <div class="card p-6 sm:p-8 mt-6 prose-history">
+                            <span class="era-badge bg-red-100 text-red-700">October 2025 · Season 2</span>
+                            <h4 class="text-2xl font-bold text-gray-800 title-font mt-3 mb-4">The DEFCON 4 declaration and nuclear incident</h4>
+                            <p>Eyewitness reports and the F.B.O.C. report describe CTBE declaring DEFCON 4 around October 2025 after a group involving supercatcreative, KALASH4741 and axolotls525 accelerated plans to attack Camp 42. The eyewitness account attributes building and detonating the nuclear devices at Camp 42 to KALASH4741, while saying supercatcreative set fires at other locations but did not use the nukes. It also identifies axolotls525 as a double agent who helped FBIS make arrests. The screenshots below document damage; the accounts and report provide the attributions and allegations.</p>
+                            <p>The account describes a billboard reading “authoritarianism is not freedom,” later removed, and says the plan was to destroy as much as possible. Its narrative also records earlier disputes and suspicions in messages dated October 2–3.</p>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-3 mt-4">
+                            <figure class="shot aspect-video" data-src="assets/image/history/nuclear-crater-overview.png"><img src="assets/image/history/nuclear-crater-overview.png" alt="Wide view of the crater and damaged industrial facility at Camp 42" loading="lazy"><figcaption>Camp 42 crater · Oct 31, 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/nuclear-crater-detail.png"><img src="assets/image/history/nuclear-crater-detail.png" alt="Closer view into the crater beside the facility" loading="lazy"><figcaption>Crater aftermath · Oct 31, 2025</figcaption></figure>
+                        </div>
+                        <div class="card p-6 sm:p-8 mt-6 prose-history">
+                            <h4 class="text-2xl font-bold text-gray-800 title-font mb-3">Arson and the FB.O.C. report</h4>
+                            <p>The account connects the fires to the same October crisis. A message dated October 30 says the server was found on fire; the existing Season 2 record also dates a house fire to October 30. The four screenshots below show the burning house and fire damage.</p>
+                            <p>It includes <strong>F.B.O.C. Legal Report 002-25</strong>, filed October 31, 2025 by CreateModFan12, naming KALASHNAKOV 4741 as the defendant. The report describes alleged theft from government officials, items passed to an informant and hidden underground, and destruction with C4. Its listed charges were arson (two counts), national terrorism, theft from a government official (two counts), distribution of contraband, and hiding illegal items underground, with additional minor violations under review. These are charges recorded in a report, not a statement here that a court reached a verdict.</p>
+                            <p>The pasted account separately says a later review found cheat-mod use for creative flight and travel over one million blocks from spawn. That allegation is not part of the listed charges above.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 mt-4">
+                            <figure class="shot aspect-video" data-src="assets/image/history/arson-house-exterior.png"><img src="assets/image/history/arson-house-exterior.png" alt="Fire burning across the exterior of a timber and brick house" loading="lazy"><figcaption>House exterior on fire · Oct 31, 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/arson-house-interior.png"><img src="assets/image/history/arson-house-interior.png" alt="Flames inside the dark interior of the house" loading="lazy"><figcaption>Inside the burning house · Oct 30, 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/arson-smoke-damage.png"><img src="assets/image/history/arson-smoke-damage.png" alt="Smoke and fire damage inside the house" loading="lazy"><figcaption>Smoke inside the house · Oct 30, 2025</figcaption></figure>
+                            <figure class="shot aspect-video" data-src="assets/image/history/arson-outbuilding-fire.png"><img src="assets/image/history/arson-outbuilding-fire.png" alt="Fire burning along the house exterior" loading="lazy"><figcaption>Fire along the house exterior · Oct 30, 2025</figcaption></figure>
+                        </div>
+                    </section>
+
+                    <!-- 10. Chronology -->
+                    <section id="chronology" class="scroll-mt-6">
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mb-5">10. The whole timeline</h3>
+                        <div class="card p-6 sm:p-8">
+                            <div class="tl-item text-slate-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">Before July 2025</p><p class="font-bold text-gray-800">Original group & Season 1</p><p class="text-sm text-gray-600">Five friends form the base of the SMP. Cayd pushes to let more people in.</p></div>
+                            <div class="tl-item text-blue-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">July 1 – December 7, 2025</p><p class="font-bold text-gray-800">Season 2</p><p class="text-sm text-gray-600">World save grows to 8.33 GB, trimmed to 1.04 GB. Polls become a habit.</p></div>
+                            <div class="tl-item text-red-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">Around October 2025</p><p class="font-bold text-gray-800">DEFCON 4, Camp 42 and the arson report</p><p class="text-sm text-gray-600">The supplied account describes a nuclear attack on Camp 42, fires elsewhere and an FB.O.C. report filed October 31. Responsibility and outcome are presented as reported claims.</p></div>
+                            <div class="tl-item text-purple-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">Late 2025 into 2026</p><p class="font-bold text-gray-800">Season 3: Astral Divergence</p><p class="text-sm text-gray-600">Forge 1.20.1, Create 6.0.8 and Ad Astra, around 400 mods.</p></div>
+                            <div class="tl-item text-amber-500"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">June 20, 2026</p><p class="font-bold text-gray-800">Season 3.1: Operation Genesis</p><p class="text-sm text-gray-600">Countdown, modpack release, first player joins. Turnout disappoints.</p></div>
+                            <div class="tl-item text-red-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">July 6, 2026</p><p class="font-bold text-gray-800">The rebrand</p><p class="text-sm text-gray-600">The modpack breaks during an update; CTBE becomes Create: Project Blueprint.</p></div>
+                            <div class="tl-item text-red-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">July – August 2026</p><p class="font-bold text-gray-800">Hardware failures</p><p class="text-sm text-gray-600">PSU fails and takes S3.1 offline; the motherboard follows and is replaced.</p></div>
+                            <div class="tl-item text-green-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">September 2026</p><p class="font-bold text-gray-800">New technical direction</p><p class="text-sm text-gray-600">Members pick 1.21.1 NeoForge. The constitution goes to a ratification vote. The release window slips.</p></div>
+                            <div class="tl-item text-green-600"><span class="tl-dot"></span><p class="text-xs font-semibold text-gray-500">October 2026</p><p class="font-bold text-gray-800">CPB in development</p><p class="text-sm text-gray-600">Seed, server setup and the notice-board block are the remaining work before Season 1.</p></div>
+                        </div>
+                    </section>
+
+                    <!-- 11. Themes -->
+                    <section id="themes" class="scroll-mt-6">
+                        <h3 class="text-3xl font-bold text-gray-800 title-font mb-5">11. What CTBE's history tells us</h3>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="card p-6"><p class="text-3xl font-bold text-blue-600 title-font">01</p><p class="font-bold text-gray-800 mt-2">It grew out of wanting company</p><p class="text-sm text-gray-600 mt-2">The group could have stayed small. Cayd's push to invite more people made it a real SMP, which is why participation has always mattered.</p></div>
+                            <div class="card p-6"><p class="text-3xl font-bold text-blue-600 title-font">02</p><p class="font-bold text-gray-800 mt-2">Participation was always the hard part</p><p class="text-sm text-gray-600 mt-2">Polls, events and pings were constant. The goal was an active community, not just a Discord full of members.</p></div>
+                            <div class="card p-6"><p class="text-3xl font-bold text-blue-600 title-font">03</p><p class="font-bold text-gray-800 mt-2">One person carried the backbone</p><p class="text-sm text-gray-600 mt-2">The broken pack, the dead hardware, the constitution and the maintenance all landed on the founder, who chose to keep funding it personally.</p></div>
+                            <div class="card p-6"><p class="text-3xl font-bold text-blue-600 title-font">04</p><p class="font-bold text-gray-800 mt-2">CPB continues CTBE</p><p class="text-sm text-gray-600 mt-2">The name, pack and governance changed, but legacy members were honored and the SMP carried on.</p></div>
+                        </div>
+                        <div class="card p-6 sm:p-8 mt-4 prose-history">
+                            <p>The story isn't "CTBE died and CPB replaced it." It's a project whose old technical foundation stopped working, and which carried its community and lessons into a new version.</p>
+                            <p class="text-sm text-gray-500">Gaps worth keeping honest: the exact origins of Season 1, the full events of Season 2, and the final result of the constitution ratification vote aren't documented here yet.</p>
+                        </div>
+
+                    </section>
+
+                    <section class="mt-12" aria-labelledby="year-video-heading">
+                        <div class="card p-6 sm:p-8">
+                            <h3 id="year-video-heading" class="text-2xl font-bold text-gray-800 title-font mb-4">1 year of CTBE in 1 hour and 18 minutes</h3>
+                            <div class="aspect-video overflow-hidden rounded-lg bg-gray-900">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/76m_FUdXBr4?si=62O7F2fikM3RMykj" title="1 year of CTBE in 1 hour and 18 minutes" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true">
+        <button id="lightbox-close" class="absolute top-4 right-4 text-white text-3xl leading-none px-3 py-1 hover:text-blue-300" aria-label="Close">×</button>
+        <figure class="max-w-5xl w-full">
+            <img id="lightbox-img" alt="" class="w-full max-h-[80vh] object-contain rounded-lg">
+            <figcaption id="lightbox-cap" class="text-center text-gray-300 text-sm mt-3"></figcaption>
+        </figure>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="text-center">
+                <p class="text-gray-300">
+                    Copyright © 2025 CreateModFan154 All Rights Reserved. For full license see it
+                    <a href="https://github.com/ctbe-team/ctbe-team.github.io/blob/main/LICENSE.md"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="text-blue-400 hover:text-blue-300 underline transition-colors duration-300">
+                        here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ---- Season gantt ----
+        const START = new Date(2025, 4, 1);   // May 2025
+        const END = new Date(2026, 10, 1);    // end of Oct 2026
+        const span = END - START;
+        const pct = d => ((d - START) / span) * 100;
+
+        const seasons = [
+            { label: 'Season 1', from: new Date(2025, 4, 1), to: new Date(2025, 5, 30), color: '#64748b', approx: true, text: 'S1' },
+            { label: 'Season 2', from: new Date(2025, 6, 1), to: new Date(2025, 11, 7), color: '#2563eb', text: 'Jul 1 – Dec 7' },
+            { label: 'Astral Divergence', from: new Date(2025, 11, 8), to: new Date(2026, 5, 19), color: '#9333ea', approx: true, text: 'Season 3' },
+            { label: 'Operation Genesis', from: new Date(2026, 5, 20), to: new Date(2026, 6, 14), color: '#d97706', text: 'S3.1' },
+            { label: 'CPB development', from: new Date(2026, 6, 6), to: new Date(2026, 9, 31), color: '#16a34a', text: 'Rebrand → Season 1 prep' },
+        ];
+        const gantt = document.getElementById('gantt');
+        seasons.forEach(s => {
+            const row = document.createElement('div');
+            row.className = 'gantt-row';
+            const left = pct(s.from), width = Math.max(pct(s.to) - left, 2.5);
+            row.innerHTML = `<div class="text-sm font-medium text-gray-700 truncate">${s.label}</div>
+                <div class="gantt-track"><div class="gantt-bar${s.approx ? ' approx' : ''}" style="left:${left}%;width:${width}%;background-color:${s.color}" title="${s.label}"><span>${s.text}</span></div></div>`;
+            gantt.appendChild(row);
+        });
+        const ticks = document.getElementById('gantt-ticks');
+        for (let m = new Date(START), i = 0; m < END; m.setMonth(m.getMonth() + 3), i++) {
+            const t = document.createElement('span');
+            t.className = 'gantt-tick absolute -translate-x-1/2 whitespace-nowrap' + (i % 2 ? ' minor' : '');
+            t.style.left = pct(m) + '%';
+            t.textContent = m.toLocaleString('en-US', { month: 'short' }) + " '" + String(m.getFullYear()).slice(2);
+            if (pct(m) === 0) t.classList.remove('-translate-x-1/2');
+            ticks.appendChild(t);
+        }
+
+        // ---- Poll data ----
+        const polls = [
+            { date: 'Jun 9, 2025', q: 'Should we do a new panorama?', opts: [['YES YES YES YES', 2], ['What is a new panorama?', 2], ['No', 0]], note: 'Tied' },
+            { date: 'Jun 28, 2025', q: 'Add the Thermal Series mods?', opts: [['Yes', 3], ['No', 0]] },
+            { date: 'Jul 13, 2025', q: 'Which armor for an upcoming sold experience?', opts: [['3 · mass-producible', 1], ['1 · craftable, hard', 0], ['2 · found naturally', 0]] },
+            { date: 'Jul 17, 2025', q: 'Can you escape the Backrooms in another modpack?', opts: [['Yes', 1], ['No', 0]] },
+            { date: 'Sep 6, 2025', q: 'Do we really need Create: Garnished?', opts: [['No, bye bye Garnished', 1], ['Yes', 0]] },
+            { date: 'Oct 17, 2025', q: 'Add mod once released?', opts: [['Yes', 3], ['No', 1]] },
+            { date: 'Oct 21, 2025', q: 'When to have the Halloween event?', opts: [['Fri, Oct 31', 3], ['Sat, Oct 25', 0], ['Sat, Nov 1', 0], ['Fri, Oct 24', 0], ['Sun, Oct 26', 0]], note: '27 members didn\'t vote' },
+            { date: 'Oct 31, 2025', q: 'Mute an account in case it gets hacked and sends scams?', opts: [['Yes', 2], ['No', 0]] },
+            { date: 'Nov 1, 2025', q: 'Add Ancient Nature (prehistoric mod)?', opts: [['Yes', 1]] },
+            { date: 'Nov 21, 2025', q: 'Release the server mod?', opts: [['Yes', 2], ['No', 0]], note: '2 votes in a day' },
+            { date: 'Nov 28, 2025', q: 'Which style: A or B?', opts: [['A', 1], ['B', 0]] },
+            { date: 'Sep 5, 2026', q: 'What version to use for CPB?', opts: [['1.21.1 NeoForge', 3], ['1.20.1 Forge', 0]] },
+        ];
+
+        // turnout chart
+        const turnout = document.getElementById('turnout');
+        const detail = document.getElementById('turnout-detail');
+        const maxVotes = 4;
+        polls.forEach((p, i) => {
+            const total = p.opts.reduce((a, o) => a + o[1], 0);
+            const col = document.createElement('button');
+            col.type = 'button';
+            col.className = 'flex-1 h-full flex flex-col justify-end items-center group focus:outline-none';
+            col.setAttribute('aria-label', `${p.q}: ${total} votes`);
+            const is2026 = p.date.includes('2026');
+            col.innerHTML = `<span class="text-[0.65rem] font-semibold text-gray-500 mb-1">${total}</span>
+                <span class="vote-col w-full rounded-t-md ${is2026 ? 'bg-green-500 group-hover:bg-green-600' : 'bg-blue-500 group-hover:bg-blue-600'}" style="height:0" data-h="${(total / maxVotes) * 100}"></span>
+                <span class="text-[0.6rem] text-gray-400 mt-1 h-7 leading-tight text-center">${p.date.replace(/, 20(\d\d)/, " '$1")}</span>`;
+            const show = () => {
+                turnout.querySelectorAll('.vote-col').forEach(c => c.classList.remove('ring-2', 'ring-blue-300'));
+                col.querySelector('.vote-col').classList.add('ring-2', 'ring-blue-300');
+                detail.innerHTML = `<strong class="text-gray-800">${p.date}:</strong> ${p.q} <span class="text-gray-500">(${total} vote${total === 1 ? '' : 's'}${p.note ? ', ' + p.note : ''})</span>`;
+            };
+            col.addEventListener('mouseenter', show);
+            col.addEventListener('focus', show);
+            col.addEventListener('click', show);
+            turnout.appendChild(col);
+        });
+
+        // poll result cards
+        const grid = document.getElementById('poll-grid');
+        polls.forEach(p => {
+            const total = p.opts.reduce((a, o) => a + o[1], 0);
+            const top = Math.max(...p.opts.map(o => o[1]));
+            const card = document.createElement('div');
+            card.className = 'card p-5';
+            card.innerHTML = `<div class="flex justify-between items-start gap-3 mb-3">
+                    <p class="font-semibold text-gray-800 text-sm">${p.q}</p>
+                    <span class="text-[0.65rem] text-gray-400 whitespace-nowrap">${p.date}</span>
+                </div>
+                ${p.opts.map(([label, v]) => {
+                    const share = total ? Math.round((v / total) * 100) : 0;
+                    const win = v === top && v > 0;
+                    return `<div class="mb-2">
+                        <div class="flex justify-between text-xs mb-1"><span class="${win ? 'font-semibold text-gray-800' : 'text-gray-600'}">${label}</span><span class="text-gray-500">${v} · ${share}%</span></div>
+                        <div class="bar-track" style="height:8px"><div class="bar-fill" data-w="${share}" style="background:${win ? 'var(--primary-blue)' : '#94a3b8'}"></div></div>
+                    </div>`;
+                }).join('')}
+                <p class="text-[0.7rem] text-gray-400 mt-2">${total} vote${total === 1 ? '' : 's'}${p.note ? ' · ' + p.note : ''}</p>`;
+            grid.appendChild(card);
+        });
+
+        // mod count bars
+        const mods = [
+            { label: 'Season 3 · Astral Divergence', v: 400, color: '#9333ea' },
+            { label: 'CPB working build', v: 327, color: '#16a34a' },
+            { label: 'CPB target', v: 250, color: '#86efac' },
+        ];
+        document.getElementById('modcount').innerHTML = mods.map(m => `
+            <div>
+                <div class="flex justify-between text-sm mb-1"><span class="font-medium text-gray-800">${m.label}</span><span class="text-gray-500">~${m.v}</span></div>
+                <div class="bar-track"><div class="bar-fill" data-w="${(m.v / 400) * 100}" style="background:${m.color}"></div></div>
+            </div>`).join('');
+
+        // ---- Animate bars when visible ----
+        const reveal = el => {
+            if (el.dataset.w !== undefined) el.style.width = el.dataset.w + '%';
+            if (el.dataset.h !== undefined) el.style.height = el.dataset.h + '%';
+        };
+        const animated = document.querySelectorAll('.bar-fill, .vote-col');
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+            }, { threshold: 0.2 });
+            animated.forEach(el => io.observe(el));
+        } else {
+            animated.forEach(reveal);
+        }
+
+        // ---- Lightbox ----
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        const lbCap = document.getElementById('lightbox-cap');
+        document.querySelectorAll('.shot').forEach(fig => {
+            fig.addEventListener('click', () => {
+                lbImg.src = fig.dataset.src;
+                lbImg.alt = fig.querySelector('img').alt;
+                lbCap.textContent = fig.querySelector('figcaption')?.textContent || '';
+                lb.classList.remove('hidden');
+                lb.classList.add('flex');
+            });
+        });
+        const closeLb = () => { lb.classList.add('hidden'); lb.classList.remove('flex'); lbImg.removeAttribute('src'); };
+        lb.addEventListener('click', e => { if (e.target === lb || e.target.id === 'lightbox-close') closeLb(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+        // ---- TOC highlight ----
+        const tocLinks = document.querySelectorAll('.toc a');
+        const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href')));
+        if ('IntersectionObserver' in window) {
+            const tocIo = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+                    }
+                });
+            }, { rootMargin: '-30% 0px -60% 0px' });
+            sections.forEach(s => s && tocIo.observe(s));
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -8,3 +8,10 @@
 # Firebase service account keys (never commit)
 *firebase-adminsdk*.json
 *service-account*.json
+
+# Archived source screenshots and saved ChatGPT history export
+/assets/md/2025-05-17_12.56.52/
+/assets/md/2026-10-01_17.40.27/
+/assets/md/Explain CTBE history_files/
+/assets/md/information.md
+/assets/md/clipboard_*.png
