@@ -18,19 +18,10 @@
         ['Staff portal · sign-in required', 'server-security/portal/']
     ];
 
-    const style = document.createElement('style');
-    style.textContent = `
-        .cpb-site-nav{position:relative;z-index:30;width:100%;align-self:stretch;background:#111827;color:#e5e7eb;border-bottom:1px solid #374151;font:500 13px/1.4 Inter,system-ui,sans-serif}
-        .cpb-site-nav__inner{max-width:1280px;margin:auto;padding:9px 16px;display:flex;align-items:center;gap:12px}
-        .cpb-site-nav__brand{color:#fff;font-weight:800;white-space:nowrap;text-decoration:none;letter-spacing:.02em}
-        .cpb-site-nav__links{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:thin;flex:1}
-        .cpb-site-nav a{color:#d1d5db;text-decoration:none;white-space:nowrap;padding:6px 9px;border-radius:6px}
-        .cpb-site-nav a:hover,.cpb-site-nav a:focus-visible{background:#1f2937;color:#fff;outline:none}
-        .cpb-site-nav a[aria-current=page]{color:#bfdbfe;background:#1e3a8a}
-        .cpb-site-nav__staff{border:1px solid #92400e;color:#fde68a!important}
-        @media(max-width:640px){.cpb-site-nav__inner{align-items:flex-start;flex-direction:column;gap:5px}.cpb-site-nav__links{width:100%}}
-    `;
-    document.head.append(style);
+    const theme = document.createElement('link');
+    theme.rel = 'stylesheet';
+    theme.href = new URL('assets/css/site-theme.css', root).href;
+    document.head.append(theme);
 
     const nav = document.createElement('nav');
     nav.className = 'cpb-site-nav';
@@ -41,7 +32,7 @@
     const brand = document.createElement('a');
     brand.className = 'cpb-site-nav__brand';
     brand.href = new URL('index.html', root).href;
-    brand.textContent = 'CTBE · CPB';
+    brand.innerHTML = 'Create: Project Blueprint<small>Community • Seasons • Services</small>';
     inner.append(brand);
 
     const links = document.createElement('div');
@@ -60,7 +51,44 @@
     inner.append(links);
     nav.append(inner);
 
+    const legacyHeader = document.querySelector('body > header.bg-white, body > header.header');
+    if (legacyHeader) legacyHeader.remove();
+
     const header = document.querySelector('body > header');
     if (header) header.insertAdjacentElement('afterend', nav);
     else document.body.prepend(nav);
+
+    const footer = document.createElement('footer');
+    footer.className = 'cpb-footer';
+    footer.innerHTML = `
+        <div class="cpb-footer__inner">
+            <div class="cpb-footer__grid">
+                <div>
+                    <a class="cpb-footer__brand" href="${new URL('index.html', root).href}">Create: Project Blueprint</a>
+                    <p class="cpb-footer__copy">A community built around Create, shared worlds, and the people who bring them to life. Explore the project, its history, and the services that keep it moving.</p>
+                </div>
+                <div><h2 class="cpb-footer__heading">Explore</h2><div class="cpb-footer__links">
+                    <a href="${new URL('history.html', root).href}">Project history</a>
+                    <a href="${new URL('whens3.1.html', root).href}">Season 3.1</a>
+                    <a href="${new URL('mainland.html', root).href}">The Mainland</a>
+                </div></div>
+                <div><h2 class="cpb-footer__heading">Community</h2><div class="cpb-footer__links">
+                    <a href="${new URL('co/', root).href}">Companies</a>
+                    <a href="${new URL('partners/', root).href}">Partners</a>
+                    <a href="${new URL('support/#contact', root).href}">Get support</a>
+                </div></div>
+                <div><h2 class="cpb-footer__heading">Project</h2><div class="cpb-footer__links">
+                    <a href="${new URL('government.html', root).href}">Governance</a>
+                    <a href="${new URL('server-security/', root).href}">Security &amp; Justice</a>
+                    <a href="${new URL('server-security/portal/', root).href}">Staff portal · sign-in required</a>
+                </div></div>
+            </div>
+            <div class="cpb-footer__bottom">
+                <span>© ${new Date().getFullYear()} Create: Project Blueprint · A community project with roots in CTBE.</span>
+                <span><a href="${new URL('LEGAL.md', root).href}">Legal</a> · <a href="${new URL('SECURITY.md', root).href}">Security</a> · <a href="${new URL('LICENSE.md', root).href}">License</a> · <a href="${new URL('status.json', root).href}">Status</a></span>
+            </div>
+        </div>`;
+    const oldFooter = document.querySelector('body > footer');
+    if (oldFooter) oldFooter.replaceWith(footer);
+    else document.body.append(footer);
 })();

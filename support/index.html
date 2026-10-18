@@ -3,9 +3,8 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support Center</title>
+  <title>CPB Support Center — Create: Project Blueprint</title>
   <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
   <style>
     body {
       box-sizing: border-box;
@@ -364,7 +363,7 @@
     <div class="logo">
      <div class="logo-icon">
       🛡️
-     </div><span id="page-title">Support Center</span>
+     </div><span id="page-title">CPB Support Center</span>
     </div>
     <nav class="nav"><a class="nav-link" href="../index.html">Home</a> <a class="nav-link" href="../README.md">Documentation</a> <a class="nav-link" href="../history.html">Community history</a> <a class="nav-link" href="../status.json">Site status</a>
     </nav>
@@ -373,10 +372,10 @@
   <section class="hero">
    <div class="hero-content">
     <div class="ai-badge">
-     <div class="ai-pulse"></div><span>AI-Powered Support</span>
+     <div class="ai-pulse"></div><span>Live Chat Support</span>
     </div>
     <h1 class="hero-title" id="hero-title">How can we help you?</h1>
-    <p class="hero-subtitle" id="hero-subtitle">Get instant support from our AI assistant or browse our help resources below</p>
+    <p class="hero-subtitle" id="hero-subtitle">Chat with the support team or browse the help resources below</p>
    </div>
   </section><!-- Main Content -->
   <main class="main-content"><!-- FAQ Section -->
@@ -449,25 +448,25 @@
        💬
       </div>
       <h3 class="feature-title">24/7 Support</h3>
-      <p class="feature-description">Our support team and AI assistant are always here to help you</p>
+      <p class="feature-description">Our support team is here to help with questions about the project and community.</p>
      </div>
     </div>
    </section><!-- Contact Section -->
    <section id="contact" class="contact-section">
     <h2 class="contact-title" id="contact-title">Need More Help?</h2>
     <p class="contact-description" id="contact-description">Our support team is here for you 24/7. Choose your preferred contact method below.</p>
-    <div class="contact-methods"><a class="contact-btn primary" href="#ai-support"> <span>💬</span> <span>Chat with AI Assistant</span> </a> <a class="contact-btn" href="../README.md"> <span>📚</span> <span>Project documentation</span> </a> <a class="contact-btn" href="../government.html#contact"> <span>🏛️</span> <span>Government contact</span> </a>
+    <div class="contact-methods"><a class="contact-btn primary" href="#" data-open-tidio> <span>💬</span> <span>Chat with support</span> </a> <a class="contact-btn" href="../README.md"> <span>📚</span> <span>Project documentation</span> </a> <a class="contact-btn" href="../government.html#contact"> <span>🏛️</span> <span>Government contact</span> </a>
     </div>
    </section>
   </main><!-- Footer -->
   <footer class="footer">
    <p class="footer-text">© 2025 CreateModFan154. All Rights Reserved. Your privacy is our priority.</p>
-  </footer><!-- ElevenLabs AI Assistant Widget --> <elevenlabs-convai id="ai-support" agent-id="agent_9801kagwktz3ehs857ymzjk93m34"></elevenlabs-convai>
+  </footer>
   <script>
     const defaultConfig = {
-      page_title: "Support Center",
+      page_title: "CPB Support Center",
       hero_title: "How can we help you?",
-      hero_subtitle: "Get instant support from our AI assistant or browse our help resources below",
+      hero_subtitle: "Chat with the support team or browse the help resources below",
       faq_title: "Frequently Asked Questions",
       contact_title: "Need More Help?",
       contact_description: "Our support team is here for you 24/7. Choose your preferred contact method below.",
@@ -614,5 +613,15 @@
     }
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a20b43820f66af6',t:'MTc2MzczMzUyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script src="../assets/js/site-nav.js"></script>
-</body>
+<script src="//code.tidio.co/krowdz2ddzpkhxf0bn1kcz2x6xpczpbl.js" async></script>
+<script>
+  document.querySelector('[data-open-tidio]')?.addEventListener('click', event => {
+    event.preventDefault();
+    if (window.tidioChatApi) {
+      window.tidioChatApi.open();
+      return;
+    }
+    document.addEventListener('tidioChat-ready', () => window.tidioChatApi?.open(), { once: true });
+  });
+</script></body>
 </html>
