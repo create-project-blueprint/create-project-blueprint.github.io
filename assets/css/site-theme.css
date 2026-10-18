@@ -99,6 +99,22 @@ a { transition: color .18s ease, border-color .18s ease, background-color .18s e
 .home-card-link { margin-top:auto; color:#bae6fd; font-size:12px; font-weight:700; }
 .home-card-link b { margin-left:5px; color:#c4b5fd; }
 .home-card--accent { background:linear-gradient(145deg,rgba(27,31,55,.98),rgba(16,20,35,.95)); }
+.home-intro-panel,.home-join-panel { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr); gap:28px; align-items:center; margin:10px 0 56px; padding:clamp(24px,4vw,40px); border:1px solid var(--cpb-border); border-radius:20px; background:linear-gradient(145deg,rgba(20,31,49,.96),rgba(12,18,31,.96)); box-shadow:0 18px 46px rgba(0,0,0,.2); }
+.home-intro-panel h3,.home-join-panel h3 { margin:0 0 12px; color:#f8fafc; font-size:clamp(24px,3vw,34px); font-weight:800; letter-spacing:-.035em; }
+.home-intro-panel p:not(.home-eyebrow),.home-join-panel p:not(.home-eyebrow) { margin:0; max-width:680px; color:#b8c4d8; font-size:15px; line-height:1.8; }
+.home-status-card { padding:22px; border:1px solid rgba(125,211,252,.24); border-radius:15px; background:rgba(8,47,73,.22); }
+.home-status-card strong { display:block; margin:11px 0 8px; color:#e0f2fe; font-size:18px; }
+.home-status-card p { color:#a8b3c7 !important; font-size:13px !important; line-height:1.7 !important; }
+.home-status-card a,.home-season-grid a { display:inline-block; margin-top:14px; color:#bae6fd; font-size:12px; font-weight:750; text-decoration:none; }
+.home-secondary-link { margin-left:10px; background:rgba(17,24,39,.5); border-color:var(--cpb-border); }
+.home-seasons { margin:50px 0 58px; }
+.home-season-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.home-season-grid article { padding:22px; border:1px solid var(--cpb-border); border-radius:15px; background:rgba(17,24,39,.75); }
+.home-season-grid article > span { color:#7dd3fc; font-size:9px; font-weight:800; letter-spacing:.15em; }
+.home-season-grid h5 { margin:11px 0 8px; color:#f8fafc; font-size:18px; font-weight:750; }
+.home-season-grid p { margin:0; color:#a8b3c7; font-size:13px; line-height:1.7; }
+.home-join-panel { grid-template-columns:minmax(0,1fr) auto; margin-top:62px; background:radial-gradient(ellipse at 90% 0%,rgba(56,189,248,.13),transparent 48%),linear-gradient(145deg,rgba(27,31,55,.98),rgba(16,20,35,.95)); }
+@media (max-width:760px) { .home-intro-panel,.home-join-panel { grid-template-columns:1fr; } .home-season-grid { grid-template-columns:1fr; } }
 
 .cpb-site-nav {
     position: relative; z-index: 50; width: 100%; align-self: stretch;

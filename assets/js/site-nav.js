@@ -15,6 +15,7 @@
         ['Partners', 'partners/'],
         ['Security & Justice', 'server-security/'],
         ['Support', 'support/'],
+        ['Join the Discord', 'https://discord.gg/mRsThVUT3J'],
         ['Staff portal · sign-in required', 'server-security/portal/']
     ];
 
@@ -32,7 +33,7 @@
     const brand = document.createElement('a');
     brand.className = 'cpb-site-nav__brand';
     brand.href = new URL('index.html', root).href;
-    brand.innerHTML = 'Create: Project Blueprint<small>Community • Seasons • Services</small>';
+    brand.innerHTML = 'Create: Project Blueprint<small>Community • Minecraft • Seasons</small>';
     inner.append(brand);
 
     const links = document.createElement('div');
@@ -43,7 +44,8 @@
         link.href = new URL(path, root).href;
         link.textContent = label;
         if (path.includes('portal')) link.classList.add('cpb-site-nav__staff');
-        if (new URL(link.href).pathname.replace(/\/+$/, '') === currentPath) {
+        const target = new URL(link.href);
+        if (target.origin === window.location.origin && target.pathname.replace(/\/+$/, '') === currentPath) {
             link.setAttribute('aria-current', 'page');
         }
         links.append(link);
@@ -65,7 +67,7 @@
             <div class="cpb-footer__grid">
                 <div>
                     <a class="cpb-footer__brand" href="${new URL('index.html', root).href}">Create: Project Blueprint</a>
-                    <p class="cpb-footer__copy">A community built around Create, shared worlds, and the people who bring them to life. Explore the project, its history, and the services that keep it moving.</p>
+                    <p class="cpb-footer__copy">CPB is a community-run modded Minecraft project with roots in the earlier CTBE seasons. This site documents the worlds, member projects, governance, and work toward the next season.</p>
                 </div>
                 <div><h2 class="cpb-footer__heading">Explore</h2><div class="cpb-footer__links">
                     <a href="${new URL('history.html', root).href}">Project history</a>
@@ -76,6 +78,7 @@
                     <a href="${new URL('co/', root).href}">Companies</a>
                     <a href="${new URL('partners/', root).href}">Partners</a>
                     <a href="${new URL('support/#contact', root).href}">Get support</a>
+                    <a href="https://discord.gg/mRsThVUT3J" target="_blank" rel="noopener noreferrer">Discord application</a>
                 </div></div>
                 <div><h2 class="cpb-footer__heading">Project</h2><div class="cpb-footer__links">
                     <a href="${new URL('government.html', root).href}">Governance</a>

@@ -1,186 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>When S3.1?</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: #0f1115;
-    color: white;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    text-align: center;
-}
-
-.container {
-    max-width: 900px;
-    padding: 2rem;
-}
-
-h1 {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-}
-
-.subtitle {
-    color: #b0b0b0;
-    margin-bottom: 3rem;
-}
-
-.countdown {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.time-box {
-    background: #181c24;
-    border: 1px solid #2c3440;
-    border-radius: 12px;
-    padding: 1.5rem;
-    min-width: 140px;
-}
-
-.number {
-    font-size: 3rem;
-    font-weight: bold;
-}
-
-.label {
-    color: #9aa4b2;
-    margin-top: .5rem;
-    text-transform: uppercase;
-}
-
-.launch-time {
-    margin-top: 2rem;
-    color: #888;
-}
-
-.status {
-    margin-top: 2rem;
-    color: #7dd3fc;
-    font-style: italic;
-    min-height: 1.5rem;
-    transition: opacity 0.3s ease;
-}
-
-.live {
-    color: #4ade80;
-    font-size: 3rem;
-    font-weight: bold;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Season 3.1 archive — Create: Project Blueprint</title>
+  <link rel="icon" type="image/png" href="assets/image/favicon.png">
+  <link rel="stylesheet" href="assets/css/site-theme.css">
+  <style>
+    main { width:min(920px,calc(100% - 32px)); margin:clamp(40px,8vw,96px) auto; }
+    .archive-card { padding:clamp(26px,5vw,54px); border:1px solid var(--cpb-border); border-radius:24px; background:linear-gradient(145deg,rgba(20,31,49,.97),rgba(12,18,31,.97)); box-shadow:0 24px 70px rgba(0,0,0,.25); }
+    .archive-card h1 { margin:10px 0 16px; color:#f8fafc; font-size:clamp(34px,6vw,58px); line-height:1.06; letter-spacing:-.045em; }
+    .archive-card p { color:#b8c4d8; line-height:1.8; }
+    .archive-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+    .archive-actions a { display:inline-flex; padding:12px 17px; border:1px solid rgba(125,211,252,.35); border-radius:999px; color:#e0f2fe; text-decoration:none; background:rgba(8,47,73,.4); }
+    .archive-actions a:hover { border-color:#7dd3fc; background:rgba(14,116,144,.3); }
+  </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>When S3.1?</h1>
-
-    <div class="subtitle">
-        CTBE SMP Season 3.1 launches soon™
-    </div>
-
-    <div class="countdown">
-        <div class="time-box">
-            <div id="days" class="number">0</div>
-            <div class="label">Days</div>
-        </div>
-
-        <div class="time-box">
-            <div id="hours" class="number">0</div>
-            <div class="label">Hours</div>
-        </div>
-
-        <div class="time-box">
-            <div id="minutes" class="number">0</div>
-            <div class="label">Minutes</div>
-        </div>
-
-        <div class="time-box">
-            <div id="seconds" class="number">0</div>
-            <div class="label">Seconds</div>
-        </div>
-    </div>
-
-    <div class="launch-time">
-        June 20, 2026 • 4:00 PM CST/CDT
-    </div>
-
-    <div id="status" class="status">
-        Loading status...
-    </div>
-</div>
-
-<script>
-const launchDate = new Date("2026-06-20T16:00:00-05:00");
-
-function updateCountdown() {
-    const now = new Date();
-    const diff = launchDate - now;
-
-    if (diff <= 0) {
-        document.querySelector(".container").innerHTML = `
-            <h1>CTBE SMP S3.1</h1>
-            <div class="live">NOW LIVE</div>
-        `;
-        return;
-    }
-
-    document.getElementById("days").textContent =
-        Math.floor(diff / 1000 / 60 / 60 / 24);
-
-    document.getElementById("hours").textContent =
-        Math.floor(diff / 1000 / 60 / 60) % 24;
-
-    document.getElementById("minutes").textContent =
-        Math.floor(diff / 1000 / 60) % 60;
-
-    document.getElementById("seconds").textContent =
-        Math.floor(diff / 1000) % 60;
-}
-
-let statuses = [];
-
-fetch("status.json")
-.then(r => r.json())
-.then(data => {
-    statuses = data;
-    rotateStatus();
-    setInterval(rotateStatus, 10000);
-});
-
-function rotateStatus() {
-    if (!statuses.length) return;
-
-    const el = document.getElementById("status");
-
-    el.style.opacity = 0;
-
-    setTimeout(() => {
-        el.textContent =
-            statuses[Math.floor(Math.random() * statuses.length)];
-        el.style.opacity = 1;
-    }, 300);
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
-</script>
-
-<script src="assets/js/site-nav.js"></script>
+  <main>
+    <article class="archive-card">
+      <p class="home-eyebrow">FORMER CTBE CHAPTER · JUNE 20, 2026</p>
+      <h1>Season 3.1: The Blueprint Expedition</h1>
+      <p><strong>Operation Genesis</strong> was the launch chapter of Season 3.1. Its announcement and lore marked an early appearance of the Blueprint name before the community’s later transition to Create: Project Blueprint.</p>
+      <p>This season is part of the project’s history, not a current server opening. Hardware failures took the world offline; CPB Season 1 is in development, and no launch date is posted.</p>
+      <div class="archive-actions">
+        <a href="history.html#season-31">Read the full Season 3.1 timeline ↗</a>
+        <a href="https://www.youtube.com/embed/b0VOgLbdIaw" target="_blank" rel="noopener noreferrer">Watch the announcement ↗</a>
+        <a href="https://discord.gg/mRsThVUT3J" target="_blank" rel="noopener noreferrer">Join the Discord ↗</a>
+      </div>
+    </article>
+  </main>
+  <script src="assets/js/site-nav.js"></script>
 </body>
 </html>
