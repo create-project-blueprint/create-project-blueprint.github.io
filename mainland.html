@@ -210,9 +210,14 @@ function rotateStatus() {
     }, 300);
 }
 
+let mainlandOpen = false;
+
 function showRealPage() {
+    if (mainlandOpen) return;
+    mainlandOpen = true;
     document.title = "CTBE SMP S3.1";
-    document.body.innerHTML = REAL_PAGE;
+    const page = document.getElementById("countdownPage");
+    if (page) page.innerHTML = REAL_PAGE;
 }
 
 function updateCountdown() {
@@ -244,6 +249,7 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 </script>
 
+<script src="assets/js/site-nav.js"></script>
 </body>
 </html>
 

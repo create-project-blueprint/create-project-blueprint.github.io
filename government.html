@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Server Government - Server Hub</title>
-    <link rel="icon" type="image/png" href="assets/image/FAVICON.png">
+    <link rel="icon" type="image/png" href="assets/image/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
@@ -101,7 +101,7 @@
     <section class="breadcrumb text-white py-8">
         <div class="max-w-6xl mx-auto px-6">
             <nav class="flex items-center space-x-2 text-sm">
-                <a href="#" class="text-blue-200 hover:text-white transition-colors">Home</a>
+                <a href="index.html" class="text-blue-200 hover:text-white transition-colors">Home</a>
                 <span class="text-blue-300">›</span>
                 <span class="text-white font-medium">Server Government</span>
             </nav>
@@ -115,7 +115,7 @@
         <div class="max-w-6xl mx-auto px-6">
             
             <!-- Government Overview -->
-            <section class="mb-12">
+            <section id="about" class="mb-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 title-font">About Our Government</h3>
                 <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
                     <p class="text-gray-700 text-lg leading-relaxed mb-6">
@@ -131,7 +131,7 @@
             </section>
 
             <!-- Leadership Structure -->
-            <section class="mb-12">
+            <section id="leadership" class="mb-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 title-font">Leadership Structure</h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     
@@ -210,7 +210,7 @@
             </section>
 
             <!-- Governance Policies -->
-            <section class="mb-12">
+            <section id="policies" class="mb-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 title-font">Governance Policies</h3>
                 
                 <div class="grid md:grid-cols-2 gap-6">
@@ -305,7 +305,7 @@
             </section>
 
             <!-- Contact Government -->
-            <section>
+            <section id="contact">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 title-font">Contact Government</h3>
                 <div class="bg-white rounded-xl shadow-lg p-8">
                     <div class="grid md:grid-cols-2 gap-8">
@@ -359,9 +359,7 @@
                                 </div>
                             </div>
                             <div class="mt-6 pt-6 border-t border-gray-200">
-                                <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                                    Submit Government Inquiry
-                                </button>
+                                <a href="support/#contact" class="block w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors text-center">Contact support about government</a>
                             </div>
                         </div>
                     </div>
@@ -387,14 +385,6 @@
         </div>
     </footer>
 
-    <script>
-        // Government inquiry button
-        const inquiryBtn = document.querySelector('button');
-        if (inquiryBtn && inquiryBtn.textContent.includes('Submit Government Inquiry')) {
-            inquiryBtn.addEventListener('click', function() {
-                alert('Opening government inquiry form...\n\nYou can submit questions about:\n• Governance policies\n• Leadership structure\n• Community concerns\n• Suggestions for improvement');
-            });
-        }
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984b0056d143eb07',t:'MTc1ODgwODMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984b0056d143eb07',t:'MTc1ODgwODMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script src="assets/js/site-nav.js"></script>
+</body>
 </html>

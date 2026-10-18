@@ -731,6 +731,9 @@
     // --------------------------------------------------------------------------
     let adminSub = 'users';
     let userSearch = '';
+    let userRoleFilter = 'all';
+    let userPage = 0;
+    const USERS_PAGE_SIZE = 50;
 
     async function renderAdmin(sub = adminSub) {
         adminSub = sub;
@@ -748,24 +751,49 @@
 
     async function renderUsers() {
         let q = db.from('profiles')
-            .select('id, email, full_name, minecraft_username, verification_status, role, created_at')
+            .select('id, email, full_name, minecraft_username, verification_status, role, created_at', { count: 'exact' })
             .order('created_at', { ascending: false })
-            .limit(200);
+            .range(userPage * USERS_PAGE_SIZE, (userPage + 1) * USERS_PAGE_SIZE - 1);
         // Strip characters that have meaning in PostgREST filter syntax
         const term = userSearch.replace(/[^\w@.\- ]/g, '').trim();
         if (term) q = q.or(`email.ilike.%${term}%,minecraft_username.ilike.%${term}%,full_name.ilike.%${term}%`);
-        const { data, error } = await q;
+        if (userRoleFilter !== 'all') q = q.eq('role', userRoleFilter);
+        const { data, error, count: total } = await q;
         if (error) throw error;
+        const rows = data || [];
+        const pageCount = Math.max(1, Math.ceil((total || 0) / USERS_PAGE_SIZE));
+        const first = total ? userPage * USERS_PAGE_SIZE + 1 : 0;
+        const last = total ? Math.min((userPage + 1) * USERS_PAGE_SIZE, total) : 0;
+        const safeRenderUsers = async () => {
+            try {
+                await renderUsers();
+            } catch (err) {
+                content().innerHTML = errorBox(err);
+            }
+        };
 
         const me = CPB.state.user.id;
         content().innerHTML = `
             ${sectionHeader('Administration · Users & Roles', CPB.access.president()
                 ? 'As President you can appoint any role, including administrators.'
                 : 'Administrators can assign staff roles. Only the President can appoint or remove administrators.',
-                `<input id="userSearch" type="search" value="${esc(userSearch)}" placeholder="Search name, IGN or email" class="bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-xs text-gray-200 w-56">`)}
+                `<input id="userSearch" type="search" value="${esc(userSearch)}" placeholder="Search name, IGN or email" aria-label="Search users" class="bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-xs text-gray-200 w-56">
+                 <select id="userRoleFilter" aria-label="Filter users by role" class="bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-xs text-gray-200">
+                    <option value="all">All roles</option>${Object.entries(CPB.ROLE_LABELS).map(([value, label]) => `<option value="${esc(value)}" ${value === userRoleFilter ? 'selected' : ''}>${esc(label)}</option>`).join('')}
+                 </select>
+                 <button type="button" id="userSearchApply" class="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white rounded text-xs font-semibold">Search</button>
+                 <button type="button" id="userSearchReset" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-gray-200 rounded text-xs font-semibold">Reset</button>
+                 <button type="button" id="userRefresh" class="px-3 py-1.5 border border-slate-700 hover:bg-slate-800 text-gray-200 rounded text-xs font-semibold">Refresh</button>`)}
             ${subTabs('adm', [['users', 'Users & Roles'], ['audit', 'Audit Log']], 'users')}
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-3 text-xs text-gray-400">
+                <span>Showing ${first}–${last} of ${total || 0} users · Page ${userPage + 1} of ${pageCount}</span>
+                <div class="flex gap-2">
+                    <button type="button" id="userPrev" ${userPage <= 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded border border-slate-700 enabled:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed">Previous</button>
+                    <button type="button" id="userNext" ${userPage + 1 >= pageCount ? 'disabled' : ''} class="px-3 py-1.5 rounded border border-slate-700 enabled:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed">Next</button>
+                </div>
+            </div>
             ${table(['User', 'Minecraft', 'Role', 'Joined', ''],
-                data.map((u) => {
+                rows.map((u) => {
                     const choices = u.id === me ? [] : assignableRoles(u.role);
                     const control = choices.length
                         ? `<div class="flex gap-2 items-center">
@@ -785,26 +813,34 @@
                             control
                         ]
                     };
-                }), term ? 'No users match your search.' : 'No users yet.')}`;
+                }), term || userRoleFilter !== 'all' ? 'No users match these filters.' : 'No users yet.')}`;
         bindSubTabs('adm', renderAdmin);
 
         const search = document.getElementById('userSearch');
-        search.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { userSearch = search.value; renderUsers(); }
-        });
+        const applySearch = () => { userSearch = search.value; userPage = 0; safeRenderUsers(); };
+        document.getElementById('userSearchApply').addEventListener('click', applySearch);
+        search.addEventListener('keydown', (e) => { if (e.key === 'Enter') applySearch(); });
+        document.getElementById('userRoleFilter').addEventListener('change', (e) => { userRoleFilter = e.target.value; userPage = 0; safeRenderUsers(); });
+        document.getElementById('userSearchReset').addEventListener('click', () => { userSearch = ''; userRoleFilter = 'all'; userPage = 0; safeRenderUsers(); });
+        document.getElementById('userRefresh').addEventListener('click', safeRenderUsers);
+        document.getElementById('userPrev').addEventListener('click', () => { if (userPage > 0) { userPage--; safeRenderUsers(); } });
+        document.getElementById('userNext').addEventListener('click', () => { if (userPage + 1 < pageCount) { userPage++; safeRenderUsers(); } });
 
         content().querySelectorAll('[data-set-role]').forEach((btn) => btn.addEventListener('click', async () => {
             const userId = btn.dataset.setRole;
             const newRole = content().querySelector(`[data-role-for="${CSS.escape(userId)}"]`).value;
             if (!confirm(`Change this user's role to ${CPB.ROLE_LABELS[newRole]}?`)) return;
             btn.disabled = true;
-            const { error } = await db.rpc('admin_set_user_role', { p_target_user_id: userId, p_new_role: newRole });
-            btn.disabled = false;
-            if (error) {
-                alert(error.message);
-                return;
+            btn.textContent = 'Saving…';
+            try {
+                const { error } = await db.rpc('admin_set_user_role', { p_target_user_id: userId, p_new_role: newRole });
+                if (error) throw error;
+                await renderUsers();
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = 'Save';
+                alert(`Could not update the role: ${err.message || err}`);
             }
-            renderUsers();
         }));
     }
 

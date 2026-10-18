@@ -84,9 +84,9 @@
                     <h1 class="text-3xl font-bold text-gray-800 title-font">CTBE SMP Server</h1>
                 </div>
                 <nav class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Home</a>
+                    <a href="../index.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Home</a>
                     <a href="#partners" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Partners</a>
-                    <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Contact</a>
+                    <a href="../support/#contact" class="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300">Contact</a>
                 </nav>
             </div>
         </div>
@@ -101,9 +101,7 @@
                 services, and opportunities to our community. Explore the companies below and discover
                 how they support our server’s ecosystem.
             </p>
-            <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300 custom-shadow">
-                Learn More
-            </button>
+            <a href="#partners" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300 custom-shadow">Explore partners</a>
         </div>
     </section>
 
@@ -146,9 +144,7 @@
                     <p class="text-gray-600 mb-4 leading-relaxed">
                         Emerging blockchain infrastructure partner. Currently under integration – stay tuned for updates.
                     </p>
-                    <a href="#" class="text-orange-600 font-semibold cursor-not-allowed opacity-70">
-                        Coming Soon…
-                    </a>
+                    <span class="text-orange-600 font-semibold opacity-70">Coming Soon…</span>
                 </div>
 
                 <!-- You can continue adding more cards below this line -->
@@ -175,14 +171,6 @@
 
     <!-- Interaction scripts (unchanged) -->
     <script>
-        // Click handler – you can replace the alert with real navigation later
-        document.querySelectorAll('.nav-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const title = card.querySelector('h4').textContent.trim();
-                alert(`You clicked on ${title}. Implement navigation as needed.`);
-            });
-        });
-
         // Smooth scrolling for internal anchors
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', e => {
@@ -194,5 +182,6 @@
             });
         });
     </script>
+<script src="../assets/js/site-nav.js"></script>
 </body>
 </html>

@@ -97,16 +97,14 @@
         <div class="hero-content max-w-6xl mx-auto px-6 text-center">
             <h2 class="text-5xl font-bold mb-6 title-font">Welcome to Our Server</h2>
             <p class="text-xl mb-10 text-blue-100 max-w-3xl mx-auto">Your central hub for community management, member services, and server administration. Everything you need in one place.</p>
-            <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300 custom-shadow">
-                Get Started
-            </button>
+            <a href="#services" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300 custom-shadow">Explore services</a>
         </div>
     </section>
 
     <!-- Main Navigation Cards -->
     <main class="flex-1 py-16 bg-gray-50">
         <div class="max-w-6xl mx-auto px-6">
-            <h3 class="text-3xl font-bold text-center text-gray-800 mb-12 title-font">Server Services</h3>
+            <h3 id="services" class="text-3xl font-bold text-center text-gray-800 mb-12 title-font">Server Services</h3>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Server Government -->
@@ -146,16 +144,16 @@
                 </a>
 
                 <!-- Applications -->
-                <div class="nav-link rounded-xl shadow-lg p-8 cursor-pointer">
+                <a href="support/#contact" class="nav-link rounded-xl shadow-lg p-8 cursor-pointer block">
                     <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
                         <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </div>
                     <h4 class="text-xl font-bold text-gray-800 mb-3">Applications</h4>
-                    <p class="text-gray-600 mb-4 leading-relaxed">Submit or review membership applications and join requests.</p>
-                    <span class="text-purple-600 font-semibold">Apply Now →</span>
-                </div>
+                    <p class="text-gray-600 mb-4 leading-relaxed">Ask the team about membership and the application process.</p>
+                    <span class="text-purple-600 font-semibold">Contact support →</span>
+                </a>
 
                 <!-- Companies -->
                 <a href="co/" class="nav-link rounded-xl shadow-lg p-8 cursor-pointer block">
@@ -214,14 +212,6 @@
     </footer>
 
     <script>
-        // Add click handlers for unlinked navigation cards
-        document.querySelectorAll('div.nav-link').forEach(card => {
-            card.addEventListener('click', function() {
-                const title = this.querySelector('h4').textContent;
-                alert(`Navigating to ${title} page...`);
-            });
-        });
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -235,5 +225,6 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98443578423f10d3',t:'MTc1ODczNzExNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98443578423f10d3',t:'MTc1ODczNzExNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script src="assets/js/site-nav.js"></script>
+</body>
 </html>
